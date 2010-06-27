@@ -1,6 +1,6 @@
-package nofs.restfs;
+package nofs.restfs.tests;
 
-import nofs.restfs.util.RestExampleRunner;
+import nofs.restfs.tests.util.RestExampleRunner;
 
 import org.junit.After;
 import org.junit.Before;
@@ -12,12 +12,12 @@ public class RestFsIntegrationTests {
 	@Before
 	public void Setup() throws Exception {
 		_restRunner = new RestExampleRunner();
-		_restRunner.Start();
+		_restRunner.StartRunner();
 	}
 	
 	@After
 	public void TearDown() throws Exception {
-		_restRunner.Stop();
+		_restRunner.StopRunner();
 	}
 	
 	@Test
