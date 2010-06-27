@@ -4,7 +4,7 @@
 
   <groupId>nofs</groupId>
   <artifactId>nofs.restfs</artifactId>
-  <version>0.0.24</version>
+  <version>${restfs.version}</version>
   <packaging>jar</packaging>
 
   <name>nofs.restfs</name>
@@ -38,6 +38,7 @@
   <properties>
     <restlet.version>2.0-M7</restlet.version>
     <nofs.version>0.0.24</nofs.version>
+    <restfs.version>0.0.24</restfs.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
