@@ -22,8 +22,22 @@
     </plugins>
   </build>
 
+  <repositories>
+    <repository>
+        <id>maven-restlet</id>
+        <name>Public online Restlet repository</name>
+        <url>http://maven.restlet.org/</url>
+    </repository>
+    <repository>
+        <id>maven-nofs</id>
+        <name>Public online NOFS repository</name>
+        <url>http://nofs.googlecode.com/hg/artifacts/</url>
+    </repository>
+  </repositories>
+
   <properties>
     <restlet.version>2.0-M7</restlet.version>
+    <nofs.version>0.0.24</nofs.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
@@ -34,13 +48,18 @@
       <artifactId>jackrabbit-webdav</artifactId>
       <version>2.1.0</version>
     </dependency>
-    
     <dependency>
-		<groupId>junit</groupId>
-		<artifactId>junit</artifactId>
-		<version>4.3.1</version>
-		<scope>test</scope>
-	</dependency>
+       <groupId>nofs</groupId>
+       <artifactId>nofs.library</artifactId>
+       <version>${nofs.version}</version>
+    </dependency>
+    <dependency>
+       <groupId>nofs</groupId>
+       <artifactId>nofs.Library.Annotations</artifactId>
+       <version>${nofs.version}</version>
+    </dependency>
+    
+    <!-- test dependencies -->
 	<dependency>
       <groupId>org.restlet.jse</groupId>
       <artifactId>org.restlet</artifactId>
