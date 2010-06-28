@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import nofs.restfs.tests.util.RestExampleRunner;
-import nofs.restfs.tests.util.TestClient;
+import nofs.restfs.tests.util.HttpTestClient;
 
 import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.HostConfiguration;
@@ -43,7 +43,7 @@ public class RestFsIntegrationTests {
 		//final int port = 80;
 		final String host = "127.0.0.1";
 		final int port = 8100;
-		TestClient client = new TestClient();
+		HttpTestClient client = new HttpTestClient();
 		WriteResponse(client.WriteHTTP(host, port, line));
 	}
 	

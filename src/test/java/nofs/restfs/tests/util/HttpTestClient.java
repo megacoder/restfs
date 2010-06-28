@@ -8,7 +8,7 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.net.Socket;
 
-public class TestClient {
+public class HttpTestClient {
 	
 	public String WriteHTTP(String host, int port, String req) throws Exception {
     	final String nl = "\r\n";
