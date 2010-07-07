@@ -1,27 +1,47 @@
 package nofs.restfs;
 
 import java.nio.ByteBuffer;
+import java.util.Date;
 
 import nofs.Library.Annotations.DomainObject;
+import nofs.Library.Annotations.ProvidesLastAccessTime;
+import nofs.Library.Annotations.ProvidesLastModifiedTime;
+import nofs.Library.Annotations.ProvidesName;
+import nofs.Library.Containers.IListensToEvents;
 import nofs.Library.Containers.IProvidesUnstructuredData;
 
 @DomainObject
-public class RestfulFile implements IProvidesUnstructuredData  {
+public class RestfulFile implements IProvidesUnstructuredData, IListensToEvents {
 
+	private String _name;
 	private byte[] _representation;
+	private Date _aTime;
+	private Date _mTime;
+	private Date _cTime;
 	
 	public RestfulFile() {
 		_representation = new byte[0];
+		_name = "";
+		_aTime = new Date(System.currentTimeMillis());
+		_mTime = new Date(System.currentTimeMillis());
+		_cTime = new Date(System.currentTimeMillis());
 	}
 	
-	private void BeforeRead() {
+	@ProvidesName 
+	public String getName() { return _name; }
+	@ProvidesName 
+	public void setName(String name) { _name = name; }
+	
+	@ProvidesLastAccessTime
+	public Date getATime() { return _aTime; }
+	@ProvidesLastAccessTime
+	public void setATime(Date value) { _aTime = value; AfterUTime(); }
+	
+	@ProvidesLastModifiedTime
+	public Date getMTime() { return _mTime; }
+	@ProvidesLastModifiedTime
+	public void setMTime(Date value) { _mTime = value; AfterUTime(); }
 		
-	}
-	
-	private void AfterWrite() {
-		
-	}
-	
 	@Override
 	public boolean Cacheable() {
 		return false;
@@ -58,6 +78,36 @@ public class RestfulFile implements IProvidesUnstructuredData  {
 	@Override
 	public void Closed() {
 		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void Opened() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void Created() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void Deleting() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	private void AfterUTime() {
+		
+	}
+	
+	private void BeforeRead() {
+		
+	}
+	
+	private void AfterWrite() {
 		
 	}
 
