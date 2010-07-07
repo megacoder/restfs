@@ -24,6 +24,7 @@ import org.apache.jackrabbit.webdav.MultiStatusResponse;
 import org.apache.jackrabbit.webdav.client.methods.DavMethod;
 import org.apache.jackrabbit.webdav.client.methods.OptionsMethod;
 import org.apache.jackrabbit.webdav.client.methods.PropFindMethod;
+import org.apache.commons.httpclient.Header;
 import org.apache.jackrabbit.webdav.property.DavPropertySet;
 import org.apache.jackrabbit.webdav.property.DefaultDavProperty;
 import org.apache.jackrabbit.webdav.version.OptionsResponse;
@@ -97,6 +98,12 @@ public class RestFsIntegrationTests {
         
         OptionsMethod method = new OptionsMethod(proto + host + resourcePath);
         client.executeMethod(method);
+
+        System.out.println("********************");
+        for(Header header : method.getResponseHeaders()) {
+        	System.out.println("name: {" + header.getName() + "} value {" + header.getValue() + "}");
+        }
+        System.out.println("********************");
         
         try {
         	OptionsResponse optionsResponse = method.getResponseAsOptionsResponse();

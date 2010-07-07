@@ -27,6 +27,10 @@ public class UserResource extends Resource {
 		getVariants().add(new Variant(MediaType.APPLICATION_JSON));
 	}
 
+	public boolean allowPropfind() {
+		return true;
+	}
+	
 	/**
 	 * Allow a PUT http request
 	 * 

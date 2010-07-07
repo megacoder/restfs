@@ -37,8 +37,8 @@
 
   <properties>
     <restlet.version>2.0-M7</restlet.version>
-    <nofs.version>0.0.24</nofs.version>
-    <restfs.version>0.0.24</restfs.version>
+    <nofs.version>0.0.25</nofs.version>
+    <restfs.version>0.0.25</restfs.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
