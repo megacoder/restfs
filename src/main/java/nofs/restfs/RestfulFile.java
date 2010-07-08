@@ -17,14 +17,17 @@ public class RestfulFile implements IProvidesUnstructuredData, IListensToEvents 
 	private byte[] _representation;
 	private Date _aTime;
 	private Date _mTime;
-	private Date _cTime;
+	private RestfulSetting _settings;
 	
 	public RestfulFile() {
 		_representation = new byte[0];
 		_name = "";
 		_aTime = new Date(System.currentTimeMillis());
 		_mTime = new Date(System.currentTimeMillis());
-		_cTime = new Date(System.currentTimeMillis());
+	}
+	
+	public void setSettings(RestfulSetting settings) {
+		_settings = settings;
 	}
 	
 	@ProvidesName 
