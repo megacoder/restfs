@@ -24,10 +24,14 @@ public class RestfulFile implements IProvidesUnstructuredData, IListensToEvents 
 		_name = "";
 		_aTime = new Date(System.currentTimeMillis());
 		_mTime = new Date(System.currentTimeMillis());
+		_settings = null;
 	}
 	
 	public void setSettings(RestfulSetting settings) {
 		_settings = settings;
+	}
+	public RestfulSetting getSettings() {
+		return _settings;
 	}
 	
 	@ProvidesName 
