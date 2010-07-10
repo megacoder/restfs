@@ -9,12 +9,14 @@ import nofs.Library.Annotations.ProvidesLastModifiedTime;
 import nofs.Library.Annotations.ProvidesName;
 import nofs.Library.Containers.IListensToEvents;
 import nofs.Library.Containers.IProvidesUnstructuredData;
+import nofs.restfs.http.GetAnswer;
+import nofs.restfs.http.WebDavFacade;
 
 @DomainObject
 public class RestfulFile implements IProvidesUnstructuredData, IListensToEvents {
 
 	private String _name;
-	private byte[] _representation;
+	private volatile byte[] _representation;
 	private Date _aTime;
 	private Date _mTime;
 	private RestfulSetting _settings;
@@ -84,8 +86,14 @@ public class RestfulFile implements IProvidesUnstructuredData, IListensToEvents 
 
 	@Override
 	public void Closed() {
-		// TODO Auto-generated method stub
-		
+		if(getSettings().getFsMethod().compareTo("Closed") == 0) {
+			try {
+				GetAnswer answer = WebDavFacade.Instance().GetMethod(getSettings().getHost(), getSettings().getResource());
+				_representation = answer.getData();
+			} catch(Exception e) {
+				_representation = e.getMessage().getBytes();
+			}			
+		}
 	}
 
 	@Override

@@ -22,6 +22,14 @@ public class WebDavFacade {
 		_hostConfigurations = new TreeMap<String, HostConfiguration>();
 	}
 	
+	private static volatile WebDavFacade _instance = null;
+	public static WebDavFacade Instance() {
+		if(_instance == null) {
+			_instance = new WebDavFacade();
+		}
+		return _instance;
+	}
+	
 	private HostConfiguration GetConfig(String host) {
 		if(!_hostConfigurations.containsKey(host)) {
 			HostConfiguration hostConfig = new HostConfiguration();
