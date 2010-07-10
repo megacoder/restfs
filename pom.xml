@@ -64,7 +64,31 @@
        <artifactId>nofs.Library.Annotations</artifactId>
        <version>${nofs.version}</version>
     </dependency>
-    
+    <dependency>
+       <groupId>nofs</groupId>
+       <artifactId>nofs</artifactId>
+       <version>${nofs.version}</version>
+    </dependency>
+    <dependency>
+       <groupId>nofs</groupId>
+       <artifactId>nofs.Common.Interfaces</artifactId>
+       <version>${nofs.version}</version>
+    </dependency>
+    <dependency>
+       <groupId>nofs</groupId>
+       <artifactId>nofs.Db4o</artifactId>
+       <version>${nofs.version}</version>
+    </dependency>
+    <dependency>
+       <groupId>nofs</groupId>
+       <artifactId>nofs.metadata.interfaces</artifactId>
+       <version>${nofs.version}</version>
+    </dependency>
+    <dependency>
+       <groupId>nofs</groupId>
+       <artifactId>nofs.metadata.AnnotationDriver</artifactId>
+       <version>${nofs.version}</version>
+    </dependency>
     <!-- test dependencies -->
   <dependency>
       <groupId>org.restlet.jse</groupId>
