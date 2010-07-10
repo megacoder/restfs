@@ -1,4 +1,6 @@
 syntax: glob
+lib/commons-logging*.jar
+lib/dom4j*.jar
 lib/nofs*.jar
 lib/db4o*.jar
 target/**

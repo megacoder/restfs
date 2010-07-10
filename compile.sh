@@ -1,9 +1,12 @@
 #!/bin/bash
 
-#mvn package -Dmaven.test.skip=true
+mvn package -Dmaven.test.skip=true
 NOFS_VERS=`cat pom.xml | grep -i "<nofs.version>" | sed 's/nofs\.version//g' | sed 's/<>//g' | sed 's/<\/>//g' | sed 's/ //g'`
 
 mkdir -p lib
+
+rm -f lib/nofs*.jar
+rm -f lib/db4o*.jar
 
 for ARTIFACT in nofs nofs.Common.Interfaces nofs.Db4o nofs.library nofs.Library.Annotations nofs.metadata.interfaces nofs.metadata.AnnotationDriver
 do
@@ -18,4 +21,7 @@ do
 	SRCFILE=`echo $SRCFILE | sed 's/ //g'`
 	cp $SRCFILE lib/
 done
+
+cp ~/.m2/repository/commons-logging/commons-logging/1.1.1/*.jar lib/
+cp ~/.m2/repository/dom4j/dom4j/1.6.1/*.jar lib/
 
