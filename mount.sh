@@ -4,10 +4,14 @@ NOFS_VERS=`unzip -c target/nofs.restfs-*.jar META-INF/maven/nofs/nofs.restfs/pom
 
 echo "detected NOFS version: $NOFS_VERS"
 
+FUSE_LIB_PATH=/usr/lib
+
 DB4O_LIBS=`find . -name "db4o*.jar"`
 NOFS_LIBS=`find . -name "nofs*$NOFS_VERS*.jar" | grep -v "restfs"`
 RESTFS_JAR=`find . -name "nofs.restfs-*.jar"`
-CLASSPATH_LIBS=`echo $DB4O_LIBS $NOFS_LIBS | sed 's/ /:/g'`
+DOM4J_JAR=`find . -name "dom4j*.jar"`
+LOG_JAR=`find . -name "commons-logging*.jar"`
+CLASSPATH_LIBS=`echo $DB4O_LIBS $DOM4J_JAR $LOG_JAR $NOFS_LIBS | sed 's/ /:/g'`
 JAVAFS_LIB=`find . -name "libjavafs.so" | sed 's/\/libjavafs\.so//g'`
 
 DRIVER_FACTORY="nofs.metadata.AnnotationDriver.Factory"
@@ -15,10 +19,25 @@ PERSIST_FACTORY="nofs.Factories.Db4oPersistenceFactory"
 MOUNT_POINT=$1
 DB_FILE=restfs.data.db
 META_FILE=restfs.metadata.db
+HEAPSIZE="384m"
+LOGLEVEL="DEBUG"
+ARGS=`echo -ne "nofs.Application.Main $DRIVER_FACTORY $PERSIST_FACTORY $RESTFS_JAR $MOUNT_POINT $DB_FILE $META_FILE"`
 
-LD_LIBRARY_PATH=$JAVA_LIB:$FUSE_HOME/lib java \
-	-classpath $CLASSPATH_LIBS
+echo "driver factory  = $DRIVER_FACTORY"
+echo "persist factory = $PERSIST_FACTORY"
+echo "restfs jar      = $RESTFS_JAR"
+echo "mount point     = $MOUNT_POINT"
+echo "data store      = $DB_FILE"
+echo "metadata store  = $META_FILE"
+echo "classpath       = $CLASSPATH_LIBS"
+echo "arguments       = $ARGS"
+echo
+echo "launching restfs...."
+echo
+
+LD_LIBRARY_PATH=$JAVA_LIB:$FUSE_LIB_PATH java \
+	-classpath $CLASSPATH_LIBS \
 	-Dorg.apache.commons.logging.Log=fuse.logging.FuseLog \
 	-Dfuse.logging.level=$LOGLEVEL \
 	-Xmx$HEAPSIZE \
-	nofs.Application.Main $DRIVER_FACTORY $PERSIST_FACTORY $RESTFS_JAR $MOUNT_POINT $DB_FILE $META_FILE
+	$ARGS
