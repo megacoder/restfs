@@ -1,4 +1,6 @@
 syntax: glob
+lib/nofs*.jar
+lib/db4o*.jar
 target/**
 *.dat
 *.db
