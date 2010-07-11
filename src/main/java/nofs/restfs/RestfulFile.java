@@ -6,24 +6,22 @@ import java.util.Date;
 import nofs.Library.Annotations.DomainObject;
 import nofs.Library.Annotations.ProvidesLastAccessTime;
 import nofs.Library.Annotations.ProvidesLastModifiedTime;
-import nofs.Library.Annotations.ProvidesName;
 import nofs.Library.Containers.IListensToEvents;
 import nofs.Library.Containers.IProvidesUnstructuredData;
 import nofs.restfs.http.GetAnswer;
 import nofs.restfs.http.WebDavFacade;
 
 @DomainObject
-public class RestfulFile implements IProvidesUnstructuredData, IListensToEvents {
+public class RestfulFile extends BaseRestfulFileObject implements IProvidesUnstructuredData, IListensToEvents {
 
-	private String _name;
 	private volatile byte[] _representation;
 	private Date _aTime;
 	private Date _mTime;
 	private RestfulSetting _settings;
 	
 	public RestfulFile() {
+		super();
 		_representation = new byte[0];
-		_name = "";
 		_aTime = new Date(System.currentTimeMillis());
 		_mTime = new Date(System.currentTimeMillis());
 		_settings = null;
@@ -35,11 +33,6 @@ public class RestfulFile implements IProvidesUnstructuredData, IListensToEvents 
 	public RestfulSetting getSettings() {
 		return _settings;
 	}
-	
-	@ProvidesName 
-	public String getName() { return _name; }
-	@ProvidesName 
-	public void setName(String name) { _name = name; }
 	
 	@ProvidesLastAccessTime
 	public Date getATime() { return _aTime; }

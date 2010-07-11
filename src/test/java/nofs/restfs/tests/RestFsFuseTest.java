@@ -1,8 +1,11 @@
 package nofs.restfs.tests;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import fuse.FuseFtypeConstants;
 
 import nofs.FUSE.Impl.NoFSFuseDriver;
 import nofs.Factories.IPersistenceFactory;
@@ -47,5 +50,23 @@ public class RestFsFuseTest extends BaseFuseTests {
 	@Test
 	public void TestInitialFS() throws Exception {
 		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {});
+	}
+	
+	@Test
+	public void TestMkdir() throws Exception {
+		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {});
+		Assert.assertEquals(0, _fs.mkdir(Fix("/x"), FuseFtypeConstants.TYPE_DIR | 0755));
+		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {
+			new DirFillerExpect("x", FuseFtypeConstants.TYPE_DIR | 0755)
+		});
+	}
+	
+	@Test
+	public void TestMknod() throws Exception {
+		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {});
+		Assert.assertEquals(0, _fs.mknod(Fix("/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
+		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {
+			new DirFillerExpect("x", FuseFtypeConstants.TYPE_FILE | 0755)
+		});
 	}
 }
