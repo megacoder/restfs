@@ -1,7 +1,6 @@
 package nofs.restfs.tests;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -32,7 +31,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class RestFsIntegrationTests {
+public class RestFsIntegrationTest {
 	private RestExampleRunner _restRunner;
 
 	@Before
@@ -140,7 +139,6 @@ public class RestFsIntegrationTests {
 		MultiStatus multiStatus = pFind.getResponseBodyAsMultiStatus();
 		MultiStatusResponse[] responses = multiStatus.getResponses();
 		MultiStatusResponse currResponse;
-		ArrayList files = new ArrayList();
 		System.out.println("Folders and files in " + resourcePath + ":");
 		for (int i = 0; i < responses.length; i++) {
 			currResponse = responses[i];
