@@ -4,8 +4,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import fuse.FuseFtypeConstants;
-
 import nofs.FUSE.Impl.NoFSFuseDriver;
 import nofs.Factories.IPersistenceFactory;
 

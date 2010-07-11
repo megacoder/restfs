@@ -12,7 +12,6 @@ import nofs.Domain.IMethodParameter;
 import nofs.Domain.Impl.MethodInvocation;
 import nofs.Domain.Impl.MethodParameter;
 import nofs.FUSE.INoFSFuseDriver;
-import nofs.TestLib.XMLComparison;
 
 import org.junit.Assert;
 
