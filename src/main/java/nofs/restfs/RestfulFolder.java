@@ -40,7 +40,12 @@ public class RestfulFolder extends BaseRestfulFileObject implements List<BaseRes
 	}
 	
 	private void RemovingObject(BaseRestfulFileObject baseFile) {
-		
+		if(baseFile instanceof RestfulFile) {
+			RestfulFile file = (RestfulFile)baseFile;
+			if(file.getSettings() != null && _settings.contains(file.getSettings())) {
+				_settings.remove(file.getSettings());
+			}
+		}
 	}
 	
 	@Override

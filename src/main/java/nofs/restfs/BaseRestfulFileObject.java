@@ -1,7 +1,9 @@
 package nofs.restfs;
 
+import nofs.Library.Annotations.DomainObject;
 import nofs.Library.Annotations.ProvidesName;
 
+@DomainObject
 public class BaseRestfulFileObject {
 	private String _name;
 	@ProvidesName
