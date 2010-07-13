@@ -4,7 +4,7 @@ import nofs.Library.Annotations.DomainObject;
 import nofs.Library.Annotations.ProvidesName;
 
 @DomainObject
-public class BaseRestfulFileObject {
+public abstract class BaseRestfulFileObject {
 	private String _name;
 	@ProvidesName
 	public String getName() { return _name; }
