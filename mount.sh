@@ -54,7 +54,7 @@ echo
 echo "launching restfs...."
 echo
 
-LD_LIBRARY_PATH=$JAVA_LIB:$FUSE_LIB_PATH java \
+LD_LIBRARY_PATH=$JAVAFS_LIB:$FUSE_LIB_PATH java \
 	-classpath $CLASSPATH_LIBS \
 	-Dorg.apache.commons.logging.Log=fuse.logging.FuseLog \
 	-Dfuse.logging.level=$LOGLEVEL \

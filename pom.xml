@@ -37,7 +37,7 @@
 
   <properties>
     <restlet.version>2.0-M7</restlet.version>
-    <nofs.version>0.0.26</nofs.version>
+    <nofs.version>0.0.27</nofs.version>
     <restfs.version>0.0.25</restfs.version>
     <db4o.version>7.4.88.12908</db4o.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
