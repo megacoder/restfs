@@ -69,6 +69,16 @@ public class BaseFuseTests {
 		buffer.position(0);
 		return buffer;
 	}
+	
+	protected static void AssertEqualsRaw(String expectedValue, ByteBuffer buffer) throws Exception {
+		StringBuffer buff = new StringBuffer();
+		int len = buffer.position();
+		buffer.position(0);
+		for(int i = 0; i < len; i++) {
+			buff.append((char)buffer.get());
+		}
+		Assert.assertEquals(expectedValue, buff.toString());
+	}
 
 	protected static void AssertEquals(String expectedValue, ByteBuffer buffer) throws Exception {
 		String actualValue = ConvertToString(buffer);
