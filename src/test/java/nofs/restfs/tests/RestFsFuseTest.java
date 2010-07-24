@@ -79,7 +79,8 @@ public class RestFsFuseTest extends BaseFuseTests {
 		Assert.assertEquals(0, _fs.mknod(Fix("/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
 		Assert.assertEquals(0, _fs.utime(Fix("/x"), (int)System.currentTimeMillis(), (int)System.currentTimeMillis()));
 	}
-		private static void WriteToFile(NoFSFuseDriver fs, String path, MockFuseOpenSetter handle, String value) throws Exception {
+	
+	private static void WriteToFile(NoFSFuseDriver fs, String path, MockFuseOpenSetter handle, String value) throws Exception {
 		ByteBuffer buffer = WrapInBuffer(value);
 		Assert.assertEquals(0, fs.write(path, handle.getFh(), false, buffer, 0));
 	}
@@ -97,7 +98,6 @@ public class RestFsFuseTest extends BaseFuseTests {
 		Assert.assertEquals(0, _fs.open(Fix("/x"), 0, handle));
 		Assert.assertEquals(0, _fs.read(Fix("/x"), handle.getFh(), buffer, 0));
 		Assert.assertEquals(0, _fs.release(Fix("/x"), handle.getFh(), 0));
-		buffer.position(0);
 		AssertEqualsRaw("blah", buffer);
 	}
 }

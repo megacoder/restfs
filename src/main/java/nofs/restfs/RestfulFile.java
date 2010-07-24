@@ -48,7 +48,7 @@ public class RestfulFile extends BaseRestfulFileObject implements IProvidesUnstr
 	public boolean Cacheable() {
 		return false;
 	}
-
+	
 	@Override
 	public long DataSize() {
 		return _representation.length;
@@ -71,6 +71,9 @@ public class RestfulFile extends BaseRestfulFileObject implements IProvidesUnstr
 
 	@Override
 	public void Write(ByteBuffer buffer, long offset, long length) {
+		if(offset+length > _representation.length) {
+			Truncate(offset+length);
+		}
 		for(long i = offset; i < offset + length && i < _representation.length; i++) {
 			_representation[(int)i] = buffer.get();
 		}
