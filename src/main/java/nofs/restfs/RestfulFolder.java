@@ -11,81 +11,54 @@ import nofs.Library.Annotations.FolderObject;
 
 @FolderObject
 @DomainObject
-public class RestfulFolder extends BaseRestfulFileObject implements List<BaseRestfulFileObject> {
-	private final List<BaseRestfulFileObject> _innerList;
+public abstract class RestfulFolder<T extends BaseFileObject> extends BaseFileObject implements List<T> {
+	private final List<T> _innerList;
 	
-	public RestfulFolder() {
-		_innerList = new LinkedList<BaseRestfulFileObject>();
-		_settings = new RestfulSettingsFolder();
+	protected RestfulFolder() {
+		_innerList = new LinkedList<T>();
 	}
 	
-	private void AddingObject(BaseRestfulFileObject baseFile) {
-		if(baseFile instanceof RestfulFile) {
-			RestfulFile file = (RestfulFile)baseFile;
-			if(file.getSettings() == null) {
-				RestfulSetting settings = null;
-				for(RestfulSetting possibleSettings : _settings) {
-					if(possibleSettings.getName().compareTo(file.getName()) == 0) {
-						settings = possibleSettings;
-						break;
-					}
-				}
-				if(settings == null) {
-					settings = new RestfulSetting();
-					_settings.add(settings);
-				}
-				file.setSettings(settings);
-			}
-		}
-	}
 	
-	private void RemovingObject(BaseRestfulFileObject baseFile) {
-		if(baseFile instanceof RestfulFile) {
-			RestfulFile file = (RestfulFile)baseFile;
-			if(file.getSettings() != null && _settings.contains(file.getSettings())) {
-				_settings.remove(file.getSettings());
-			}
-		}
-	}
+	protected abstract void AddingObject(BaseFileObject baseFile);
+	protected abstract void RemovingObject(BaseFileObject baseFile);
 	
 	@Override
-	public boolean add(BaseRestfulFileObject baseFile) {
+	public boolean add(T baseFile) {
 		AddingObject(baseFile);
 		return _innerList.add(baseFile);
 	}
 	
 	@Override
-	public void add(int index, BaseRestfulFileObject element) {
+	public void add(int index, T element) {
 		AddingObject(element);
 		_innerList.add(index, element);
 	}
 	
-	private RestfulSettingsFolder _settings;
-	public RestfulSettingsFolder getSettings() { return _settings; }
-
+	@SuppressWarnings("unchecked")
 	@Override
-	public boolean addAll(Collection<? extends BaseRestfulFileObject> c) {
+	public boolean addAll(Collection c) {
 		boolean stat = false;
-		for(BaseRestfulFileObject obj : c) {
-			stat |= add(obj);
+		for(Object obj : c) {
+			stat |= add((T)obj);
 		}
 		return stat;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public boolean addAll(int index, Collection<? extends BaseRestfulFileObject> c) {
-		List<BaseRestfulFileObject> objects = new LinkedList<BaseRestfulFileObject>();
-		List<BaseRestfulFileObject> objectsToAdd = new LinkedList<BaseRestfulFileObject>();
+	public boolean addAll(int index, Collection c) {
+		List<T> objects = new LinkedList<T>();
+		List<T> objectsToAdd = new LinkedList<T>();
 		objects.addAll(_innerList);
 		objectsToAdd.addAll(c);
 		_innerList.clear();
 		for(int i = 0; objects.size() > 0 && objectsToAdd.size() > 0; i++) {
 			if(i > index && objectsToAdd.size() > 0) {
-				BaseRestfulFileObject obj = objectsToAdd.remove(0);
+				T obj = objectsToAdd.remove(0);
 				AddingObject(obj);
 				_innerList.add(obj);
 			} else {
-				BaseRestfulFileObject obj = objects.remove(0);
+				T obj = objects.remove(0);
 				AddingObject(obj);
 				_innerList.add(obj);
 			}
@@ -95,7 +68,7 @@ public class RestfulFolder extends BaseRestfulFileObject implements List<BaseRes
 
 	@Override
 	public void clear() {
-		for(BaseRestfulFileObject o : _innerList) {
+		for(T o : _innerList) {
 			RemovingObject(o);
 		}
 		_innerList.clear();
@@ -112,7 +85,7 @@ public class RestfulFolder extends BaseRestfulFileObject implements List<BaseRes
 	}
 
 	@Override
-	public BaseRestfulFileObject get(int index) {
+	public T get(int index) {
 		return _innerList.get(index);
 	}
 
@@ -127,7 +100,7 @@ public class RestfulFolder extends BaseRestfulFileObject implements List<BaseRes
 	}
 
 	@Override
-	public Iterator<BaseRestfulFileObject> iterator() {
+	public Iterator<T> iterator() {
 		return _innerList.iterator();
 	}
 
@@ -137,12 +110,12 @@ public class RestfulFolder extends BaseRestfulFileObject implements List<BaseRes
 	}
 
 	@Override
-	public ListIterator<BaseRestfulFileObject> listIterator() {
+	public ListIterator<T> listIterator() {
 		return _innerList.listIterator();
 	}
 
 	@Override
-	public ListIterator<BaseRestfulFileObject> listIterator(int index) {
+	public ListIterator<T> listIterator(int index) {
 		return _innerList.listIterator(index);
 	}
 
@@ -152,8 +125,8 @@ public class RestfulFolder extends BaseRestfulFileObject implements List<BaseRes
 	}
 
 	@Override
-	public BaseRestfulFileObject remove(int index) {
-		BaseRestfulFileObject obj = _innerList.get(index);
+	public T remove(int index) {
+		BaseFileObject obj = _innerList.get(index);
 		RemovingObject(obj);
 		return _innerList.remove(index);
 	}
@@ -161,26 +134,26 @@ public class RestfulFolder extends BaseRestfulFileObject implements List<BaseRes
 	@Override
 	public boolean removeAll(Collection<?> c) {
 		for(Object obj : c) {
-			RemovingObject((BaseRestfulFileObject)obj);
+			RemovingObject((BaseFileObject)obj);
 		}
 		return _innerList.removeAll(c);
 	}
 
 	@Override
 	public boolean retainAll(Collection<?> c) {
-		List<BaseRestfulFileObject> allItems = new LinkedList<BaseRestfulFileObject>();
+		List<BaseFileObject> allItems = new LinkedList<BaseFileObject>();
 		for(Object obj : c) {
 			allItems.remove(obj);
 		}
-		for(BaseRestfulFileObject obj : allItems) {
+		for(BaseFileObject obj : allItems) {
 			RemovingObject(obj);
 		}
 		return _innerList.retainAll(c);
 	}
 
 	@Override
-	public BaseRestfulFileObject set(int index, BaseRestfulFileObject element) {
-		BaseRestfulFileObject obj = _innerList.set(index, element);
+	public T set(int index, T element) {
+		T obj = _innerList.set(index, element);
 		RemovingObject(obj);
 		AddingObject(element);
 		return obj;
@@ -192,7 +165,7 @@ public class RestfulFolder extends BaseRestfulFileObject implements List<BaseRes
 	}
 
 	@Override
-	public List<BaseRestfulFileObject> subList(int fromIndex, int toIndex) {
+	public List<T> subList(int fromIndex, int toIndex) {
 		return _innerList.subList(fromIndex, toIndex);
 	}
 
@@ -201,6 +174,7 @@ public class RestfulFolder extends BaseRestfulFileObject implements List<BaseRes
 		return _innerList.toArray();
 	}
 
+	@SuppressWarnings("hiding")
 	@Override
 	public <T> T[] toArray(T[] a) {
 		return _innerList.toArray(a);

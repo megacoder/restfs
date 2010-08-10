@@ -4,7 +4,7 @@ import nofs.Library.Annotations.DomainObject;
 import nofs.Library.Annotations.ProvidesName;
 
 @DomainObject
-public class RestfulSetting {
+public class RestfulSetting extends BaseFileObject {
 	private String _name;
 	public RestfulSetting() {
 		_name = "";

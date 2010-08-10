@@ -4,10 +4,13 @@ import nofs.Library.Annotations.DomainObject;
 import nofs.Library.Annotations.FolderObject;
 import nofs.Library.Annotations.RootFolderObject;
 
-@SuppressWarnings("serial")
 @RootFolderObject
-@FolderObject
+@FolderObject(ChildTypeFilterMethod="Filter")
 @DomainObject
-public class RestfulRoot extends RestfulFolder {
-
+public class RestfulRoot extends RestfulFolderWithSettings {
+	public boolean Filter(Class<?> possibleChildType) {
+		return 
+			possibleChildType == RestfulFolderWithSettings.class ||
+			possibleChildType == RestfulFile.class;
+	}
 }

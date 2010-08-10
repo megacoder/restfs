@@ -12,7 +12,7 @@ import nofs.restfs.http.GetAnswer;
 import nofs.restfs.http.WebDavFacade;
 
 @DomainObject
-public class RestfulFile extends BaseRestfulFileObject implements IProvidesUnstructuredData, IListensToEvents {
+public class RestfulFile extends BaseFileObject implements IProvidesUnstructuredData, IListensToEvents {
 
 	private volatile byte[] _representation;
 	private Date _aTime;
@@ -37,12 +37,12 @@ public class RestfulFile extends BaseRestfulFileObject implements IProvidesUnstr
 	@ProvidesLastAccessTime
 	public Date getATime() { return _aTime; }
 	@ProvidesLastAccessTime
-	public void setATime(Date value) { _aTime = value; AfterUTime(); }
+	public void setATime(Date value) throws Exception { _aTime = value; AfterUTime(); }
 	
 	@ProvidesLastModifiedTime
 	public Date getMTime() { return _mTime; }
 	@ProvidesLastModifiedTime
-	public void setMTime(Date value) { _mTime = value; AfterUTime(); }
+	public void setMTime(Date value) throws Exception { _mTime = value; AfterUTime(); }
 		
 	@Override
 	public boolean Cacheable() {
@@ -55,7 +55,7 @@ public class RestfulFile extends BaseRestfulFileObject implements IProvidesUnstr
 	}
 
 	@Override
-	public void Read(ByteBuffer buffer, long offset, long length) {
+	public void Read(ByteBuffer buffer, long offset, long length) throws Exception {
 		BeforeRead();
 		for(long i = offset; i < offset + length && i < _representation.length; i++) {
 			buffer.put(_representation[(int)i]);
@@ -70,7 +70,7 @@ public class RestfulFile extends BaseRestfulFileObject implements IProvidesUnstr
 	}
 
 	@Override
-	public void Write(ByteBuffer buffer, long offset, long length) {
+	public void Write(ByteBuffer buffer, long offset, long length) throws Exception {
 		if(offset+length > _representation.length) {
 			Truncate(offset+length);
 		}
@@ -91,35 +91,54 @@ public class RestfulFile extends BaseRestfulFileObject implements IProvidesUnstr
 			}			
 		}
 	}
+	
+	private void PerformMethod() throws Exception
+	{
+		if(getSettings().getWebMethod().toLowerCase().compareTo("get") == 0) {
+			GetAnswer answer = WebDavFacade.Instance().GetMethod(getSettings().getHost(), getSettings().getResource());
+			_representation = answer.getData();
+		} else {
+			throw new Exception("web method " + getSettings().getWebMethod() + " not implemented yet ");
+		}
+	}
 
 	@Override
-	public void Opened() {
-		// TODO Auto-generated method stub
-		
+	public void Opened() throws Exception {
+		if(getSettings().getFsMethod().compareTo("Opened") == 0) {
+			PerformMethod();
+		}
 	}
 
 	@Override
-	public void Created() {
-		// TODO Auto-generated method stub
-		
+	public void Created() throws Exception {
+		if(getSettings().getFsMethod().compareTo("Created") == 0) {
+			PerformMethod();
+		}
 	}
 
 	@Override
-	public void Deleting() {
-		// TODO Auto-generated method stub
-		
+	public void Deleting() throws Exception {
+		if(getSettings().getFsMethod().compareTo("Deleting") == 0) {
+			PerformMethod();
+		}
 	}
 	
-	private void AfterUTime() {
-		
+	private void AfterUTime() throws Exception {
+		if(getSettings().getFsMethod().compareTo("UTime") == 0) {
+			PerformMethod();
+		}
 	}
 	
-	private void BeforeRead() {
-		
+	private void BeforeRead() throws Exception {
+		if(getSettings().getFsMethod().compareTo("BeforeRead") == 0) {
+			PerformMethod();
+		}
 	}
 	
-	private void AfterWrite() {
-		
+	private void AfterWrite() throws Exception {
+		if(getSettings().getFsMethod().compareTo("AfterWrite") == 0) {
+			PerformMethod();
+		}
 	}
 
 }

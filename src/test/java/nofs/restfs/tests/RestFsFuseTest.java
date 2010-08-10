@@ -69,7 +69,8 @@ public class RestFsFuseTest extends BaseFuseTests {
 		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {});
 		Assert.assertEquals(0, _fs.mknod(Fix("/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
 		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {
-			new DirFillerExpect("x", FuseFtypeConstants.TYPE_FILE | 0755)
+			new DirFillerExpect("x", FuseFtypeConstants.TYPE_FILE | 0755),
+			new DirFillerExpect(".x", FuseFtypeConstants.TYPE_FILE | 0755)
 		});
 	}
 	
@@ -89,12 +90,20 @@ public class RestFsFuseTest extends BaseFuseTests {
 	public void TestWriteToFile() throws Exception {
 		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {});
 		Assert.assertEquals(0, _fs.mknod(Fix("/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
+		
 		MockFuseOpenSetter handle = new MockFuseOpenSetter();
+		
+		ByteBuffer buffer = ByteBuffer.allocate(1024*1024);
+		Assert.assertEquals(0, _fs.open(Fix("/x"), 0, handle));
+		Assert.assertEquals(0, _fs.read(Fix("/x"), handle.getFh(), buffer, 0));
+		Assert.assertEquals(0, _fs.release(Fix("/x"), handle.getFh(), 0));
+		AssertEqualsRaw("", buffer);
+		
 		Assert.assertEquals(0, _fs.open(Fix("/x"), 0, handle));
 		WriteToFile(_fs, Fix("/x"), handle, "blah");
 		Assert.assertEquals(0, _fs.release(Fix("/x"), handle.getFh(), 0));
 		
-		ByteBuffer buffer = ByteBuffer.allocate(1024*1024);
+		buffer = ByteBuffer.allocate(1024*1024);
 		Assert.assertEquals(0, _fs.open(Fix("/x"), 0, handle));
 		Assert.assertEquals(0, _fs.read(Fix("/x"), handle.getFh(), buffer, 0));
 		Assert.assertEquals(0, _fs.release(Fix("/x"), handle.getFh(), 0));
