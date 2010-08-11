@@ -75,6 +75,20 @@ public class RestFsFuseTest extends BaseFuseTests {
 	}
 	
 	@Test
+	public void TestMkdirMknod() throws Exception {
+		Assert.assertEquals(0, _fs.mkdir(Fix("/x"), FuseFtypeConstants.TYPE_DIR | 0755));
+		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {
+			new DirFillerExpect("x", FuseFtypeConstants.TYPE_DIR | 0755)
+		});
+		TestFolderContents(_fs, Fix("/x"), new DirFillerExpect[] {});
+		Assert.assertEquals(0, _fs.mknod(Fix("/x/y"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
+		TestFolderContents(_fs, Fix("/x"), new DirFillerExpect[] {
+			new DirFillerExpect("y", FuseFtypeConstants.TYPE_DIR | 0755),
+			new DirFillerExpect(".y", FuseFtypeConstants.TYPE_DIR | 0755)
+		});
+	}
+	
+	@Test
 	public void TestMknodThenUTime() throws Exception {
 		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {});
 		Assert.assertEquals(0, _fs.mknod(Fix("/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
@@ -84,6 +98,40 @@ public class RestFsFuseTest extends BaseFuseTests {
 	private static void WriteToFile(NoFSFuseDriver fs, String path, MockFuseOpenSetter handle, String value) throws Exception {
 		ByteBuffer buffer = WrapInBuffer(value);
 		Assert.assertEquals(0, fs.write(path, handle.getFh(), false, buffer, 0));
+	}
+	
+	private static String CreateSettingsXml(String fsMethod, String webMethod, String resource, String host) {
+		return 
+			"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n<RestfulSetting>\n  <FsMethod>" + fsMethod + "</FsMethod>\n" + 
+			"  <WebMethod>" + webMethod + "</WebMethod>\n" + 
+			"  <Resource>" + resource + "</Resource>\n" + 
+			"  <Host>" + host + "</Host>\n</RestfulSetting>\n";
+	}
+	
+	@Test
+	public void TestWriteToSettingsFile() throws Exception {
+		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {});
+		Assert.assertEquals(0, _fs.mknod(Fix("/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
+		
+		MockFuseOpenSetter handle = new MockFuseOpenSetter();
+		
+		String xml = CreateSettingsXml("","","","");
+		
+		ByteBuffer buffer = ByteBuffer.allocate(1024*1024);
+		Assert.assertEquals(0, _fs.open(Fix("/.x"), 0, handle));
+		Assert.assertEquals(0, _fs.read(Fix("/.x"), handle.getFh(), buffer, 0));
+		Assert.assertEquals(0, _fs.release(Fix("/.x"), handle.getFh(), 0));
+		AssertEqualsRaw(xml, buffer);
+		
+		Assert.assertEquals(0, _fs.open(Fix("/.x"), 0, handle));
+		WriteToFile(_fs, Fix("/.x"), handle, "blah");
+		Assert.assertEquals(0, _fs.release(Fix("/.x"), handle.getFh(), 0));
+		
+		buffer = ByteBuffer.allocate(1024*1024);
+		Assert.assertEquals(0, _fs.open(Fix("/.x"), 0, handle));
+		Assert.assertEquals(0, _fs.read(Fix("/.x"), handle.getFh(), buffer, 0));
+		Assert.assertEquals(0, _fs.release(Fix("/.x"), handle.getFh(), 0));
+		AssertEqualsRaw(xml, buffer);
 	}
 	
 	@Test
