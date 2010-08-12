@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import fuse.Errno;
 import fuse.FuseFtypeConstants;
 
 import nofs.FUSE.Impl.NoFSFuseDriver;
@@ -121,17 +122,32 @@ public class RestFsFuseTest extends BaseFuseTests {
 		Assert.assertEquals(0, _fs.open(Fix("/.x"), 0, handle));
 		Assert.assertEquals(0, _fs.read(Fix("/.x"), handle.getFh(), buffer, 0));
 		Assert.assertEquals(0, _fs.release(Fix("/.x"), handle.getFh(), 0));
-		AssertEqualsRaw(xml, buffer);
+		AssertEquals(xml, buffer);
 		
+		handle = new MockFuseOpenSetter();
 		Assert.assertEquals(0, _fs.open(Fix("/.x"), 0, handle));
 		WriteToFile(_fs, Fix("/.x"), handle, "blah");
-		Assert.assertEquals(0, _fs.release(Fix("/.x"), handle.getFh(), 0));
+		Assert.assertEquals(Errno.EDOM, _fs.release(Fix("/.x"), handle.getFh(), 0));
 		
+		handle = new MockFuseOpenSetter();
 		buffer = ByteBuffer.allocate(1024*1024);
 		Assert.assertEquals(0, _fs.open(Fix("/.x"), 0, handle));
 		Assert.assertEquals(0, _fs.read(Fix("/.x"), handle.getFh(), buffer, 0));
 		Assert.assertEquals(0, _fs.release(Fix("/.x"), handle.getFh(), 0));
-		AssertEqualsRaw(xml, buffer);
+		AssertEquals(xml, buffer);
+		
+		xml = CreateSettingsXml("a","b","c","d");
+		handle = new MockFuseOpenSetter();
+		Assert.assertEquals(0, _fs.open(Fix("/.x"), 0, handle));
+		WriteToFile(_fs, Fix("/.x"), handle, xml);
+		Assert.assertEquals(0, _fs.release(Fix("/.x"), handle.getFh(), 0));
+		
+		handle = new MockFuseOpenSetter();
+		buffer = ByteBuffer.allocate(1024*1024);
+		Assert.assertEquals(0, _fs.open(Fix("/.x"), 0, handle));
+		Assert.assertEquals(0, _fs.read(Fix("/.x"), handle.getFh(), buffer, 0));
+		Assert.assertEquals(0, _fs.release(Fix("/.x"), handle.getFh(), 0));
+		AssertEquals(xml, buffer);
 	}
 	
 	@Test
