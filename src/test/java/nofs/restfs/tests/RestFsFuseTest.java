@@ -110,6 +110,23 @@ public class RestFsFuseTest extends BaseFuseTests {
 	}
 	
 	@Test
+	public void TestOpenTruncateWriteSettingsFile() throws Exception {
+		Assert.assertEquals(0, _fs.mknod(Fix("/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
+		MockFuseOpenSetter handle = new MockFuseOpenSetter();
+		String xml = CreateSettingsXml("a","b","c","d");
+		Assert.assertEquals(0, _fs.open(Fix("/.x"), 0, handle));
+		Assert.assertEquals(0, _fs.truncate(Fix("/.x"), 0));
+		WriteToFile(_fs, Fix("/.x"), handle, xml);
+		Assert.assertEquals(0, _fs.release(Fix("/.x"), handle.getFh(), 0));
+		handle = new MockFuseOpenSetter();
+		ByteBuffer buffer = ByteBuffer.allocate(1024*1024);
+		Assert.assertEquals(0, _fs.open(Fix("/.x"), 0, handle));
+		Assert.assertEquals(0, _fs.read(Fix("/.x"), handle.getFh(), buffer, 0));
+		Assert.assertEquals(0, _fs.release(Fix("/.x"), handle.getFh(), 0));
+		AssertEquals(xml, buffer);
+	}
+	
+	@Test
 	public void TestWriteToSettingsFile() throws Exception {
 		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {});
 		Assert.assertEquals(0, _fs.mknod(Fix("/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
