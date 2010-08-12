@@ -1,4 +1,7 @@
 syntax: glob
+lib/jackrabbit*
+lib/jcl*
+lib/slf4j*
 lib/commons-logging*.jar
 lib/dom4j*.jar
 lib/nofs*.jar
