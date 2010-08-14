@@ -30,6 +30,7 @@ public class RestfulFile extends BaseFileObject implements IProvidesUnstructured
 	public void setSettings(RestfulSetting settings) {
 		_settings = settings;
 	}
+	
 	public RestfulSetting getSettings() {
 		return _settings;
 	}
@@ -95,10 +96,16 @@ public class RestfulFile extends BaseFileObject implements IProvidesUnstructured
 	private void PerformMethod() throws Exception
 	{
 		try {
-			System.out.println(getName() + " PerformMethod()");
+			System.out.println(
+					getName() + " PerformMethod() - web method: " + getSettings().getWebMethod() + 
+					" - fs method: " + getSettings().getFsMethod() + 
+					" - host: " + getSettings().getHost() + 
+					" - resource: " + getSettings().getResource());
 			if(getSettings().getWebMethod().toLowerCase().compareTo("get") == 0) {
-				System.out.println(getName() + " get");
-				GetAnswer answer = WebDavFacade.Instance().GetMethod(getSettings().getHost(), getSettings().getResource());
+				System.out.println(getName() + " get...");
+				WebDavFacade inst = WebDavFacade.Instance();
+				System.out.println(getName() + " got instance");
+				GetAnswer answer = inst.GetMethod(getSettings().getHost(), getSettings().getResource());
 				_representation = answer.getData();
 				System.out.println(getName() + " get completed");
 			} else {
