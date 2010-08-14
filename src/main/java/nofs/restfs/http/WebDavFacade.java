@@ -1,5 +1,8 @@
 package nofs.restfs.http;
 
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
@@ -30,16 +33,21 @@ public class WebDavFacade {
 		return _instance;
 	}
 	
-	private HostConfiguration GetConfig(String host) {
+	private HostConfiguration GetConfig(String host) throws Exception {
 		if(!_hostConfigurations.containsKey(host)) {
 			HostConfiguration hostConfig = new HostConfiguration();
 			hostConfig = new HostConfiguration();
 	        hostConfig.setHost(host);
+	        _hostConfigurations.put(host, hostConfig);
 		}
-		return _hostConfigurations.get(host);
+		HostConfiguration config = _hostConfigurations.get(host);
+		if(config == null) {
+			throw new Exception("Config for host " + host + " is null");
+		}
+		return config;
 	}
 	
-	private HttpConnectionManager GetManager(String host) {
+	private HttpConnectionManager GetManager(String host) throws Exception {
 		if(!_connectionManagers.containsKey(host)) {
 	        HttpConnectionManager connectionManager = new MultiThreadedHttpConnectionManager();
 	        HttpConnectionManagerParams params = new HttpConnectionManagerParams();
@@ -51,11 +59,19 @@ public class WebDavFacade {
 		return _connectionManagers.get(host);
 	}
 	
+	private static String GetURI(String host, String resource) throws MalformedURLException, URISyntaxException {
+		if(!resource.startsWith("/")) {
+			resource = "/" + resource;
+		}
+		return new URL("http", host, resource).toURI().toString(); 
+	}
+	
 	public GetAnswer GetMethod(String host, String resource) throws Exception {
 		HttpConnectionManager manager = GetManager(host);
 		HttpClient client = new HttpClient(manager);
 		client.setHostConfiguration(GetConfig(host));
-		GetMethod getMethod = new GetMethod("http://" + host + resource);
+		String uri = GetURI(host, resource);
+		GetMethod getMethod = new GetMethod(uri);
 		client.executeMethod(getMethod);
 		return new GetAnswer(getMethod.getStatusCode(), getMethod.getResponseBody());
 	}

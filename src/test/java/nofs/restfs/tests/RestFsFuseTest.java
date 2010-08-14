@@ -110,6 +110,28 @@ public class RestFsFuseTest extends BaseFuseTests {
 	}
 	
 	@Test
+	public void TestGetOnUTimeMethod() throws Exception {
+		Assert.assertEquals(0, _fs.mknod(Fix("/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
+		MockFuseOpenSetter handle = new MockFuseOpenSetter();
+		String xml = CreateSettingsXml("UTime","GET","~joe/uptime","joekaylor.net");
+		Assert.assertEquals(0, _fs.open(Fix("/.x"), 0, handle));
+		Assert.assertEquals(0, _fs.truncate(Fix("/.x"), 0));
+		WriteToFile(_fs, Fix("/.x"), handle, xml);
+		Assert.assertEquals(0, _fs.release(Fix("/.x"), handle.getFh(), 0));
+		
+		int time = (int)System.currentTimeMillis();
+		Assert.assertEquals(0, _fs.utime(Fix("/x"), time, time));
+		
+		handle = new MockFuseOpenSetter();
+		ByteBuffer buffer = ByteBuffer.allocate(1024*1024);
+		Assert.assertEquals(0, _fs.open(Fix("/x"), 0, handle));
+		Assert.assertEquals(0, _fs.read(Fix("/x"), handle.getFh(), buffer, 0));
+		Assert.assertEquals(0, _fs.release(Fix("/x"), handle.getFh(), 0));
+		String data = ConvertToString(buffer);
+		System.out.println(data);
+	}
+	
+	@Test
 	public void TestOpenTruncateWriteSettingsFile() throws Exception {
 		Assert.assertEquals(0, _fs.mknod(Fix("/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
 		MockFuseOpenSetter handle = new MockFuseOpenSetter();
