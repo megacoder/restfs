@@ -1,4 +1,6 @@
 syntax: glob
+lib/commons-codec*.jar
+lib/commons-httpclient*.jar
 lib/jackrabbit*
 lib/jcl*
 lib/slf4j*

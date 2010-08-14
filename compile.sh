@@ -28,4 +28,5 @@ cp ~/.m2/repository/org/apache/jackrabbit/jackrabbit-webdav/2.1.0/*.jar lib/
 cp ~/.m2/repository/org/apache/jackrabbit/jackrabbit-jcr-commons/2.1.0/*.jar lib/
 cp ~/.m2/repository/org/slf4j/slf4j-api/1.6.0/*.jar lib/
 cp ~/.m2/repository/org/slf4j/jcl-over-slf4j/1.5.8/*.jar lib/
-
+cp ~/.m2/repository/commons-httpclient/commons-httpclient/3.0/*.jar lib/
+cp ~/.m2/repository/commons-codec/commons-codec/1.2/*.jar lib/
