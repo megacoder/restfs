@@ -31,9 +31,7 @@ public class WebDavFacade {
 	}
 	
 	private HostConfiguration GetConfig(String host) throws Exception {
-		System.out.println("GetConfig(" + host + ")");
 		if(!_hostConfigurations.containsKey(host)) {
-			System.out.println("GetConfig(" + host + ") new");
 			HostConfiguration hostConfig = new HostConfiguration();
 			hostConfig = new HostConfiguration();
 	        hostConfig.setHost(host);
@@ -47,9 +45,7 @@ public class WebDavFacade {
 	}
 	
 	private HttpConnectionManager GetManager(String host) throws Exception {
-		System.out.println("GetManager(" + host + ")");
 		if(!_connectionManagers.containsKey(host)) {
-			System.out.println("GetManager(" + host + ") new");
 	        HttpConnectionManager connectionManager = new MultiThreadedHttpConnectionManager();
 	        HttpConnectionManagerParams params = new HttpConnectionManagerParams();
 	        int maxHostConnections = 20;
@@ -68,19 +64,12 @@ public class WebDavFacade {
 	}
 	
 	public GetAnswer GetMethod(String host, String resource) throws Exception {
-		System.out.println("GetMethod(" + host + "," + resource + ")");
 		HttpConnectionManager manager = GetManager(host);
-		System.out.println("GetManager()");
 		HttpClient client = new HttpClient(manager);
-		System.out.println("HttpClient()");
 		client.setHostConfiguration(GetConfig(host));
-		System.out.println("setHostConfiguration()");
 		String uri = GetURI(host, resource);
-		System.out.println("GetURI()");
 		GetMethod getMethod = new GetMethod(uri);
-		System.out.println("GetMethod()");
-		int httpResult = client.executeMethod(getMethod);
-		System.out.println("HTTP reply: " + httpResult);
+		client.executeMethod(getMethod);
 		return new GetAnswer(getMethod.getStatusCode(), getMethod.getResponseBody());
 	}
 	
