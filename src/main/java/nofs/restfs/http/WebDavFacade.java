@@ -56,18 +56,23 @@ public class WebDavFacade {
 		return _connectionManagers.get(host);
 	}
 	
-	private static String GetURI(String host, String resource) throws MalformedURLException, URISyntaxException {
+	private static String GetURI(String host, String port, String resource) throws MalformedURLException, URISyntaxException {
 		if(!resource.startsWith("/")) {
 			resource = "/" + resource;
 		}
-		return new URL("http", host, resource).toURI().toString(); 
+		int portValue = 80;
+		if(port.length() > 0)
+		{
+			portValue = Integer.parseInt(port);
+		}
+		return new URL("http", host, portValue, resource).toURI().toString(); 
 	}
 	
-	public GetAnswer GetMethod(String host, String resource) throws Exception {
+	public GetAnswer GetMethod(String host, String port, String resource) throws Exception {
 		HttpConnectionManager manager = GetManager(host);
 		HttpClient client = new HttpClient(manager);
 		client.setHostConfiguration(GetConfig(host));
-		String uri = GetURI(host, resource);
+		String uri = GetURI(host, port, resource);
 		GetMethod getMethod = new GetMethod(uri);
 		client.executeMethod(getMethod);
 		return new GetAnswer(getMethod.getStatusCode(), getMethod.getResponseBody());

@@ -19,6 +19,10 @@ public class RestfulSetting extends BaseFileObject {
 	public String getWebMethod() { return _method; }
 	public void setWebMethod(String value) { _method = value; }
 	
+	private String _port = "";
+	public String getPort() { return _port; }
+	public void setPort(String value) { _port = value; }
+	
 	private String _fsMethod = "";
 	public String getFsMethod() { return _fsMethod; }
 	public void setFsMethod(String value) { _fsMethod = value; }

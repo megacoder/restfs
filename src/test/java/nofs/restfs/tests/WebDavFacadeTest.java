@@ -10,7 +10,7 @@ public class WebDavFacadeTest {
 
 	@Test
 	public void TestGetMethod() throws Exception {
-		GetAnswer answer = WebDavFacade.Instance().GetMethod("joekaylor.net", "/~joe/uptime");
+		GetAnswer answer = WebDavFacade.Instance().GetMethod("joekaylor.net", "80", "/~joe/uptime");
 		Assert.assertTrue(0 != answer.getData().length);
 	}
 }

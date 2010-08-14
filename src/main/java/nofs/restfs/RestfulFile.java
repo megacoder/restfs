@@ -82,14 +82,9 @@ public class RestfulFile extends BaseFileObject implements IProvidesUnstructured
 	}
 
 	@Override
-	public void Closed() {
+	public void Closed() throws Exception {
 		if(getSettings().getFsMethod().compareTo("Closed") == 0) {
-			try {
-				GetAnswer answer = WebDavFacade.Instance().GetMethod(getSettings().getHost(), getSettings().getResource());
-				_representation = answer.getData();
-			} catch(Exception e) {
-				_representation = e.getMessage().getBytes();
-			}			
+			PerformMethod();			
 		}
 	}
 	
@@ -104,7 +99,9 @@ public class RestfulFile extends BaseFileObject implements IProvidesUnstructured
 			if(getSettings().getWebMethod().toLowerCase().compareTo("get") == 0) {
 				System.out.println(getName() + " get...");
 				WebDavFacade inst = WebDavFacade.Instance();
-				GetAnswer answer = inst.GetMethod(getSettings().getHost(), getSettings().getResource());
+				GetAnswer answer = inst.GetMethod(
+						getSettings().getHost(), getSettings().getPort(), 
+						getSettings().getResource());
 				_representation = answer.getData();
 				System.out.println(getName() + " get completed");
 			} else {
