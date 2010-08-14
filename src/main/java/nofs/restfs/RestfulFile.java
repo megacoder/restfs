@@ -94,9 +94,12 @@ public class RestfulFile extends BaseFileObject implements IProvidesUnstructured
 	
 	private void PerformMethod() throws Exception
 	{
+		System.out.println(getName() + " PerformMethod()");
 		if(getSettings().getWebMethod().toLowerCase().compareTo("get") == 0) {
+			System.out.println(getName() + " get");
 			GetAnswer answer = WebDavFacade.Instance().GetMethod(getSettings().getHost(), getSettings().getResource());
 			_representation = answer.getData();
+			System.out.println(getName() + " get completed");
 		} else {
 			throw new Exception("web method " + getSettings().getWebMethod() + " not implemented yet ");
 		}
@@ -104,39 +107,45 @@ public class RestfulFile extends BaseFileObject implements IProvidesUnstructured
 
 	@Override
 	public void Opened() throws Exception {
-		if(getSettings().getFsMethod().compareTo("Opened") == 0) {
+		System.out.println(getName() + " opened");
+		if(getSettings().getFsMethod().toLowerCase().compareTo("opened") == 0) {
 			PerformMethod();
 		}
 	}
 
 	@Override
 	public void Created() throws Exception {
-		if(getSettings().getFsMethod().compareTo("Created") == 0) {
+		System.out.println(getName() + " created");
+		if(getSettings().getFsMethod().toLowerCase().compareTo("created") == 0) {
 			PerformMethod();
 		}
 	}
 
 	@Override
 	public void Deleting() throws Exception {
-		if(getSettings().getFsMethod().compareTo("Deleting") == 0) {
+		System.out.println(getName() + " deleting");
+		if(getSettings().getFsMethod().toLowerCase().compareTo("deleting") == 0) {
 			PerformMethod();
 		}
 	}
 	
 	private void AfterUTime() throws Exception {
-		if(getSettings().getFsMethod().compareTo("UTime") == 0) {
+		System.out.println(getName() + " afterutime");
+		if(getSettings().getFsMethod().toLowerCase().compareTo("utime") == 0) {
 			PerformMethod();
 		}
 	}
 	
 	private void BeforeRead() throws Exception {
-		if(getSettings().getFsMethod().compareTo("BeforeRead") == 0) {
+		System.out.println(getName() + " beforeread");
+		if(getSettings().getFsMethod().toLowerCase().compareTo("beforeread") == 0) {
 			PerformMethod();
 		}
 	}
 	
 	private void AfterWrite() throws Exception {
-		if(getSettings().getFsMethod().compareTo("AfterWrite") == 0) {
+		System.out.println(getName() + " afterwrite");
+		if(getSettings().getFsMethod().toLowerCase().compareTo("AfterWrite") == 0) {
 			PerformMethod();
 		}
 	}
