@@ -94,14 +94,20 @@ public class RestfulFile extends BaseFileObject implements IProvidesUnstructured
 	
 	private void PerformMethod() throws Exception
 	{
-		System.out.println(getName() + " PerformMethod()");
-		if(getSettings().getWebMethod().toLowerCase().compareTo("get") == 0) {
-			System.out.println(getName() + " get");
-			GetAnswer answer = WebDavFacade.Instance().GetMethod(getSettings().getHost(), getSettings().getResource());
-			_representation = answer.getData();
-			System.out.println(getName() + " get completed");
-		} else {
-			throw new Exception("web method " + getSettings().getWebMethod() + " not implemented yet ");
+		try {
+			System.out.println(getName() + " PerformMethod()");
+			if(getSettings().getWebMethod().toLowerCase().compareTo("get") == 0) {
+				System.out.println(getName() + " get");
+				GetAnswer answer = WebDavFacade.Instance().GetMethod(getSettings().getHost(), getSettings().getResource());
+				_representation = answer.getData();
+				System.out.println(getName() + " get completed");
+			} else {
+				throw new Exception("web method " + getSettings().getWebMethod() + " not implemented yet ");
+			}
+		} catch(Exception e) {
+			System.out.println("method failed");
+			e.printStackTrace();
+			throw e;
 		}
 	}
 
