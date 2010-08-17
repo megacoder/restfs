@@ -9,6 +9,7 @@ import nofs.Library.Annotations.ProvidesLastModifiedTime;
 import nofs.Library.Containers.IListensToEvents;
 import nofs.Library.Containers.IProvidesUnstructuredData;
 import nofs.restfs.http.GetAnswer;
+import nofs.restfs.http.PostAnswer;
 import nofs.restfs.http.WebDavFacade;
 
 @DomainObject
@@ -98,12 +99,21 @@ public class RestfulFile extends BaseFileObject implements IProvidesUnstructured
 					" - resource: " + getSettings().getResource());
 			if(getSettings().getWebMethod().toLowerCase().compareTo("get") == 0) {
 				System.out.println(getName() + " get...");
-				WebDavFacade inst = WebDavFacade.Instance();
-				GetAnswer answer = inst.GetMethod(
+				GetAnswer answer = WebDavFacade.Instance().GetMethod(
 						getSettings().getHost(), getSettings().getPort(), 
 						getSettings().getResource());
 				_representation = answer.getData();
 				System.out.println(getName() + " get completed");
+			} else if(getSettings().getWebMethod().toLowerCase().compareTo("post") == 0) {
+				System.out.println(getName() + " post...");
+				PostAnswer answer = WebDavFacade.Instance().PostMethod(
+						getSettings().getHost(), getSettings().getPort(), 
+						getSettings().getResource(), getSettings().getFormName(),
+						_representation);
+				if(answer != null) {
+					_representation = answer.getData();
+				}
+				System.out.println(getName() + " post completed");
 			} else {
 				throw new Exception("web method " + getSettings().getWebMethod() + " not implemented yet ");
 			}

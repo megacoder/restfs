@@ -39,11 +39,12 @@ public class RestFsWithServiceTest extends BaseFuseTests  {
 		_app.StopRunner();
 	}
 	
-	private void WriteToSettings(String path, String xml) throws Exception {
+	private void WriteToFile(String path, String xml) throws Exception {
 		MockFuseOpenSetter handle = new MockFuseOpenSetter();
 		Assert.assertEquals(0, _fs.open(Fix(path), 0, handle));
 		Assert.assertEquals(0, _fs.truncate(Fix(path), 0));
-		WriteToFile(_fs, Fix(path), handle, xml);
+		ByteBuffer buffer = WrapInBuffer(xml);
+		Assert.assertEquals(0, _fs.write(path, handle.getFh(), false, buffer, 0));
 		Assert.assertEquals(0, _fs.release(Fix(path), handle.getFh(), 0));
 	}
 	
@@ -56,15 +57,11 @@ public class RestFsWithServiceTest extends BaseFuseTests  {
 		return ConvertToString(buffer);
 	}
 	
-	private static void WriteToFile(NoFSFuseDriver fs, String path, MockFuseOpenSetter handle, String value) throws Exception {
-		ByteBuffer buffer = WrapInBuffer(value);
-		Assert.assertEquals(0, fs.write(path, handle.getFh(), false, buffer, 0));
-	}
-	
-	private static String CreateSettingsXml(String fsMethod, String webMethod, String resource, String host, String port) {
+	private static String CreateSettingsXml(String fsMethod, String webMethod, String formName, String resource, String host, String port) {
 		return 
 			"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n<RestfulSetting>\n  <FsMethod>" + fsMethod + "</FsMethod>\n" + 
-			"  <WebMethod>" + webMethod + "</WebMethod>\n" + 
+			"  <WebMethod>" + webMethod + "</WebMethod>\n" +
+			"  <FormName>" + formName + "</FormName>\n" +
 			"  <Resource>" + resource + "</Resource>\n" + 
 			"  <Host>" + host + "</Host>\n" +
 			"  <Port>" + port + "</Port>\n" +
@@ -86,9 +83,24 @@ public class RestFsWithServiceTest extends BaseFuseTests  {
 	}
 	
 	@Test
+	public void TestPostUserOnUTime() throws Exception {
+		Assert.assertEquals(0, _fs.mknod(Fix("/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
+		WriteToFile("/.x", CreateSettingsXml("utime", "post", "user", "/users/5", "127.0.0.1", "8100"));
+		WriteToFile("/x", "{\"id\":\"1\",\"name\":\"foobar\"}");
+		Assert.assertEquals(0, _fs.utime(Fix("/x"), (int)System.currentTimeMillis(), (int)System.currentTimeMillis()));
+		String result = ReadFromFile("/x");
+		Assert.assertEquals("{\"name\":\"foobar\"}", result);
+		
+		WriteToFile("/.x", CreateSettingsXml("utime", "get", "", "/users/5", "127.0.0.1", "8100"));
+		Assert.assertEquals(0, _fs.utime(Fix("/x"), (int)System.currentTimeMillis(), (int)System.currentTimeMillis()));
+		result = ReadFromFile("/x");
+		Assert.assertEquals("{\"id\":\"1\",\"name\":\"name\"}", result);
+	}
+	
+	@Test
 	public void TestGetUserOnUtime() throws Exception {
 		Assert.assertEquals(0, _fs.mknod(Fix("/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
-		WriteToSettings("/.x", CreateSettingsXml("utime", "get", "/users/5", "127.0.0.1", "8100"));
+		WriteToFile("/.x", CreateSettingsXml("utime", "get", "", "/users/5", "127.0.0.1", "8100"));
 		Assert.assertEquals(0, _fs.utime(Fix("/x"), (int)System.currentTimeMillis(), (int)System.currentTimeMillis()));
 		String result = ReadFromFile("/x");
 		Assert.assertEquals("{\"id\":\"1\",\"name\":\"name\"}", result);
@@ -97,7 +109,7 @@ public class RestFsWithServiceTest extends BaseFuseTests  {
 	@Test
 	public void TestGetUserBeforeRead() throws Exception {
 		Assert.assertEquals(0, _fs.mknod(Fix("/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
-		WriteToSettings("/.x", CreateSettingsXml("beforeread", "get", "/users/5", "127.0.0.1", "8100"));
+		WriteToFile("/.x", CreateSettingsXml("beforeread", "get", "", "/users/5", "127.0.0.1", "8100"));
 		String result = ReadFromFile("/x");
 		Assert.assertEquals("{\"id\":\"1\",\"name\":\"name\"}", result);
 	}
@@ -105,7 +117,7 @@ public class RestFsWithServiceTest extends BaseFuseTests  {
 	@Test
 	public void TestGetUserOpened() throws Exception {
 		Assert.assertEquals(0, _fs.mknod(Fix("/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
-		WriteToSettings("/.x", CreateSettingsXml("opened", "get", "/users/5", "127.0.0.1", "8100"));
+		WriteToFile("/.x", CreateSettingsXml("opened", "get", "", "/users/5", "127.0.0.1", "8100"));
 		String result = ReadFromFile("/x");
 		Assert.assertEquals("{\"id\":\"1\",\"name\":\"name\"}", result);
 	}

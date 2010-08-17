@@ -2,6 +2,8 @@ grammar json;
 
 options {
 	output = AST;
+	ASTLabelType=CommonTree;
+	language = Java;
 }
 
 tokens {

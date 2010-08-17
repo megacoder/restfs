@@ -137,8 +137,7 @@ public class UserResource extends Resource {
 		// We handle only a form request in this example. Other types could be
 		// JSON or XML.
 		try {
-			if (entity.getMediaType().equals(MediaType.APPLICATION_WWW_FORM,
-					true)) {
+			if (entity.getMediaType().equals(MediaType.APPLICATION_WWW_FORM, true)) {
 				Form form = new Form(entity);
 				User u = new User();
 				u.setName(form.getFirstValue("user[name]"));
