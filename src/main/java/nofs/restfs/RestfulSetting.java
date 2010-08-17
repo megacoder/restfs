@@ -19,6 +19,10 @@ public class RestfulSetting extends BaseFileObject {
 	public String getWebMethod() { return _method; }
 	public void setWebMethod(String value) { _method = value; }
 	
+	private String _formName = "";
+	public String getFormName() { return _formName; }
+	public void setFormName(String value) { _formName = value; }
+	
 	private String _port = "";
 	public String getPort() { return _port; }
 	public void setPort(String value) { _port = value; }

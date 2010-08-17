@@ -1,11 +1,8 @@
 package nofs.restfs.http;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
@@ -18,12 +15,8 @@ import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.methods.PutMethod;
 import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
 import org.apache.jackrabbit.webdav.client.methods.OptionsMethod;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.restlet.ext.json.JsonRepresentation;
 
 public class WebDavFacade {
 	private final Map<String, HttpConnectionManager> _connectionManagers;
@@ -87,25 +80,21 @@ public class WebDavFacade {
 		return new GetAnswer(getMethod.getStatusCode(), getMethod.getResponseBody());
 	}
 	
-	public void PostMethod(String host, String port, String resource, byte[] data) throws Exception {
-		HttpConnectionManager manager = GetManager(host);
-		HttpClient client = new HttpClient(manager);
-		client.setHostConfiguration(GetConfig(host));
-		String uri = GetURI(host, port, resource);
-		PostMethod postMethod = new PostMethod(uri);
-		
-		
+	public PostAnswer PostMethod(String host, String port, String resource, String formName, byte[] data) throws Exception {
 		NameValuePair[] parameters = null;
-		
-		//representation.getJsonArray().
-		/*JSONObject jsonObject = new JsonRepresentation(ConvertToString(data)).getJsonObject();
-		for(String key : jsonObject.keys()) {
-			
-		}*/
-		
-		postMethod.setRequestBody(parameters);
-		
-		client.executeMethod(postMethod);
+		JSONParser parser = new JSONParser();
+		if(parser.DataIsJSONData(data)) {
+			parameters = parser.ParseJSONIntoPairs(formName, data);
+			HttpConnectionManager manager = GetManager(host);
+			HttpClient client = new HttpClient(manager);
+			client.setHostConfiguration(GetConfig(host));
+			String uri = GetURI(host, port, resource);
+			PostMethod postMethod = new PostMethod(uri);
+			postMethod.setRequestBody(parameters);
+			client.executeMethod(postMethod);
+			return new PostAnswer(postMethod.getStatusCode(), postMethod.getResponseBody());
+		}
+		return null;		
 	}
 	
 	public OptionsAnswer OptionsMethod(String host, String resource) throws Exception {
@@ -144,13 +133,5 @@ public class WebDavFacade {
 			}
 		}
 		return new OptionsAnswer(method.getStatusCode(), methods);
-	}
-	
-	private static String ConvertToString(byte[] data) {
-		StringBuffer buff = new StringBuffer();
-		for(int i = 0 ; i < data.length; i++) {
-			buff.append((char)data[i]);
-		}
-		return buff.toString();
 	}
 }
