@@ -16,19 +16,19 @@ import nofs.metadata.interfaces.IMetadataFactory;
 import nofs.metadata.interfaces.INoFSClassLoader;
 import nofs.restfs.tests.util.BaseFuseTests;
 import nofs.restfs.tests.util.MockFuseOpenSetter;
-import nofs.restfs.tests.util.RestExampleRunner;
+import nofs.restfs.tests.util.RestExampleRunner2;
 import nofs.restfs.tests.util.TemporaryTestFolder;
 
-public class RestFsWithServiceTest extends BaseFuseTests {
+public class RestFsWithService2Test extends BaseFuseTests {
 	private TemporaryTestFolder _tmpFolder;
 	private NoFSFuseDriver _fs;
-	private RestExampleRunner _app;
+	private RestExampleRunner2 _app;
 
 	@Before
 	public void Setup() throws Exception {
 		_tmpFolder = new TemporaryTestFolder();
 		_fs = BuildFS();
-		_app = new RestExampleRunner();
+		_app = new RestExampleRunner2();
 		_app.StartRunner();
 	}
 
@@ -83,42 +83,15 @@ public class RestFsWithServiceTest extends BaseFuseTests {
 	}
 	
 	@Test
-	public void TestPostUserOnUTime() throws Exception {
+	public void TestGetOnUTime() throws Exception {
 		Assert.assertEquals(0, _fs.mknod(Fix("/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
-		WriteToFile("/.x", CreateSettingsXml("utime", "post", "user", "/users/5", "127.0.0.1", "8100"));
-		WriteToFile("/x", "{\"id\":\"1\",\"name\":\"foobar\"}");
+		WriteToFile("/.x", CreateSettingsXml("utime", "post", "", "/items", "127.0.0.1", "8100"));
+		WriteToFile("/x", "{\"description\":\"1\",\"name\":\"foobar\"}");
+		Assert.assertEquals(0, _fs.utime(Fix("/x"), (int)System.currentTimeMillis(), (int)System.currentTimeMillis()));
+		WriteToFile("/.x", CreateSettingsXml("utime", "get", "", "/items/foobar1", "127.0.0.1", "8100"));
 		Assert.assertEquals(0, _fs.utime(Fix("/x"), (int)System.currentTimeMillis(), (int)System.currentTimeMillis()));
 		String result = ReadFromFile("/x");
-		Assert.assertEquals("{\"name\":\"foobar\"}", result);
-		
-		WriteToFile("/.x", CreateSettingsXml("utime", "get", "", "/users/5", "127.0.0.1", "8100"));
-		Assert.assertEquals(0, _fs.utime(Fix("/x"), (int)System.currentTimeMillis(), (int)System.currentTimeMillis()));
-		result = ReadFromFile("/x");
-		Assert.assertEquals("{\"id\":\"1\",\"name\":\"name\"}", result);
-	}
-	
-	@Test
-	public void TestGetUserOnUtime() throws Exception {
-		Assert.assertEquals(0, _fs.mknod(Fix("/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
-		WriteToFile("/.x", CreateSettingsXml("utime", "get", "", "/users/5", "127.0.0.1", "8100"));
-		Assert.assertEquals(0, _fs.utime(Fix("/x"), (int)System.currentTimeMillis(), (int)System.currentTimeMillis()));
-		String result = ReadFromFile("/x");
-		Assert.assertEquals("{\"id\":\"1\",\"name\":\"name\"}", result);
-	}
-	
-	@Test
-	public void TestGetUserBeforeRead() throws Exception {
-		Assert.assertEquals(0, _fs.mknod(Fix("/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
-		WriteToFile("/.x", CreateSettingsXml("beforeread", "get", "", "/users/5", "127.0.0.1", "8100"));
-		String result = ReadFromFile("/x");
-		Assert.assertEquals("{\"id\":\"1\",\"name\":\"name\"}", result);
-	}
-	
-	@Test
-	public void TestGetUserOpened() throws Exception {
-		Assert.assertEquals(0, _fs.mknod(Fix("/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
-		WriteToFile("/.x", CreateSettingsXml("opened", "get", "", "/users/5", "127.0.0.1", "8100"));
-		String result = ReadFromFile("/x");
-		Assert.assertEquals("{\"id\":\"1\",\"name\":\"name\"}", result);
+		Assert.assertEquals("{\"item\":\"1\",\"name\":\"name\"}", result);
+
 	}
 }
