@@ -2,6 +2,7 @@ package nofs.restfs.tests.util;
 
 import java.io.IOException;
 
+import org.junit.Ignore;
 import org.restlet.Component;
 import org.restlet.data.Protocol;
 
@@ -13,7 +14,7 @@ public class RestExampleRunner2 extends Thread {
 		_component.getServers().add(Protocol.HTTP, 8100);
 
 		//RestExampleApp application = new RestExampleApp(_component.getContext());
-		FirstResourceApplication application = new FirstResourceApplication(); 
+		FirstResourceApplication application = new FirstResourceApplication(_component.getContext()); 
 
 		// Attach the application to the component and start it
 		_component.getDefaultHost().attach(application);
@@ -24,6 +25,7 @@ public class RestExampleRunner2 extends Thread {
 	}
 	
 	@Override
+	@Ignore
 	public void run() {
 		try {
 			_component.start();

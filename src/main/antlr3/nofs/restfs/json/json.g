@@ -25,18 +25,24 @@ package nofs.restfs.json;
 
 // Optional step: Disable automatic error recovery
 @members {
-protected void mismatch(IntStream input, int ttype, BitSet follow)
-throws RecognitionException
+protected void mismatch(IntStream input, int ttype, BitSet follow) throws RecognitionException
 {
-throw new MismatchedTokenException(ttype, input);
+	throw new MismatchedTokenException(ttype, input);
 }
-public Object recoverFromMismatchedSet(IntStream input,
-RecognitionException e,
-BitSet follow)
-throws RecognitionException
+public Object recoverFromMismatchedSet(IntStream input, RecognitionException e, BitSet follow) throws RecognitionException
 {
-throw e;
+	throw e;
 }
+
+public java.util.List<RecognitionException> Errors = new java.util.LinkedList<RecognitionException>();
+
+public void displayRecognitionError(String[] tokenNames,
+                                        RecognitionException e) {
+        String hdr = getErrorHeader(e);
+	String msg = getErrorMessage(e, tokenNames);
+	Errors.add(e);
+}
+
 }
 // Alter code generation so catch-clauses get replace with
 // this action.
@@ -87,6 +93,7 @@ members	: pair (COMMA! pair)*
 pair	: String ':' value
 	  -> ^(FIELD String value)
 	;
+	
 // Simple, but more permissive than the RFC allows. See number above for a validity check.
 Number	: '-'? Digit+ ( '.' Digit+)?;
 

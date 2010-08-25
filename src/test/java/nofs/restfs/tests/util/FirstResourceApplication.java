@@ -4,11 +4,16 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import org.restlet.Application;
+import org.restlet.Context;
 import org.restlet.Restlet;
 import org.restlet.routing.Router;
 
 public class FirstResourceApplication extends Application {
 
+	public FirstResourceApplication(Context context) {
+		super(context);
+	}
+	
     /** The list of items is persisted in memory. */
     private final ConcurrentMap<String, Item> items = new ConcurrentHashMap<String, Item>();
 

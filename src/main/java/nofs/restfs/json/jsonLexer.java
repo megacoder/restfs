@@ -1,4 +1,4 @@
-// $ANTLR 3.1.3 Mar 17, 2009 19:23:44 nofs\\restfs\\json\\json.g 2010-08-14 23:54:24
+// $ANTLR 3.1.3 Mar 17, 2009 19:23:44 nofs\\restfs\\json\\json.g 2010-08-24 21:25:30
 
 package nofs.restfs.json;
 
@@ -54,8 +54,8 @@ public class jsonLexer extends Lexer {
         try {
             int _type = COMMA;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // nofs\\restfs\\json\\json.g:7:7: ( ',' )
-            // nofs\\restfs\\json\\json.g:7:9: ','
+            // nofs\\restfs\\json\\json.g:11:7: ( ',' )
+            // nofs\\restfs\\json\\json.g:11:9: ','
             {
             match(','); 
 
@@ -74,8 +74,8 @@ public class jsonLexer extends Lexer {
         try {
             int _type = T__21;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // nofs\\restfs\\json\\json.g:8:7: ( 'true' )
-            // nofs\\restfs\\json\\json.g:8:9: 'true'
+            // nofs\\restfs\\json\\json.g:12:7: ( 'true' )
+            // nofs\\restfs\\json\\json.g:12:9: 'true'
             {
             match("true"); 
 
@@ -95,8 +95,8 @@ public class jsonLexer extends Lexer {
         try {
             int _type = T__22;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // nofs\\restfs\\json\\json.g:9:7: ( 'false' )
-            // nofs\\restfs\\json\\json.g:9:9: 'false'
+            // nofs\\restfs\\json\\json.g:13:7: ( 'false' )
+            // nofs\\restfs\\json\\json.g:13:9: 'false'
             {
             match("false"); 
 
@@ -116,8 +116,8 @@ public class jsonLexer extends Lexer {
         try {
             int _type = T__23;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // nofs\\restfs\\json\\json.g:10:7: ( 'null' )
-            // nofs\\restfs\\json\\json.g:10:9: 'null'
+            // nofs\\restfs\\json\\json.g:14:7: ( 'null' )
+            // nofs\\restfs\\json\\json.g:14:9: 'null'
             {
             match("null"); 
 
@@ -137,8 +137,8 @@ public class jsonLexer extends Lexer {
         try {
             int _type = T__24;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // nofs\\restfs\\json\\json.g:11:7: ( '{' )
-            // nofs\\restfs\\json\\json.g:11:9: '{'
+            // nofs\\restfs\\json\\json.g:15:7: ( '{' )
+            // nofs\\restfs\\json\\json.g:15:9: '{'
             {
             match('{'); 
 
@@ -157,8 +157,8 @@ public class jsonLexer extends Lexer {
         try {
             int _type = T__25;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // nofs\\restfs\\json\\json.g:12:7: ( '}' )
-            // nofs\\restfs\\json\\json.g:12:9: '}'
+            // nofs\\restfs\\json\\json.g:16:7: ( '}' )
+            // nofs\\restfs\\json\\json.g:16:9: '}'
             {
             match('}'); 
 
@@ -177,8 +177,8 @@ public class jsonLexer extends Lexer {
         try {
             int _type = T__26;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // nofs\\restfs\\json\\json.g:13:7: ( '[' )
-            // nofs\\restfs\\json\\json.g:13:9: '['
+            // nofs\\restfs\\json\\json.g:17:7: ( '[' )
+            // nofs\\restfs\\json\\json.g:17:9: '['
             {
             match('['); 
 
@@ -197,8 +197,8 @@ public class jsonLexer extends Lexer {
         try {
             int _type = T__27;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // nofs\\restfs\\json\\json.g:14:7: ( ']' )
-            // nofs\\restfs\\json\\json.g:14:9: ']'
+            // nofs\\restfs\\json\\json.g:18:7: ( ']' )
+            // nofs\\restfs\\json\\json.g:18:9: ']'
             {
             match(']'); 
 
@@ -217,8 +217,8 @@ public class jsonLexer extends Lexer {
         try {
             int _type = T__28;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // nofs\\restfs\\json\\json.g:15:7: ( ':' )
-            // nofs\\restfs\\json\\json.g:15:9: ':'
+            // nofs\\restfs\\json\\json.g:19:7: ( ':' )
+            // nofs\\restfs\\json\\json.g:19:9: ':'
             {
             match(':'); 
 
@@ -237,10 +237,10 @@ public class jsonLexer extends Lexer {
         try {
             int _type = Number;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // nofs\\restfs\\json\\json.g:89:8: ( ( '-' )? ( Digit )+ ( '.' ( Digit )+ )? )
-            // nofs\\restfs\\json\\json.g:89:10: ( '-' )? ( Digit )+ ( '.' ( Digit )+ )?
+            // nofs\\restfs\\json\\json.g:98:8: ( ( '-' )? ( Digit )+ ( '.' ( Digit )+ )? )
+            // nofs\\restfs\\json\\json.g:98:10: ( '-' )? ( Digit )+ ( '.' ( Digit )+ )?
             {
-            // nofs\\restfs\\json\\json.g:89:10: ( '-' )?
+            // nofs\\restfs\\json\\json.g:98:10: ( '-' )?
             int alt1=2;
             int LA1_0 = input.LA(1);
 
@@ -249,7 +249,7 @@ public class jsonLexer extends Lexer {
             }
             switch (alt1) {
                 case 1 :
-                    // nofs\\restfs\\json\\json.g:89:10: '-'
+                    // nofs\\restfs\\json\\json.g:98:10: '-'
                     {
                     match('-'); 
 
@@ -258,7 +258,7 @@ public class jsonLexer extends Lexer {
 
             }
 
-            // nofs\\restfs\\json\\json.g:89:15: ( Digit )+
+            // nofs\\restfs\\json\\json.g:98:15: ( Digit )+
             int cnt2=0;
             loop2:
             do {
@@ -272,7 +272,7 @@ public class jsonLexer extends Lexer {
 
                 switch (alt2) {
             	case 1 :
-            	    // nofs\\restfs\\json\\json.g:89:15: Digit
+            	    // nofs\\restfs\\json\\json.g:98:15: Digit
             	    {
             	    mDigit(); 
 
@@ -288,7 +288,7 @@ public class jsonLexer extends Lexer {
                 cnt2++;
             } while (true);
 
-            // nofs\\restfs\\json\\json.g:89:22: ( '.' ( Digit )+ )?
+            // nofs\\restfs\\json\\json.g:98:22: ( '.' ( Digit )+ )?
             int alt4=2;
             int LA4_0 = input.LA(1);
 
@@ -297,10 +297,10 @@ public class jsonLexer extends Lexer {
             }
             switch (alt4) {
                 case 1 :
-                    // nofs\\restfs\\json\\json.g:89:24: '.' ( Digit )+
+                    // nofs\\restfs\\json\\json.g:98:24: '.' ( Digit )+
                     {
                     match('.'); 
-                    // nofs\\restfs\\json\\json.g:89:28: ( Digit )+
+                    // nofs\\restfs\\json\\json.g:98:28: ( Digit )+
                     int cnt3=0;
                     loop3:
                     do {
@@ -314,7 +314,7 @@ public class jsonLexer extends Lexer {
 
                         switch (alt3) {
                     	case 1 :
-                    	    // nofs\\restfs\\json\\json.g:89:28: Digit
+                    	    // nofs\\restfs\\json\\json.g:98:28: Digit
                     	    {
                     	    mDigit(); 
 
@@ -352,8 +352,8 @@ public class jsonLexer extends Lexer {
         try {
             int _type = Exponent;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // nofs\\restfs\\json\\json.g:91:9: ( ( 'e' | 'E' ) ( '-' )? ( Digit )+ )
-            // nofs\\restfs\\json\\json.g:91:11: ( 'e' | 'E' ) ( '-' )? ( Digit )+
+            // nofs\\restfs\\json\\json.g:100:9: ( ( 'e' | 'E' ) ( '-' )? ( Digit )+ )
+            // nofs\\restfs\\json\\json.g:100:11: ( 'e' | 'E' ) ( '-' )? ( Digit )+
             {
             if ( input.LA(1)=='E'||input.LA(1)=='e' ) {
                 input.consume();
@@ -364,7 +364,7 @@ public class jsonLexer extends Lexer {
                 recover(mse);
                 throw mse;}
 
-            // nofs\\restfs\\json\\json.g:91:21: ( '-' )?
+            // nofs\\restfs\\json\\json.g:100:21: ( '-' )?
             int alt5=2;
             int LA5_0 = input.LA(1);
 
@@ -373,7 +373,7 @@ public class jsonLexer extends Lexer {
             }
             switch (alt5) {
                 case 1 :
-                    // nofs\\restfs\\json\\json.g:91:21: '-'
+                    // nofs\\restfs\\json\\json.g:100:21: '-'
                     {
                     match('-'); 
 
@@ -382,7 +382,7 @@ public class jsonLexer extends Lexer {
 
             }
 
-            // nofs\\restfs\\json\\json.g:91:26: ( Digit )+
+            // nofs\\restfs\\json\\json.g:100:26: ( Digit )+
             int cnt6=0;
             loop6:
             do {
@@ -396,7 +396,7 @@ public class jsonLexer extends Lexer {
 
                 switch (alt6) {
             	case 1 :
-            	    // nofs\\restfs\\json\\json.g:91:26: Digit
+            	    // nofs\\restfs\\json\\json.g:100:26: Digit
             	    {
             	    mDigit(); 
 
@@ -428,11 +428,11 @@ public class jsonLexer extends Lexer {
         try {
             int _type = String;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // nofs\\restfs\\json\\json.g:93:9: ( '\"' ( EscapeSequence | ~ ( '\\u0000' .. '\\u001f' | '\\\\' | '\\\"' ) )* '\"' )
-            // nofs\\restfs\\json\\json.g:94:2: '\"' ( EscapeSequence | ~ ( '\\u0000' .. '\\u001f' | '\\\\' | '\\\"' ) )* '\"'
+            // nofs\\restfs\\json\\json.g:102:9: ( '\"' ( EscapeSequence | ~ ( '\\u0000' .. '\\u001f' | '\\\\' | '\\\"' ) )* '\"' )
+            // nofs\\restfs\\json\\json.g:103:2: '\"' ( EscapeSequence | ~ ( '\\u0000' .. '\\u001f' | '\\\\' | '\\\"' ) )* '\"'
             {
             match('\"'); 
-            // nofs\\restfs\\json\\json.g:94:6: ( EscapeSequence | ~ ( '\\u0000' .. '\\u001f' | '\\\\' | '\\\"' ) )*
+            // nofs\\restfs\\json\\json.g:103:6: ( EscapeSequence | ~ ( '\\u0000' .. '\\u001f' | '\\\\' | '\\\"' ) )*
             loop7:
             do {
                 int alt7=3;
@@ -448,14 +448,14 @@ public class jsonLexer extends Lexer {
 
                 switch (alt7) {
             	case 1 :
-            	    // nofs\\restfs\\json\\json.g:94:8: EscapeSequence
+            	    // nofs\\restfs\\json\\json.g:103:8: EscapeSequence
             	    {
             	    mEscapeSequence(); 
 
             	    }
             	    break;
             	case 2 :
-            	    // nofs\\restfs\\json\\json.g:94:25: ~ ( '\\u0000' .. '\\u001f' | '\\\\' | '\\\"' )
+            	    // nofs\\restfs\\json\\json.g:103:25: ~ ( '\\u0000' .. '\\u001f' | '\\\\' | '\\\"' )
             	    {
             	    if ( (input.LA(1)>=' ' && input.LA(1)<='!')||(input.LA(1)>='#' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFF') ) {
             	        input.consume();
@@ -492,10 +492,10 @@ public class jsonLexer extends Lexer {
         try {
             int _type = WS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // nofs\\restfs\\json\\json.g:97:3: ( ( ' ' | '\\n' | '\\r' | '\\t' )+ )
-            // nofs\\restfs\\json\\json.g:97:5: ( ' ' | '\\n' | '\\r' | '\\t' )+
+            // nofs\\restfs\\json\\json.g:106:3: ( ( ' ' | '\\n' | '\\r' | '\\t' )+ )
+            // nofs\\restfs\\json\\json.g:106:5: ( ' ' | '\\n' | '\\r' | '\\t' )+
             {
-            // nofs\\restfs\\json\\json.g:97:5: ( ' ' | '\\n' | '\\r' | '\\t' )+
+            // nofs\\restfs\\json\\json.g:106:5: ( ' ' | '\\n' | '\\r' | '\\t' )+
             int cnt8=0;
             loop8:
             do {
@@ -548,11 +548,11 @@ public class jsonLexer extends Lexer {
     // $ANTLR start "EscapeSequence"
     public final void mEscapeSequence() throws RecognitionException {
         try {
-            // nofs\\restfs\\json\\json.g:100:6: ( '\\\\' ( UnicodeEscape | 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) )
-            // nofs\\restfs\\json\\json.g:100:10: '\\\\' ( UnicodeEscape | 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' )
+            // nofs\\restfs\\json\\json.g:109:6: ( '\\\\' ( UnicodeEscape | 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) )
+            // nofs\\restfs\\json\\json.g:109:10: '\\\\' ( UnicodeEscape | 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' )
             {
             match('\\'); 
-            // nofs\\restfs\\json\\json.g:100:15: ( UnicodeEscape | 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' )
+            // nofs\\restfs\\json\\json.g:109:15: ( UnicodeEscape | 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' )
             int alt9=9;
             switch ( input.LA(1) ) {
             case 'u':
@@ -609,63 +609,63 @@ public class jsonLexer extends Lexer {
 
             switch (alt9) {
                 case 1 :
-                    // nofs\\restfs\\json\\json.g:100:16: UnicodeEscape
+                    // nofs\\restfs\\json\\json.g:109:16: UnicodeEscape
                     {
                     mUnicodeEscape(); 
 
                     }
                     break;
                 case 2 :
-                    // nofs\\restfs\\json\\json.g:100:31: 'b'
+                    // nofs\\restfs\\json\\json.g:109:31: 'b'
                     {
                     match('b'); 
 
                     }
                     break;
                 case 3 :
-                    // nofs\\restfs\\json\\json.g:100:35: 't'
+                    // nofs\\restfs\\json\\json.g:109:35: 't'
                     {
                     match('t'); 
 
                     }
                     break;
                 case 4 :
-                    // nofs\\restfs\\json\\json.g:100:39: 'n'
+                    // nofs\\restfs\\json\\json.g:109:39: 'n'
                     {
                     match('n'); 
 
                     }
                     break;
                 case 5 :
-                    // nofs\\restfs\\json\\json.g:100:43: 'f'
+                    // nofs\\restfs\\json\\json.g:109:43: 'f'
                     {
                     match('f'); 
 
                     }
                     break;
                 case 6 :
-                    // nofs\\restfs\\json\\json.g:100:47: 'r'
+                    // nofs\\restfs\\json\\json.g:109:47: 'r'
                     {
                     match('r'); 
 
                     }
                     break;
                 case 7 :
-                    // nofs\\restfs\\json\\json.g:100:51: '\\\"'
+                    // nofs\\restfs\\json\\json.g:109:51: '\\\"'
                     {
                     match('\"'); 
 
                     }
                     break;
                 case 8 :
-                    // nofs\\restfs\\json\\json.g:100:56: '\\''
+                    // nofs\\restfs\\json\\json.g:109:56: '\\''
                     {
                     match('\''); 
 
                     }
                     break;
                 case 9 :
-                    // nofs\\restfs\\json\\json.g:100:61: '\\\\'
+                    // nofs\\restfs\\json\\json.g:109:61: '\\\\'
                     {
                     match('\\'); 
 
@@ -686,8 +686,8 @@ public class jsonLexer extends Lexer {
     // $ANTLR start "UnicodeEscape"
     public final void mUnicodeEscape() throws RecognitionException {
         try {
-            // nofs\\restfs\\json\\json.g:104:2: ( 'u' HexDigit HexDigit HexDigit HexDigit )
-            // nofs\\restfs\\json\\json.g:104:4: 'u' HexDigit HexDigit HexDigit HexDigit
+            // nofs\\restfs\\json\\json.g:113:2: ( 'u' HexDigit HexDigit HexDigit HexDigit )
+            // nofs\\restfs\\json\\json.g:113:4: 'u' HexDigit HexDigit HexDigit HexDigit
             {
             match('u'); 
             mHexDigit(); 
@@ -706,7 +706,7 @@ public class jsonLexer extends Lexer {
     // $ANTLR start "HexDigit"
     public final void mHexDigit() throws RecognitionException {
         try {
-            // nofs\\restfs\\json\\json.g:108:2: ( '0' .. '9' | 'A' .. 'F' | 'a' .. 'f' )
+            // nofs\\restfs\\json\\json.g:117:2: ( '0' .. '9' | 'A' .. 'F' | 'a' .. 'f' )
             // nofs\\restfs\\json\\json.g:
             {
             if ( (input.LA(1)>='0' && input.LA(1)<='9')||(input.LA(1)>='A' && input.LA(1)<='F')||(input.LA(1)>='a' && input.LA(1)<='f') ) {
@@ -730,8 +730,8 @@ public class jsonLexer extends Lexer {
     // $ANTLR start "Digit"
     public final void mDigit() throws RecognitionException {
         try {
-            // nofs\\restfs\\json\\json.g:112:2: ( '0' .. '9' )
-            // nofs\\restfs\\json\\json.g:112:4: '0' .. '9'
+            // nofs\\restfs\\json\\json.g:121:2: ( '0' .. '9' )
+            // nofs\\restfs\\json\\json.g:121:4: '0' .. '9'
             {
             matchRange('0','9'); 
 
