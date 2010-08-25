@@ -44,7 +44,7 @@ public class RestfulFile extends BaseFileObject implements IProvidesUnstructured
 	@ProvidesLastModifiedTime
 	public Date getMTime() { return _mTime; }
 	@ProvidesLastModifiedTime
-	public void setMTime(Date value) throws Exception { _mTime = value; AfterUTime(); }
+	public void setMTime(Date value) throws Exception { _mTime = value; /*AfterUTime();*/ }
 		
 	@Override
 	public boolean Cacheable() {

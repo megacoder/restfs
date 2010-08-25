@@ -1,6 +1,7 @@
 package nofs.restfs.tests.util;
 
 import java.io.IOException;
+import java.util.concurrent.ConcurrentMap;
 
 import org.restlet.data.Form;
 import org.restlet.data.MediaType;
@@ -10,6 +11,7 @@ import org.restlet.representation.Representation;
 import org.restlet.representation.StringRepresentation;
 import org.restlet.resource.Get;
 import org.restlet.resource.Post;
+import org.restlet.resource.ServerResource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -17,8 +19,12 @@ import org.w3c.dom.Element;
  * Resource that manages a list of items.
  * 
  */
-public class ItemsResource extends BaseResource {
-
+public class ItemsResource extends ServerResource { //BaseResource {
+	
+	protected ConcurrentMap<String, Item> getItems() {
+        return ((FirstResourceApplication) getApplication()).getItems();
+    }
+	
     /**
      * Handle POST requests: create a new item.
      */
@@ -90,7 +96,7 @@ public class ItemsResource extends BaseResource {
     /**
      * Returns a listing of all registered items.
      */
-    @Get("xml")
+    @Get
     public Representation toXml() {
         // Generate the right representation according to its media type.
         try {
