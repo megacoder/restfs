@@ -16,16 +16,16 @@ import org.apache.commons.httpclient.NameValuePair;
 
 public class JSONParser {
 
-	public boolean DataIsJSONData(byte[] data) throws Exception {
+	public boolean DataIsJSONData(String representation) throws Exception {
 		try {
-			return null != Parse(data);
+			return null != Parse(representation);
 		} catch(RecognitionException re) {
 			return false;
 		}
 	}
 	
-	public NameValuePair[] ParseJSONIntoPairs(String formName, byte[] data) throws Exception {
-		jsonObject obj = Parse(data);
+	public NameValuePair[] ParseJSONIntoPairs(String formName, String representation) throws Exception {
+		jsonObject obj = Parse(representation);
 		if(obj == null) {
 			return new NameValuePair[0];
 		} else {
@@ -45,9 +45,8 @@ public class JSONParser {
 		}
 	}
 	
-	private static jsonObject Parse(byte[] data) throws Exception {
-		String stringValue = ConvertToString(data);
-		jsonLexer lexer = new jsonLexer(new ANTLRStringStream(stringValue));
+	private static jsonObject Parse(String representation) throws Exception {
+		jsonLexer lexer = new jsonLexer(new ANTLRStringStream(representation));
 		CommonTokenStream tokenStream = new CommonTokenStream();
 		tokenStream.setTokenSource(lexer);
 		jsonParser parser = new jsonParser(tokenStream);
@@ -59,13 +58,5 @@ public class JSONParser {
 		} else {
 			return null;
 		}
-	}
-	
-	private static String ConvertToString(byte[] data) {
-		StringBuffer buff = new StringBuffer();
-		for(int i = 0 ; i < data.length; i++) {
-			buff.append((char)data[i]);
-		}
-		return buff.toString();
 	}
 }

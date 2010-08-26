@@ -15,6 +15,7 @@ import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
 import org.apache.jackrabbit.webdav.client.methods.OptionsMethod;
 
@@ -83,18 +84,21 @@ public class WebDavFacade {
 	public PostAnswer PostMethod(String host, String port, String resource, String formName, byte[] data) throws Exception {
 		NameValuePair[] parameters = null;
 		JSONParser parser = new JSONParser();
-		if(parser.DataIsJSONData(data)) {
-			parameters = parser.ParseJSONIntoPairs(formName, data);
-			HttpConnectionManager manager = GetManager(host);
-			HttpClient client = new HttpClient(manager);
-			client.setHostConfiguration(GetConfig(host));
-			String uri = GetURI(host, port, resource);
-			PostMethod postMethod = new PostMethod(uri);
+		String representation = ConvertToString(data);
+		PostMethod postMethod = new PostMethod(GetURI(host, port, resource));
+		if(parser.DataIsJSONData(representation)) {
+			parameters = parser.ParseJSONIntoPairs(formName, representation);
 			postMethod.setRequestBody(parameters);
-			client.executeMethod(postMethod);
-			return new PostAnswer(postMethod.getStatusCode(), postMethod.getResponseBody());
+		} else if(representation.contains("<?xml version=\"1.0\"?>")){
+			postMethod.setRequestEntity(new StringRequestEntity(representation, "text/xml", "US-ASCII"));
+		} else {
+			return null;
 		}
-		return null;		
+		HttpConnectionManager manager = GetManager(host);
+		HttpClient client = new HttpClient(manager);
+		client.setHostConfiguration(GetConfig(host));
+		client.executeMethod(postMethod);
+		return new PostAnswer(postMethod.getStatusCode(), postMethod.getResponseBody());
 	}
 	
 	public OptionsAnswer OptionsMethod(String host, String resource) throws Exception {
@@ -133,5 +137,13 @@ public class WebDavFacade {
 			}
 		}
 		return new OptionsAnswer(method.getStatusCode(), methods);
+	}
+	
+	private static String ConvertToString(byte[] data) {
+		StringBuffer buff = new StringBuffer();
+		for(int i = 0 ; i < data.length; i++) {
+			buff.append((char)data[i]);
+		}
+		return buff.toString();
 	}
 }
