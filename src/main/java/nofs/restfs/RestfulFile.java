@@ -11,6 +11,7 @@ import nofs.Library.Containers.IProvidesUnstructuredData;
 import nofs.restfs.http.DeleteAnswer;
 import nofs.restfs.http.GetAnswer;
 import nofs.restfs.http.PostAnswer;
+import nofs.restfs.http.PutAnswer;
 import nofs.restfs.http.WebDavFacade;
 
 @DomainObject
@@ -119,6 +120,15 @@ public class RestfulFile extends BaseFileObject implements IProvidesUnstructured
 					SetRepresentation(answer.getData());
 				}
 				System.out.println(getName() + " post completed");
+			} else if(getSettings().getWebMethod().toLowerCase().compareTo("put") == 0) {
+				System.out.println(getName() + " put...");
+				PutAnswer answer = WebDavFacade.Instance().PutMethod(
+						getSettings().getHost(), getSettings().getPort(), 
+						getSettings().getResource(), _representation);
+				if(answer != null) {
+					SetRepresentation(answer.getData());
+				}
+				System.out.println(getName() + " put completed");
 			} else if(getSettings().getWebMethod().toLowerCase().compareTo("delete") == 0) {
 				System.out.println(getName() + " delete...");
 				DeleteAnswer answer = WebDavFacade.Instance().DeleteMethod(

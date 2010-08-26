@@ -1,5 +1,6 @@
 package nofs.restfs.http;
 
+import java.io.ByteArrayInputStream;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -15,6 +16,7 @@ import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.PutMethod;
 import org.apache.commons.httpclient.methods.DeleteMethod;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
@@ -83,6 +85,17 @@ public class WebDavFacade {
 		return new GetAnswer(getMethod.getStatusCode(), getMethod.getResponseBody());
 	}
 	
+	@SuppressWarnings("deprecation")
+	public PutAnswer PutMethod(String host, String port, String resource, byte[] data) throws Exception {
+		PutMethod putMethod = new PutMethod(GetURI(host,port,resource));
+		putMethod.setRequestBody(new ByteArrayInputStream(data));
+		HttpConnectionManager manager = GetManager(host);
+		HttpClient client = new HttpClient(manager);
+		client.setHostConfiguration(GetConfig(host));
+		client.executeMethod(putMethod);
+		return new PutAnswer(putMethod.getStatusCode(), putMethod.getResponseBody());
+	}
+	
 	public PostAnswer PostMethod(
 			String host, String port, String resource, 
 			String formName, byte[] data) throws Exception {
@@ -112,7 +125,7 @@ public class WebDavFacade {
 		client.executeMethod(deleteMethod);
 		return new DeleteAnswer(deleteMethod.getStatusCode(), deleteMethod.getResponseBody());
 	}
-	
+
 	public OptionsAnswer OptionsMethod(String host, String resource) throws Exception {
 		HttpConnectionManager manager = GetManager(host);
 		HttpClient client = new HttpClient(manager);
