@@ -73,18 +73,32 @@ public class RestFsWithService2Test extends BaseFuseTests {
 	}
 	
 	@Test
-	public void TestGetOnUTime() throws Exception {
+	public void TestPostThenGetOnUTime() throws Exception {
+		Assert.assertEquals(0, _fs.mknod(Fix("/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
+		WriteToFile("/.x", RestSettingHelper.CreateSettingsXml("utime", "post", "", "/firstResource/items", "127.0.0.1", "8100"));
+		WriteToFile("/x", "{\"description\":\"1\",\"name\":\"foobar\"}");
+		Assert.assertEquals(0, _fs.utime(Fix("/x"), (int)System.currentTimeMillis(), (int)System.currentTimeMillis()));
+		String result = ReadFromFile("/x");
+		Assert.assertEquals("Item created", result);
+		
+		WriteToFile("/.x", RestSettingHelper.CreateSettingsXml("utime", "get", "", "/firstResource/items/foobar", "127.0.0.1", "8100"));
+		Assert.assertEquals(0, _fs.utime(Fix("/x"), (int)System.currentTimeMillis(), (int)System.currentTimeMillis()));
+		result = ReadFromFile("/x");
+		Assert.assertEquals(
+				"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><item><name>foobar</name><description>1</description></item>",
+				result);
+	}
+	
+	@Test
+	public void TestPostThenDeleteOnUTime() throws Exception { 
 		Assert.assertEquals(0, _fs.mknod(Fix("/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
 		WriteToFile("/.x", RestSettingHelper.CreateSettingsXml("utime", "post", "", "/firstResource/items", "127.0.0.1", "8100"));
 		WriteToFile("/x", "{\"description\":\"1\",\"name\":\"foobar\"}");
 		Assert.assertEquals(0, _fs.utime(Fix("/x"), (int)System.currentTimeMillis(), (int)System.currentTimeMillis()));
 		
-		WriteToFile("/.x", RestSettingHelper.CreateSettingsXml("utime", "get", "", "/firstResource/items/foobar", "127.0.0.1", "8100"));
+		WriteToFile("/.x", RestSettingHelper.CreateSettingsXml("utime", "delete", "", "/firstResource/items/foobar", "127.0.0.1", "8100"));
 		Assert.assertEquals(0, _fs.utime(Fix("/x"), (int)System.currentTimeMillis(), (int)System.currentTimeMillis()));
 		String result = ReadFromFile("/x");
-		Assert.assertEquals(
-				//"{\"item\":\"1\",\"name\":\"name\"}",
-				"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><item><name>foobar</name><description>1</description></item>",
-				result);
+		Assert.assertEquals("", result);
 	}
 }

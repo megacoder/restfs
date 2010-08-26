@@ -8,6 +8,7 @@ import nofs.Library.Annotations.ProvidesLastAccessTime;
 import nofs.Library.Annotations.ProvidesLastModifiedTime;
 import nofs.Library.Containers.IListensToEvents;
 import nofs.Library.Containers.IProvidesUnstructuredData;
+import nofs.restfs.http.DeleteAnswer;
 import nofs.restfs.http.GetAnswer;
 import nofs.restfs.http.PostAnswer;
 import nofs.restfs.http.WebDavFacade;
@@ -89,6 +90,10 @@ public class RestfulFile extends BaseFileObject implements IProvidesUnstructured
 		}
 	}
 	
+	private void SetRepresentation(byte[] data) {
+		_representation = data == null ? new byte[0] : data;
+	}
+	
 	private void PerformMethod() throws Exception
 	{
 		try {
@@ -102,7 +107,7 @@ public class RestfulFile extends BaseFileObject implements IProvidesUnstructured
 				GetAnswer answer = WebDavFacade.Instance().GetMethod(
 						getSettings().getHost(), getSettings().getPort(), 
 						getSettings().getResource());
-				_representation = answer.getData();
+				SetRepresentation(answer.getData());
 				System.out.println(getName() + " get completed");
 			} else if(getSettings().getWebMethod().toLowerCase().compareTo("post") == 0) {
 				System.out.println(getName() + " post...");
@@ -111,9 +116,18 @@ public class RestfulFile extends BaseFileObject implements IProvidesUnstructured
 						getSettings().getResource(), getSettings().getFormName(),
 						_representation);
 				if(answer != null) {
-					_representation = answer.getData();
+					SetRepresentation(answer.getData());
 				}
 				System.out.println(getName() + " post completed");
+			} else if(getSettings().getWebMethod().toLowerCase().compareTo("delete") == 0) {
+				System.out.println(getName() + " delete...");
+				DeleteAnswer answer = WebDavFacade.Instance().DeleteMethod(
+						getSettings().getHost(), getSettings().getPort(),
+						getSettings().getResource());
+				if(answer != null) {
+					SetRepresentation(answer.getData());
+				}
+				System.out.println(getName() + " delete completed");
 			} else {
 				throw new Exception("web method " + getSettings().getWebMethod() + " not implemented yet ");
 			}

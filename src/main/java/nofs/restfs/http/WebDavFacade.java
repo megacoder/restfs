@@ -11,11 +11,11 @@ import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpConnectionManager;
-import org.apache.commons.httpclient.HttpMethodBase;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.DeleteMethod;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
 import org.apache.jackrabbit.webdav.client.methods.OptionsMethod;
@@ -71,22 +71,7 @@ public class WebDavFacade {
 		}
 		return new URL("http", host, portValue, resource).toURI().toString(); 
 	}
-	
-	/*private static void EncodeRepresentation(HttpMethodBase method, byte[] data, String formName, String encodeMethod) {
-		JSONParser parser = new JSONParser();
-		if(encodeMethod.toLowerCase().compareTo("body") == 0) {
-			String representation = ConvertToString(data);
-			if(parser.DataIsJSONData(representation)) {
-				NameValuePair[] parameters = parser.ParseJSONIntoPairs(formName, representation);
-				method.setRequestBody(parameters);
-			} else if(representation.contains("<?xml version=\"1.0\"?>")){
-				method.setRequestEntity(new StringRequestEntity(representation, "text/xml", "US-ASCII"));
-			}
-		} else if(encodeMethod.toLowerCase().compareTo("url") == 0) {
-			
-		}
-	}*/
-	
+		
 	public GetAnswer GetMethod(
 			String host, String port, String resource) throws Exception {
 		HttpConnectionManager manager = GetManager(host);
@@ -117,6 +102,15 @@ public class WebDavFacade {
 		client.setHostConfiguration(GetConfig(host));
 		client.executeMethod(postMethod);
 		return new PostAnswer(postMethod.getStatusCode(), postMethod.getResponseBody());
+	}
+	
+	public DeleteAnswer DeleteMethod(String host, String port, String resource) throws Exception {
+		DeleteMethod deleteMethod = new DeleteMethod(GetURI(host, port, resource));
+		HttpConnectionManager manager = GetManager(host);
+		HttpClient client = new HttpClient(manager);
+		client.setHostConfiguration(GetConfig(host));
+		client.executeMethod(deleteMethod);
+		return new DeleteAnswer(deleteMethod.getStatusCode(), deleteMethod.getResponseBody());
 	}
 	
 	public OptionsAnswer OptionsMethod(String host, String resource) throws Exception {
