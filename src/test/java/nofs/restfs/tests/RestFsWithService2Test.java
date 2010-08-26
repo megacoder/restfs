@@ -75,11 +75,11 @@ public class RestFsWithService2Test extends BaseFuseTests {
 	@Test
 	public void TestGetOnUTime() throws Exception {
 		Assert.assertEquals(0, _fs.mknod(Fix("/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
-		WriteToFile("/.x", RestSettingHelper.CreateSettingsXml("utime", "post", "", "/firstResource/items", "127.0.0.1", "8100", "URL"));
+		WriteToFile("/.x", RestSettingHelper.CreateSettingsXml("utime", "post", "", "/firstResource/items", "127.0.0.1", "8100"));
 		WriteToFile("/x", "{\"description\":\"1\",\"name\":\"foobar\"}");
 		Assert.assertEquals(0, _fs.utime(Fix("/x"), (int)System.currentTimeMillis(), (int)System.currentTimeMillis()));
 		
-		WriteToFile("/.x", RestSettingHelper.CreateSettingsXml("utime", "get", "", "/firstResource/items/foobar", "127.0.0.1", "8100", ""));
+		WriteToFile("/.x", RestSettingHelper.CreateSettingsXml("utime", "get", "", "/firstResource/items/foobar", "127.0.0.1", "8100"));
 		Assert.assertEquals(0, _fs.utime(Fix("/x"), (int)System.currentTimeMillis(), (int)System.currentTimeMillis()));
 		String result = ReadFromFile("/x");
 		Assert.assertEquals(
