@@ -11,6 +11,7 @@ import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpConnectionManager;
+import org.apache.commons.httpclient.HttpMethodBase;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.GetMethod;
@@ -71,7 +72,23 @@ public class WebDavFacade {
 		return new URL("http", host, portValue, resource).toURI().toString(); 
 	}
 	
-	public GetAnswer GetMethod(String host, String port, String resource) throws Exception {
+	/*private static void EncodeRepresentation(HttpMethodBase method, byte[] data, String formName, String encodeMethod) {
+		JSONParser parser = new JSONParser();
+		if(encodeMethod.toLowerCase().compareTo("body") == 0) {
+			String representation = ConvertToString(data);
+			if(parser.DataIsJSONData(representation)) {
+				NameValuePair[] parameters = parser.ParseJSONIntoPairs(formName, representation);
+				method.setRequestBody(parameters);
+			} else if(representation.contains("<?xml version=\"1.0\"?>")){
+				method.setRequestEntity(new StringRequestEntity(representation, "text/xml", "US-ASCII"));
+			}
+		} else if(encodeMethod.toLowerCase().compareTo("url") == 0) {
+			
+		}
+	}*/
+	
+	public GetAnswer GetMethod(
+			String host, String port, String resource) throws Exception {
 		HttpConnectionManager manager = GetManager(host);
 		HttpClient client = new HttpClient(manager);
 		client.setHostConfiguration(GetConfig(host));
@@ -81,13 +98,14 @@ public class WebDavFacade {
 		return new GetAnswer(getMethod.getStatusCode(), getMethod.getResponseBody());
 	}
 	
-	public PostAnswer PostMethod(String host, String port, String resource, String formName, byte[] data) throws Exception {
-		NameValuePair[] parameters = null;
+	public PostAnswer PostMethod(
+			String host, String port, String resource, 
+			String formName, byte[] data) throws Exception {
 		JSONParser parser = new JSONParser();
 		String representation = ConvertToString(data);
 		PostMethod postMethod = new PostMethod(GetURI(host, port, resource));
 		if(parser.DataIsJSONData(representation)) {
-			parameters = parser.ParseJSONIntoPairs(formName, representation);
+			NameValuePair[] parameters = parser.ParseJSONIntoPairs(formName, representation);
 			postMethod.setRequestBody(parameters);
 		} else if(representation.contains("<?xml version=\"1.0\"?>")){
 			postMethod.setRequestEntity(new StringRequestEntity(representation, "text/xml", "US-ASCII"));

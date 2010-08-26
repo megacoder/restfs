@@ -17,6 +17,7 @@ import nofs.metadata.interfaces.INoFSClassLoader;
 import nofs.restfs.tests.util.BaseFuseTests;
 import nofs.restfs.tests.util.MockFuseOpenSetter;
 import nofs.restfs.tests.util.RestExampleRunner2;
+import nofs.restfs.tests.util.RestSettingHelper;
 import nofs.restfs.tests.util.TemporaryTestFolder;
 
 public class RestFsWithService2Test extends BaseFuseTests {
@@ -57,17 +58,6 @@ public class RestFsWithService2Test extends BaseFuseTests {
 		return ConvertToString(buffer);
 	}
 	
-	private static String CreateSettingsXml(String fsMethod, String webMethod, String formName, String resource, String host, String port) {
-		return 
-			"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n<RestfulSetting>\n  <FsMethod>" + fsMethod + "</FsMethod>\n" + 
-			"  <WebMethod>" + webMethod + "</WebMethod>\n" +
-			"  <FormName>" + formName + "</FormName>\n" +
-			"  <Resource>" + resource + "</Resource>\n" + 
-			"  <Host>" + host + "</Host>\n" +
-			"  <Port>" + port + "</Port>\n" +
-			"</RestfulSetting>\n";
-	}
-	
 	private NoFSFuseDriver BuildFS() throws Exception {
 		final String objectStore = _tmpFolder.getPath("fs.db");
 		final String metaFile = _tmpFolder.getPath("meta.db");
@@ -85,13 +75,16 @@ public class RestFsWithService2Test extends BaseFuseTests {
 	@Test
 	public void TestGetOnUTime() throws Exception {
 		Assert.assertEquals(0, _fs.mknod(Fix("/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
-		WriteToFile("/.x", CreateSettingsXml("utime", "post", "", "/items", "127.0.0.1", "8100"));
+		WriteToFile("/.x", RestSettingHelper.CreateSettingsXml("utime", "post", "", "/firstResource/items", "127.0.0.1", "8100", "URL"));
 		WriteToFile("/x", "{\"description\":\"1\",\"name\":\"foobar\"}");
 		Assert.assertEquals(0, _fs.utime(Fix("/x"), (int)System.currentTimeMillis(), (int)System.currentTimeMillis()));
-		/*WriteToFile("/.x", CreateSettingsXml("utime", "get", "", "/items/foobar1", "127.0.0.1", "8100"));
+		
+		WriteToFile("/.x", RestSettingHelper.CreateSettingsXml("utime", "get", "", "/firstResource/items/foobar", "127.0.0.1", "8100", ""));
 		Assert.assertEquals(0, _fs.utime(Fix("/x"), (int)System.currentTimeMillis(), (int)System.currentTimeMillis()));
 		String result = ReadFromFile("/x");
-		Assert.assertEquals("{\"item\":\"1\",\"name\":\"name\"}", result);*/
-
+		Assert.assertEquals(
+				//"{\"item\":\"1\",\"name\":\"name\"}",
+				"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><item><name>foobar</name><description>1</description></item>",
+				result);
 	}
 }

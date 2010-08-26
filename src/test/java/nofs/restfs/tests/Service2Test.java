@@ -29,8 +29,7 @@ public class Service2Test {
 	
 	@Test
 	public void TestService() throws Exception {
-		 //ClientResource itemsResource = new ClientResource("http://localhost:8100/firstResource/items");  
-		ClientResource itemsResource = new ClientResource("http://localhost:8100/items");
+		 ClientResource itemsResource = new ClientResource("http://localhost:8100/firstResource/items");  
          ClientResource itemResource = null;  
    
          // Create a new item  
@@ -60,7 +59,7 @@ public class Service2Test {
              // Print the list of registered items.  
              get(itemsResource);  
          }  
-	}
+	 }
 	
      public static void get(ClientResource clientResource) throws IOException, ResourceException {  
          clientResource.get();  

@@ -15,8 +15,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class ItemResource extends BaseResource {
-
-    /** The underlying Item object. */
+	/** The underlying Item object. */
     Item item;
 
     /** The sequence of characters that identifies the resource. */
@@ -99,4 +98,5 @@ public class ItemResource extends BaseResource {
 
         return null;
     }
+
 }

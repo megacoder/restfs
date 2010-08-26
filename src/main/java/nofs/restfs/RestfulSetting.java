@@ -38,4 +38,8 @@ public class RestfulSetting extends BaseFileObject {
 	private String _resource = "";
 	public String getResource() { return _resource; }
 	public void setResource(String value) { _resource = value; }
+	
+	private String _encodeMethod = "";
+	public String getEncodeMethod() { return _encodeMethod; }
+	public void setEncodeMethod(String value) { _encodeMethod = value; }
 }

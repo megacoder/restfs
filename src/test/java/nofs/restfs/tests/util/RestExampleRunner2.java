@@ -14,10 +14,10 @@ public class RestExampleRunner2 extends Thread {
 		_component.getServers().add(Protocol.HTTP, 8100);
 
 		//RestExampleApp application = new RestExampleApp(_component.getContext());
-		FirstResourceApplication application = new FirstResourceApplication(_component.getContext()); 
+		FirstResourceApplication application = new FirstResourceApplication(/*_component.getContext()*/); 
 
 		// Attach the application to the component and start it
-		_component.getDefaultHost().attach(application);
+		_component.getDefaultHost().attach("/firstResource", application);
 	}
 	
 	public void StartRunner() throws Exception {

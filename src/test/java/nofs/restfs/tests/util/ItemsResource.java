@@ -19,117 +19,115 @@ import org.w3c.dom.Element;
  * Resource that manages a list of items.
  * 
  */
-public class ItemsResource extends ServerResource { //BaseResource {
-	
-	protected ConcurrentMap<String, Item> getItems() {
-        return ((FirstResourceApplication) getApplication()).getItems();
-    }
-	
-    /**
-     * Handle POST requests: create a new item.
-     */
-    @Post
-    public Representation acceptItem(Representation entity) {
-        Representation result = null;
-        // Parse the given representation and retrieve pairs of
-        // "name=value" tokens.
-        Form form = new Form(entity);
-        String itemName = form.getFirstValue("name");
-        String itemDescription = form.getFirstValue("description");
+public class ItemsResource extends BaseResource {
 
-        // Register the new item if one is not already registered.
-        if (!getItems().containsKey(itemName)
-                && getItems().putIfAbsent(itemName,
-                        new Item(itemName, itemDescription)) == null) {
-            // Set the response's status and entity
-            setStatus(Status.SUCCESS_CREATED);
-            Representation rep = new StringRepresentation("Item created",
-                    MediaType.TEXT_PLAIN);
-            // Indicates where is located the new resource.
-            rep.setIdentifier(getRequest().getResourceRef().getIdentifier()
-                    + "/" + itemName);
-            result = rep;
-        } else { // Item is already registered.
-            setStatus(Status.CLIENT_ERROR_NOT_FOUND);
-            result = generateErrorRepresentation("Item " + itemName
-                    + " already exists.", "1");
-        }
+	/**
+	 * Handle POST requests: create a new item.
+	 */
+	@Post
+	public Representation acceptItem(Representation entity) {
+		Representation result = null;
+		// Parse the given representation and retrieve pairs of
+		// "name=value" tokens.
+		Form form = new Form(entity);
+		String itemName = form.getFirstValue("name");
+		String itemDescription = form.getFirstValue("description");
 
-        return result;
-    }
+		// Register the new item if one is not already registered.
+		if (!getItems().containsKey(itemName)
+				&& getItems().putIfAbsent(itemName,
+						new Item(itemName, itemDescription)) == null) {
+			// Set the response's status and entity
+			setStatus(Status.SUCCESS_CREATED);
+			Representation rep = new StringRepresentation("Item created",
+					MediaType.TEXT_PLAIN);
+			// Indicates where is located the new resource.
+			rep.setIdentifier(getRequest().getResourceRef().getIdentifier()
+					+ "/" + itemName);
+			result = rep;
+		} else { // Item is already registered.
+			setStatus(Status.CLIENT_ERROR_NOT_FOUND);
+			result = generateErrorRepresentation("Item " + itemName
+					+ " already exists.", "1");
+		}
 
-    /**
-     * Generate an XML representation of an error response.
-     * 
-     * @param errorMessage
-     *            the error message.
-     * @param errorCode
-     *            the error code.
-     */
-    private Representation generateErrorRepresentation(String errorMessage,
-            String errorCode) {
-        DomRepresentation result = null;
-        // This is an error
-        // Generate the output representation
-        try {
-            result = new DomRepresentation(MediaType.TEXT_XML);
-            // Generate a DOM document representing the list of
-            // items.
-            Document d = result.getDocument();
+		return result;
+	}
 
-            Element eltError = d.createElement("error");
+	/**
+	 * Generate an XML representation of an error response.
+	 * 
+	 * @param errorMessage
+	 *            the error message.
+	 * @param errorCode
+	 *            the error code.
+	 */
+	private Representation generateErrorRepresentation(String errorMessage,
+			String errorCode) {
+		DomRepresentation result = null;
+		// This is an error
+		// Generate the output representation
+		try {
+			result = new DomRepresentation(MediaType.TEXT_XML);
+			// Generate a DOM document representing the list of
+			// items.
+			Document d = result.getDocument();
 
-            Element eltCode = d.createElement("code");
-            eltCode.appendChild(d.createTextNode(errorCode));
-            eltError.appendChild(eltCode);
+			Element eltError = d.createElement("error");
 
-            Element eltMessage = d.createElement("message");
-            eltMessage.appendChild(d.createTextNode(errorMessage));
-            eltError.appendChild(eltMessage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+			Element eltCode = d.createElement("code");
+			eltCode.appendChild(d.createTextNode(errorCode));
+			eltError.appendChild(eltCode);
 
-        return result;
-    }
+			Element eltMessage = d.createElement("message");
+			eltMessage.appendChild(d.createTextNode(errorMessage));
+			eltError.appendChild(eltMessage);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-    /**
-     * Returns a listing of all registered items.
-     */
-    @Get
-    public Representation toXml() {
-        // Generate the right representation according to its media type.
-        try {
-            DomRepresentation representation = new DomRepresentation(
-                    MediaType.TEXT_XML);
-            // Generate a DOM document representing the list of
-            // items.
-            Document d = representation.getDocument();
-            Element r = d.createElement("items");
-            d.appendChild(r);
-            for (Item item : getItems().values()) {
-                Element eltItem = d.createElement("item");
+		return result;
+	}
 
-                Element eltName = d.createElement("name");
-                eltName.appendChild(d.createTextNode(item.getName()));
-                eltItem.appendChild(eltName);
+	/**
+	 * Returns a listing of all registered items.
+	 */
+	@Get("xml")
+	public Representation toXml() {
+		// Generate the right representation according to its media type.
+		try {
+			DomRepresentation representation = new DomRepresentation(
+					MediaType.TEXT_XML);
 
-                Element eltDescription = d.createElement("description");
-                eltDescription.appendChild(d.createTextNode(item
-                        .getDescription()));
-                eltItem.appendChild(eltDescription);
+			// Generate a DOM document representing the list of
+			// items.
+			Document d = representation.getDocument();
+			Element r = d.createElement("items");
+			d.appendChild(r);
+			for (Item item : getItems().values()) {
+				Element eltItem = d.createElement("item");
 
-                r.appendChild(eltItem);
-            }
-            d.normalizeDocument();
+				Element eltName = d.createElement("name");
+				eltName.appendChild(d.createTextNode(item.getName()));
+				eltItem.appendChild(eltName);
 
-            // Returns the XML representation of this document.
-            return representation;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+				Element eltDescription = d.createElement("description");
+				eltDescription.appendChild(d.createTextNode(item
+						.getDescription()));
+				eltItem.appendChild(eltDescription);
 
-        return null;
-    }
+				r.appendChild(eltItem);
+			}
+			d.normalizeDocument();
+
+			// Returns the XML representation of this document.
+			return representation;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
 
 }
