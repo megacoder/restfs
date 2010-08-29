@@ -1,0 +1,62 @@
+#!/bin/bash
+
+WHERE=$1
+FSMETHOD=""
+WEBMETHOD=""
+RESOURCE=""
+HOST=""
+PORT=""
+FORMNAME=""
+
+for ARG in $1 $2 $3 $4 $5 $6 $7
+do
+	FSCOUNT=`echo $ARG | grep -c "fs:"`
+	WEBCOUNT=`echo $ARG | grep -c "web:"`
+	RESOURCECOUNT=`echo $ARG | grep -c "resource:"`
+	HOSTCOUNT=`echo $ARG | grep -c "host:"`
+	PORTCOUNT=`echo $ARG | grep -c "port:"`
+	FORMCOUNT=`echo $ARG | grep -c "form:"`
+	if [ 0 -lt $FSCOUNT ] 
+	then
+		FSMETHOD=`echo $ARG | sed 's/fs://g'`
+	fi
+	if [ 0 -lt $WEBCOUNT ]
+	then
+		WEBMETHOD=`echo $ARG | sed 's/web://g'`
+	fi
+	if [ 0 -lt $RESOURCECOUNT ]
+	then
+		RESOURCE=`echo $ARG | sed 's/resource://g'`
+	fi
+	if [ 0 -lt $HOSTCOUNT ]
+	then
+		HOST=`echo $ARG | sed 's/host://g'`
+	fi
+	if [ 0 -lt $PORTCOUNT ]
+	then
+		PORT=`echo $ARG | sed 's/port://g'`
+	fi
+	if [ 0 -lt $FORMCOUNT ]
+	then
+		FORMNAME=`echo $ARG | sed 's/form://g'`
+	fi
+done
+
+TEMPFILE=/tmp/tmp.xml
+rm -f $TEMPFILE
+touch $TEMPFILE
+
+echo -ne "<RestfulSetting>\n" >> $TEMPFILE
+echo -ne "  <FsMethod>$FSMETHOD</FsMethod>\n" >> $TEMPFILE
+echo -ne "  <WebMethod>$WEBMETHOD</WebMethod>\n" >> $TEMPFILE
+echo -ne "  <FormName>$FORMNAME</FormName>\n" >> $TEMPFILE
+echo -ne "  <Resource>$RESOURCE</Resource>\n" >> $TEMPFILE
+echo -ne "  <Host>$HOST</Host>\n" >> $TEMPFILE
+echo -ne "  <Port>$PORT</Port>\n" >> $TEMPFILE
+echo -ne "</RestfulSetting>\n" >> $TEMPFILE
+
+cat $TEMPFILE > $WHERE
+rm -f $TEMPFILE
+
+
+
