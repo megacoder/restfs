@@ -1,0 +1,10 @@
+#!/bin/bash
+
+./configureResource ../tmp/.x \
+	fs:utime web:get host:127.0.0.1 \
+	port:8182 resource:firstResource/items/foobar
+
+touch ../tmp/x
+cat ../tmp/x
+echo -ne "\n"
+

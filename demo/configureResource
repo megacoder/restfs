@@ -46,6 +46,7 @@ TEMPFILE=/tmp/tmp.xml
 rm -f $TEMPFILE
 touch $TEMPFILE
 
+echo -ne "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n" >> $TEMPFILE
 echo -ne "<RestfulSetting>\n" >> $TEMPFILE
 echo -ne "  <FsMethod>$FSMETHOD</FsMethod>\n" >> $TEMPFILE
 echo -ne "  <WebMethod>$WEBMETHOD</WebMethod>\n" >> $TEMPFILE
@@ -57,6 +58,3 @@ echo -ne "</RestfulSetting>\n" >> $TEMPFILE
 
 cat $TEMPFILE > $WHERE
 rm -f $TEMPFILE
-
-
-
