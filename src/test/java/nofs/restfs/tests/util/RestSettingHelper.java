@@ -5,7 +5,9 @@ public class RestSettingHelper {
 			String fsMethod, String webMethod, String formName, 
 			String resource, String host, String port) {
 		return 
-			"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n<RestfulSetting>\n  " + 
+			//"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+			//"\n" + 
+			"<RestfulSetting>\n" + 
 			"  <FsMethod>" + fsMethod + "</FsMethod>\n" + 
 			"  <WebMethod>" + webMethod + "</WebMethod>\n" +
 			"  <FormName>" + formName + "</FormName>\n" +

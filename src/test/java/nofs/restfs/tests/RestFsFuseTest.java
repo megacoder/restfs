@@ -19,6 +19,7 @@ import nofs.metadata.interfaces.IMetadataFactory;
 import nofs.metadata.interfaces.INoFSClassLoader;
 import nofs.restfs.tests.util.BaseFuseTests;
 import nofs.restfs.tests.util.DirFillerExpect;
+import nofs.restfs.tests.util.MockFuseGetattrSetter;
 import nofs.restfs.tests.util.RestSettingHelper;
 import nofs.restfs.tests.util.TemporaryTestFolder;
 
@@ -141,6 +142,54 @@ public class RestFsFuseTest extends BaseFuseTests {
 		AssertEquals(xml, buffer);
 	}
 	
+	private void WriteToFile(String path, String xml) throws Exception {
+		MockFuseGetattrSetter attr = new MockFuseGetattrSetter();
+		int stat = _fs.getattr(path, attr);
+		if(stat == 0) {
+			Assert.assertEquals(0, _fs.truncate(path, 0));
+		} else {
+			Assert.assertEquals(Errno.ENOENT, stat);
+		}
+		MockFuseOpenSetter handle = new MockFuseOpenSetter();
+		Assert.assertEquals(0, _fs.open(Fix(path), 0, handle));
+		Assert.assertEquals(0, _fs.truncate(Fix(path), 0));
+		ByteBuffer buffer = WrapInBuffer(xml);
+		Assert.assertEquals(0, _fs.write(path, handle.getFh(), false, buffer, 0));
+		Assert.assertEquals(0, _fs.release(Fix(path), handle.getFh(), 0));
+	}
+	
+	private String ReadFromFile(String path) throws Exception {
+		MockFuseOpenSetter handle = new MockFuseOpenSetter();
+		ByteBuffer buffer = ByteBuffer.allocate(1024*1024);
+		Assert.assertEquals(0, _fs.open(Fix(path), 0, handle));
+		Assert.assertEquals(0, _fs.read(Fix(path), handle.getFh(), buffer, 0));
+		Assert.assertEquals(0, _fs.release(Fix(path), handle.getFh(), 0));
+		return ConvertToString(buffer);
+	}
+	
+	@Test
+	public void TestWriteToSettingsFileSmallerThenBigger() throws Exception {
+		Assert.assertEquals(0, _fs.mknod(Fix("/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
+		
+		final String start = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n";
+		
+		String xml = RestSettingHelper.CreateSettingsXml("","","","","","");
+		
+		Assert.assertEquals(start + xml, ReadFromFile(Fix("/.x")));
+		
+		xml = RestSettingHelper.CreateSettingsXml("aa","bb","cc","dd","ee","16000");
+		WriteToFile(Fix("/.x"), xml);
+		Assert.assertEquals(start + xml, ReadFromFile(Fix("/.x")));
+		
+		xml = RestSettingHelper.CreateSettingsXml("f","g","h","i","j","6500");
+		WriteToFile(Fix("/.x"), xml);
+		Assert.assertEquals(start + xml, ReadFromFile(Fix("/.x")));
+		
+		xml = RestSettingHelper.CreateSettingsXml("lll","mmm","nnn","ooo","ppp","6500");
+		WriteToFile(Fix("/.x"), xml);
+		Assert.assertEquals(start + xml, ReadFromFile(Fix("/.x")));
+	}
+	
 	@Test
 	public void TestWriteToSettingsFile() throws Exception {
 		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {});
@@ -148,7 +197,7 @@ public class RestFsFuseTest extends BaseFuseTests {
 		
 		MockFuseOpenSetter handle = new MockFuseOpenSetter();
 		
-		String xml = RestSettingHelper.CreateSettingsXml("","","","","", "80");
+		String xml = RestSettingHelper.CreateSettingsXml("","","","","", "");
 		
 		ByteBuffer buffer = ByteBuffer.allocate(1024*1024);
 		Assert.assertEquals(0, _fs.open(Fix("/.x"), 0, handle));
