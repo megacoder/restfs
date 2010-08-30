@@ -1,0 +1,30 @@
+package nofs.restfs.http;
+
+public enum HttpMethods {
+	GET,
+	HEAD,
+	POST,
+	PUT,
+	OPTIONS,
+	DELETE,
+	//DAV methods:
+	CHECKIN,
+	CHECKOUT,
+	COPY,
+	LABEL,
+	LOCK,
+	MKCOL,
+	MOVE,
+	POLL,
+	PROPFIND,
+	PROPPATCH,
+	REBIND,
+	REPORT,
+	SEARCH,
+	SUBSCRIBE,
+	UNBIND,
+	UNCHECKOUT,
+	UNLOCK,
+	UNSUBSCRIBE,
+	UPDATE,
+}

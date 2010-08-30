@@ -1,0 +1,13 @@
+#!/bin/bash
+
+touch ../tmp/x
+./configureResource ../tmp/.x \
+	fs:utime web:post host:127.0.0.1 \
+	port:8182 resource:firstResource/items
+
+echo -ne "{\"description\" : \"hello\", \"name\" : \"foobar\"}" > ../tmp/x
+touch ../tmp/x
+cat ../tmp/x
+echo -ne "\n"
+
+

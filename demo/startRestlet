@@ -1,0 +1,10 @@
+#!/bin/bash
+
+LIBS=`find . -name "org.restlet*.jar"`
+LIBS=`echo $LIBS | sed 's/ /:/g'`
+
+java \
+	-classpath $LIBS \
+	org.restlet.example.firstResource.FirstResourceServerMain
+
+

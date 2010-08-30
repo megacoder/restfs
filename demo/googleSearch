@@ -1,0 +1,20 @@
+#!/bin/bash
+
+TERMS=$@
+
+URL_ARGS=`echo $TERMS | sed 's/ /%20/g'`
+FILE_NAME=`echo $TERMS | sed 's/ /_/g'`
+RESOURCE="ajax/services/search/web?v=1.0&q=$URL_ARGS"
+RESOURCE=`echo $RESOURCE | sed -e 's~&~\&amp;~g' -e 's~<~\&lt;~g' -e 's~>~\&gt;~g'`
+
+echo "URL args = $URL_ARGS"
+echo "FILE = $FILE_NAME"
+echo "RESOURCE = $RESOURCE"
+
+touch ../tmp/$FILE_NAME
+./configureResource ../tmp/.$FILE_NAME fs:utime web:get host:ajax.googleapis.com port:80 resource:$RESOURCE
+touch ../tmp/$FILE_NAME
+cat ../tmp/$FILE_NAME
+cat ../tmp/.$FILE_NAME
+echo -ne "\n"
+
