@@ -61,6 +61,51 @@ public class RestFsFuseTest extends BaseFuseTests {
 	}
 	
 	@Test
+	public void TestMkdirInAuth() throws Exception {
+		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {
+			new DirFillerExpect("auth", FuseFtypeConstants.TYPE_DIR | 0755)
+		});
+		TestFolderContents(_fs, Fix("/auth"), new DirFillerExpect[] {
+		});
+		Assert.assertEquals(0, _fs.mkdir(Fix("/auth/x"), FuseFtypeConstants.TYPE_DIR | 0755));
+		TestFolderContents(_fs, Fix("/auth"), new DirFillerExpect[] {
+			new DirFillerExpect("x", FuseFtypeConstants.TYPE_DIR | 0755)
+		});
+	}
+	
+	@Test
+	public void TestMkdirInAuthInstanceFails() throws Exception {
+		Assert.assertEquals(0, _fs.mkdir(Fix("/auth/x"), FuseFtypeConstants.TYPE_DIR | 0755));
+		TestFolderContents(_fs, Fix("/auth/x"), new DirFillerExpect[] {
+		});
+		Assert.assertEquals(Errno.EACCES, _fs.mkdir(Fix("/auth/x/1"), FuseFtypeConstants.TYPE_DIR | 0755));
+		TestFolderContents(_fs, Fix("/auth/x"), new DirFillerExpect[] {
+		});
+	}
+	
+	@Test
+	public void TestMknodInAuthInstanceFails() throws Exception {
+		Assert.assertEquals(0, _fs.mkdir(Fix("/auth/x"), FuseFtypeConstants.TYPE_DIR | 0755));
+		TestFolderContents(_fs, Fix("/auth/x"), new DirFillerExpect[] {
+		});
+		Assert.assertEquals(Errno.EACCES, _fs.mknod(Fix("/auth/x/1"), FuseFtypeConstants.TYPE_DIR | 0755, 0));
+		TestFolderContents(_fs, Fix("/auth/x"), new DirFillerExpect[] {
+		});
+	}
+	
+	@Test
+	public void TestMknodInAuth() throws Exception {
+		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {
+			new DirFillerExpect("auth", FuseFtypeConstants.TYPE_DIR | 0755)
+		});
+		TestFolderContents(_fs, Fix("/auth"), new DirFillerExpect[] {
+		});
+		Assert.assertEquals(Errno.EACCES, _fs.mknod(Fix("/auth/x"), FuseFtypeConstants.TYPE_DIR | 0755, 0));
+		TestFolderContents(_fs, Fix("/auth"), new DirFillerExpect[] {
+		});
+	}
+	
+	@Test
 	public void TestMkdir() throws Exception {
 		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {
 			new DirFillerExpect("auth", FuseFtypeConstants.TYPE_DIR | 0755)
