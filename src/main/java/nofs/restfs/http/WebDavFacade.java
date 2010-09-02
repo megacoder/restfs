@@ -20,7 +20,6 @@ import org.apache.commons.httpclient.methods.PutMethod;
 import org.apache.commons.httpclient.methods.DeleteMethod;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
-import org.apache.jackrabbit.webdav.client.methods.OptionsMethod;
 
 public class WebDavFacade {
 	private final Map<String, HttpConnectionManager> _connectionManagers;
@@ -126,7 +125,7 @@ public class WebDavFacade {
 		return new DeleteAnswer(deleteMethod.getStatusCode(), deleteMethod.getResponseBody());
 	}
 
-	public OptionsAnswer OptionsMethod(String host, String resource) throws Exception {
+	/*public OptionsAnswer OptionsMethod(String host, String resource) throws Exception {
 		HttpConnectionManager manager = GetManager(host);
 		HttpClient client = new HttpClient(manager);
 		client.setHostConfiguration(GetConfig(host));
@@ -162,7 +161,7 @@ public class WebDavFacade {
 			}
 		}
 		return new OptionsAnswer(method.getStatusCode(), methods);
-	}
+	}*/
 	
 	private static String ConvertToString(byte[] data) {
 		StringBuffer buff = new StringBuffer();

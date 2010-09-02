@@ -55,23 +55,31 @@ public class RestFsFuseTest extends BaseFuseTests {
 	
 	@Test
 	public void TestInitialFS() throws Exception {
-		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {});
+		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {
+			new DirFillerExpect("auth", FuseFtypeConstants.TYPE_DIR | 0755)
+		});
 	}
 	
 	@Test
 	public void TestMkdir() throws Exception {
-		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {});
+		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {
+			new DirFillerExpect("auth", FuseFtypeConstants.TYPE_DIR | 0755)
+		});
 		Assert.assertEquals(0, _fs.mkdir(Fix("/x"), FuseFtypeConstants.TYPE_DIR | 0755));
 		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {
+			new DirFillerExpect("auth", FuseFtypeConstants.TYPE_DIR | 0755),
 			new DirFillerExpect("x", FuseFtypeConstants.TYPE_DIR | 0755)
 		});
 	}
 	
 	@Test
 	public void TestMknod() throws Exception {
-		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {});
+		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {
+			new DirFillerExpect("auth", FuseFtypeConstants.TYPE_DIR | 0755)
+		});
 		Assert.assertEquals(0, _fs.mknod(Fix("/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
 		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {
+			new DirFillerExpect("auth", FuseFtypeConstants.TYPE_DIR | 0755),
 			new DirFillerExpect("x", FuseFtypeConstants.TYPE_FILE | 0755),
 			new DirFillerExpect(".x", FuseFtypeConstants.TYPE_FILE | 0755)
 		});
@@ -81,6 +89,7 @@ public class RestFsFuseTest extends BaseFuseTests {
 	public void TestMkdirMknod() throws Exception {
 		Assert.assertEquals(0, _fs.mkdir(Fix("/x"), FuseFtypeConstants.TYPE_DIR | 0755));
 		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {
+			new DirFillerExpect("auth", FuseFtypeConstants.TYPE_DIR | 0755),
 			new DirFillerExpect("x", FuseFtypeConstants.TYPE_DIR | 0755)
 		});
 		TestFolderContents(_fs, Fix("/x"), new DirFillerExpect[] {});
@@ -93,7 +102,9 @@ public class RestFsFuseTest extends BaseFuseTests {
 	
 	@Test
 	public void TestMknodThenUTime() throws Exception {
-		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {});
+		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {
+			new DirFillerExpect("auth", FuseFtypeConstants.TYPE_DIR | 0755)
+		});
 		Assert.assertEquals(0, _fs.mknod(Fix("/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
 		Assert.assertEquals(0, _fs.utime(Fix("/x"), (int)System.currentTimeMillis(), (int)System.currentTimeMillis()));
 	}
@@ -171,7 +182,7 @@ public class RestFsFuseTest extends BaseFuseTests {
 	public void TestWriteToSettingsFileSmallerThenBigger() throws Exception {
 		Assert.assertEquals(0, _fs.mknod(Fix("/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
 		
-		final String start = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n";
+		final String start = "";//"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n";
 		
 		String xml = RestSettingHelper.CreateSettingsXml("","","","","","");
 		
@@ -192,7 +203,9 @@ public class RestFsFuseTest extends BaseFuseTests {
 	
 	@Test
 	public void TestWriteToSettingsFile() throws Exception {
-		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {});
+		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {
+			new DirFillerExpect("auth", FuseFtypeConstants.TYPE_DIR | 0755)
+		});
 		Assert.assertEquals(0, _fs.mknod(Fix("/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
 		
 		MockFuseOpenSetter handle = new MockFuseOpenSetter();
@@ -206,6 +219,7 @@ public class RestFsFuseTest extends BaseFuseTests {
 		AssertEquals(xml, buffer);
 		
 		handle = new MockFuseOpenSetter();
+		Assert.assertEquals(0, _fs.truncate(Fix("/.x"),	0));
 		Assert.assertEquals(0, _fs.open(Fix("/.x"), 0, handle));
 		WriteToFile(_fs, Fix("/.x"), handle, "blah");
 		Assert.assertEquals(Errno.EDOM, _fs.release(Fix("/.x"), handle.getFh(), 0));
@@ -219,6 +233,7 @@ public class RestFsFuseTest extends BaseFuseTests {
 		
 		xml = RestSettingHelper.CreateSettingsXml("a","b","","c","d", "80");
 		handle = new MockFuseOpenSetter();
+		Assert.assertEquals(0, _fs.truncate(Fix("/.x"),	0));
 		Assert.assertEquals(0, _fs.open(Fix("/.x"), 0, handle));
 		WriteToFile(_fs, Fix("/.x"), handle, xml);
 		Assert.assertEquals(0, _fs.release(Fix("/.x"), handle.getFh(), 0));
@@ -233,7 +248,9 @@ public class RestFsFuseTest extends BaseFuseTests {
 	
 	@Test
 	public void TestWriteToFile() throws Exception {
-		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {});
+		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {
+			new DirFillerExpect("auth", FuseFtypeConstants.TYPE_DIR | 0755)
+		});
 		Assert.assertEquals(0, _fs.mknod(Fix("/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
 		
 		MockFuseOpenSetter handle = new MockFuseOpenSetter();

@@ -1,5 +1,7 @@
 package nofs.restfs;
 
+import java.util.List;
+
 import nofs.Library.Annotations.DomainObject;
 import nofs.Library.Annotations.FolderObject;
 import nofs.Library.Annotations.NeedsContainerManager;
@@ -81,5 +83,9 @@ public class RestfulFolderWithSettings extends RestfulFolder<BaseFileObject> {
 				remove(file.getSettings());
 			}
 		}
+	}
+
+	@Override
+	protected void CreatingList(List<BaseFileObject> newList) {
 	}
 }
