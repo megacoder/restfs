@@ -83,16 +83,46 @@
     <nofs.version>0.0.28</nofs.version>
     <restfs.version>0.0.25</restfs.version>
     <db4o.version>7.4.88.12908</db4o.version>
+    <oauth.version>20100601</oauth.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
-  <dependencies>
+  <dependencies> 
+    
     <dependency>
-      <groupId>org.antlr</groupId>
-      <artifactId>antlr</artifactId>
-      <version>3.1.3</version>
-	</dependency>  
+      <groupId>org.mortbay.jetty</groupId>
+      <artifactId>jetty-embedded</artifactId>
+      <version>6.1.11</version>
+    </dependency>
     <dependency>
+      <groupId>net.oauth.core</groupId>
+      <artifactId>oauth</artifactId>
+      <version>${oauth.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>net.oauth.core</groupId>
+      <artifactId>oauth-consumer</artifactId>
+      <version>${oauth.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>net.oauth.core</groupId>
+      <artifactId>oauth-httpclient4</artifactId>
+      <version>${oauth.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-jdk14</artifactId>
+      <version>1.5.6</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+    	<groupId>commons-httpclient</groupId>
+    	<artifactId>commons-httpclient</artifactId>
+    	<version>3.1</version>
+    	<scope>runtime</scope>
+    </dependency>
+    
+    <!--<dependency>
       <groupId>commons-codec</groupId>
       <artifactId>commons-codec</artifactId>
       <version>1.2</version>
@@ -111,7 +141,14 @@
       <groupId>org.apache.jackrabbit</groupId>
       <artifactId>jackrabbit-webdav</artifactId>
       <version>2.1.0</version>
-    </dependency>
+    </dependency>-->
+    
+    <dependency>
+      <groupId>org.antlr</groupId>
+      <artifactId>antlr</artifactId>
+      <version>3.1.3</version>
+	</dependency> 
+    
     <dependency>
        <groupId>nofs</groupId>
        <artifactId>nofs.library</artifactId>
