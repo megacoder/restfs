@@ -10,6 +10,6 @@ public interface IOAuthFacade {
 
 	public void beginAuthorization();
 
-	public void waitForAuthorization() throws InterruptedException;
+	public boolean waitForAuthorization(int time) throws InterruptedException;
 
 }

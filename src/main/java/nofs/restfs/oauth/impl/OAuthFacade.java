@@ -79,12 +79,16 @@ public class OAuthFacade implements IOAuthFacade {
 		authThread.start();
 	}
 	
-	public void waitForAuthorization() throws InterruptedException {
+	public boolean waitForAuthorization(int time) throws InterruptedException {
 		synchronized(_accessor) {
 			while(_accessor.accessToken == null) {
-				_accessor.wait();
+				_accessor.wait(time);
+				if(time > 0) {
+					return _accessor.accessToken != null;
+				}
 			}
 		}
+		return true;
 	}
 	
 	private class AsyncAuthorize extends Thread {
