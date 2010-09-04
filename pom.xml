@@ -67,6 +67,11 @@
 
   <repositories>
     <repository>
+      <id>oauth</id> 
+      <name>OAuth Repository</name> 
+      <url>http://oauth.googlecode.com/svn/code/maven</url> 
+    </repository>
+    <repository>
         <id>maven-restlet</id>
         <name>Public online Restlet repository</name>
         <url>http://maven.restlet.org/</url>
@@ -83,7 +88,9 @@
     <nofs.version>0.0.28</nofs.version>
     <restfs.version>0.0.25</restfs.version>
     <db4o.version>7.4.88.12908</db4o.version>
-    <oauth.version>20100601</oauth.version>
+    <!--<oauth.version>20100601</oauth.version>-->
+    <oauth.version>20100527</oauth.version>
+    <oauth.httpclient.version>20090913</oauth.httpclient.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
@@ -107,7 +114,7 @@
     <dependency>
       <groupId>net.oauth.core</groupId>
       <artifactId>oauth-httpclient4</artifactId>
-      <version>${oauth.version}</version>
+      <version>${oauth.httpclient.version}</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
