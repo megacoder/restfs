@@ -1,19 +1,6 @@
 package nofs.restfs.oauth.impl;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.Socket;
 import java.util.List;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.mortbay.jetty.Connector;
-import org.mortbay.jetty.Handler;
-import org.mortbay.jetty.Request;
-import org.mortbay.jetty.Server;
-import org.mortbay.jetty.handler.AbstractHandler;
 
 import net.oauth.OAuth;
 import net.oauth.OAuthAccessor;
@@ -38,12 +25,17 @@ public class OAuthFacade implements IOAuthFacade {
 	private final OAuthConsumer _consumer;
 	private final OAuthClient _client;
 	private final OAuthAccessor _accessor;
+	private final boolean _oob;
 
 	private String _authorizationURL;
 	private String _error;
 
-	public OAuthFacade(String key, String secret, String requestTokenURL,
-			String userAuthURL, String accessTokenURL) {
+	public OAuthFacade(
+			String key, String secret, String requestTokenURL,
+			String userAuthURL, String accessTokenURL, boolean oob) throws Exception {
+		if(!oob) {
+			throw new Exception("oob == false not yet supported");
+		}
 		_key = key;
 		_secret = secret;
 		_requestTokenURL = requestTokenURL;
@@ -54,11 +46,28 @@ public class OAuthFacade implements IOAuthFacade {
 		_consumer = new OAuthConsumer(null, _key, _secret, _provider);
 		_client = new OAuthClient(new HttpClient4());
 		_accessor = new OAuthAccessor(_consumer);
+		_oob = oob;
+		_verifier = null;
 
 		_authorizationURL = null;
 		_error = "";
 	}
 
+	private String _verifier;
+	public void setVerifier(String verifier) {
+		_verifier = verifier;
+		synchronized(_accessor) {
+			_accessor.notifyAll();
+		}
+	}
+	
+	public void setAccessToken(String value) {
+		synchronized(_accessor) {
+			_accessor.accessToken = value;
+			_accessor.notifyAll();
+		}
+	}
+	
 	public String getAccessToken() {
 		synchronized(_accessor) {
 			return _accessor.accessToken;
@@ -103,14 +112,14 @@ public class OAuthFacade implements IOAuthFacade {
 	}
 
 	private void Authorize() {
-		Server server = null;
+		//Server server = null;
 		try {
 			try {
 				synchronized (_accessor) {
 					List<OAuth.Parameter> callback = null;
 
 					while (_accessor.accessToken == null) {
-						if (server == null) {
+						/*if (server == null && !_oob) {
 							final int freePort = getFreePort();
 							server = new Server(freePort);
 							for (Connector c : server.getConnectors()) {
@@ -118,7 +127,10 @@ public class OAuthFacade implements IOAuthFacade {
 							}
 							server.setHandler(newCallback());
 							server.start();
-							callback = OAuth.newList(OAuth.OAUTH_CALLBACK, "http://localhost:" + freePort + CALLBACK_PATH);
+							callback = OAuth.newList(OAuth.OAUTH_CALLBACK, 
+									"http://localhost:" + freePort + CALLBACK_PATH);
+						} else */if(_oob) {
+							callback = OAuth.newList(OAuth.OAUTH_CALLBACK, "oob");
 						}
 						OAuthMessage response = _client.getRequestTokenResponse(_accessor, null, callback);
 						String authorizationURL = OAuth.addParameters(
@@ -128,7 +140,9 @@ public class OAuthFacade implements IOAuthFacade {
 							authorizationURL = OAuth.addParameters(authorizationURL, callback);
 						}
 						_authorizationURL = authorizationURL;
-						_accessor.wait();
+						if(_accessor.accessToken == null && _verifier == null) {
+							_accessor.wait();
+						}
 						if (_accessor.accessToken == null) {
 							List<Parameter> parameters = null;
 							if(_verifier != null) {
@@ -140,13 +154,13 @@ public class OAuthFacade implements IOAuthFacade {
 					}
 				}
 			} finally {
-				if (server != null) {
+				/*if (server != null) {
 					try {
 						server.stop();
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-				}
+				}*/
 			}
 		} catch (OAuthProblemException p) {
 			StringBuilder msg = new StringBuilder();
@@ -160,12 +174,14 @@ public class OAuthFacade implements IOAuthFacade {
 				msg.append(eol).append(response);
 			}
 			_error += msg.toString();
+			System.err.println(msg.toString());
 		} catch (Exception e) {
 			_error += e.getMessage();
+			System.err.println(e.getMessage());
 		}
 	}
 
-	private static int getFreePort() throws IOException {
+	/*private static int getFreePort() throws IOException {
 		Socket s = new Socket();
 		s.bind(null);
 		try {
@@ -229,5 +245,5 @@ public class OAuthFacade implements IOAuthFacade {
 			doc.println("</HTML>");
 		}
 
-	}
+	}*/
 }

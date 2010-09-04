@@ -45,6 +45,7 @@ public class OAuthInstanceFolder extends RestfulFolder<BaseFileObject> {
 			_configFile = container.NewPersistentInstance();
 			_configFile.setName("config");
 			container.ObjectChanged(_configFile);
+			_configFile.setupParent(this);
 		}
 		return _configFile;
 	}	

@@ -8,57 +8,80 @@ import nofs.restfs.oauth.impl.OAuthFacade;
 @DomainObject
 public class OAuthConfigFile extends BaseFileObject implements IListensToEvents {
 	
-	private String Key = "";
-	private String Secret = "";
-	private String RequestTokenURL = "";
-	private String UserAuthURL = "";
-	private String AccessTokenURL = "";
+	private String _key = "";
+	private String _secret = "";
+	private String _requestTokenURL = "";
+	private String _userAuthURL = "";
+	private String _accessTokenURL = "";
+	private String _verifierPin = "";
+	private String _accessToken = "";
 	private OAuthInstanceFolder _parent;
-	private IOAuthFacade _facade;
+	private volatile IOAuthFacade _facade;
 	
 	public void setupParent(OAuthInstanceFolder parent) {
 		_parent = parent;
 	}
-	
+	public String getAccessToken() {
+		return _accessToken;
+	}
+	public void setAccessToken(String value) {
+		_accessToken = value;
+	}
+	public String getVerifierPin() {
+		return _verifierPin;
+	}
+	public void setVerifierPin(String value) {
+		_verifierPin = value;
+	}
 	public void setAccessTokenURL(String accessTokenURL) {
-		AccessTokenURL = accessTokenURL;
+		_accessTokenURL = accessTokenURL;
 	}
 	public String getAccessTokenURL() {
-		return AccessTokenURL;
+		return _accessTokenURL;
 	}
 	public void setUserAuthURL(String userAuthURL) {
-		UserAuthURL = userAuthURL;
+		_userAuthURL = userAuthURL;
 	}
 	public String getUserAuthURL() {
-		return UserAuthURL;
+		return _userAuthURL;
 	}
 	public void setRequestTokenURL(String requestTokenURL) {
-		RequestTokenURL = requestTokenURL;
+		_requestTokenURL = requestTokenURL;
 	}
 	public String getRequestTokenURL() {
-		return RequestTokenURL;
+		return _requestTokenURL;
 	}
 	public void setSecret(String secret) {
-		Secret = secret;
+		_secret = secret;
 	}
 	public String getSecret() {
-		return Secret;
+		return _secret;
 	}
 	public void setKey(String key) {
-		Key = key;
+		_key = key;
 	}
 	public String getKey() {
-		return Key;
+		return _key;
 	}
 	
-	private boolean allSettingsAreSet() {
+	private boolean allAuthSettingsAreSet() {
 		return 
-			!(Key == "" &&
-			  Secret == "" &&
-			  RequestTokenURL == "" &&
-			  UserAuthURL == "" &&
-			  AccessTokenURL == "");
+			!(_key == "" &&
+			  _secret == "" &&
+			  _requestTokenURL == "" &&
+			  _userAuthURL == "" &&
+			  _accessTokenURL == "");
 	}
+	
+	private boolean verifierPinSet() {
+		return !(_verifierPin == "");
+	}
+	
+	private boolean haveAccessToken() {
+		return !(_accessToken == "");
+	}
+	
+	private volatile boolean _updaterRunning = false;
 	
 	private class UpdaterThread extends Thread {
 		private final IOAuthFacade _facade;
@@ -71,32 +94,53 @@ public class OAuthConfigFile extends BaseFileObject implements IListensToEvents 
 		@Override
 		public void run() {
 			try {
+				System.out.println("waiting for authorization...");
 				while(!_facade.waitForAuthorization(100)) {
 					if(_facade.getError() != null && _facade.getError().length() > 0) {
+						System.out.println(_facade.getError());
 						_parent.StatusFile().SetState(_facade.getError());
 					} else if(_facade.getAuthorizationURL() != null && _facade.getAuthorizationURL().length() > 0) {
+						System.out.println("Auth url: " + _facade.getAuthorizationURL());
 						_parent.StatusFile().SetState(_facade.getAuthorizationURL());
 					} else {
 						_parent.StatusFile().SetState("Authorizing...");
 					}
 				}
+				System.out.println("got token: " + _facade.getAccessToken());
 				_parent.TokenFile().SetState(_facade.getAccessToken());
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
+			_updaterRunning = false;
 		}
+	}
+	
+	private IOAuthFacade Facade() throws Exception {
+		if(_facade == null) {
+			_facade = new OAuthFacade(_key, _secret, _requestTokenURL, _userAuthURL, _accessTokenURL, true);
+		}
+		return _facade;
 	}
 	
 	@Override
 	public void Closed() throws Exception {
-		if(allSettingsAreSet()) {
-			_facade = new OAuthFacade(Key, Secret, RequestTokenURL, UserAuthURL, AccessTokenURL);
-			_facade.beginAuthorization();
+		if(haveAccessToken()) {
+			Facade().setAccessToken(_accessToken);
+		} else if(!_updaterRunning && allAuthSettingsAreSet()) {
+			System.out.println("authorizing...");
+			_facade = null;
+			_updaterRunning = true;
+			
+			Facade().beginAuthorization();
 			_parent.StatusFile().SetState("Authorizing...");
 			_parent.TokenFile().SetState("");
-			UpdaterThread updater = new UpdaterThread(_facade, _parent);
+			UpdaterThread updater = new UpdaterThread(Facade(), _parent);
 			updater.setDaemon(true);
 			updater.start();
+		}
+		if(verifierPinSet()) {
+			System.out.println("setting PIN...");
+			Facade().setVerifier(_verifierPin);
 		}
 	}
 	@Override
