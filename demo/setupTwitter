@@ -1,0 +1,15 @@
+#!/bin/bash
+
+BASE=../tmp
+
+KEY="I7K6TjPB193Z1xDkG5H4A"
+SECRET="bWQSgKLOLfwie4Zt9cxerozcu5xGFMYy10vJpa8Tfy4"
+REQUEST_TOKEN_URL="https://api.twitter.com/oauth/request_token"
+ACCESS_TOKEN_URL="https://api.twitter.com/oauth/access_token"
+AUTHORIZE_URL="https://api.twitter.com/oauth/authorize"
+
+mkdir $BASE/auth/twitter
+./configureAuth \
+	key:$KEY secret:$SECRET accessurl:$ACCESS_TOKEN_URL \
+	userauthurl:$AUTHORIZE_URL requesttokenurl:$REQUEST_TOKEN_URL
+
