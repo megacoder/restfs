@@ -22,14 +22,22 @@ do
 	cp $SRCFILE lib/
 done
 
+OAUTH_VERS="20100527"
+OAUTH_HTTP_VERS="20090913"
+
 cp ~/.m2/repository/commons-logging/commons-logging/1.1.1/*.jar lib/
 cp ~/.m2/repository/dom4j/dom4j/1.6.1/*.jar lib/
 cp ~/.m2/repository/org/apache/jackrabbit/jackrabbit-webdav/2.1.0/*.jar lib/
 cp ~/.m2/repository/org/apache/jackrabbit/jackrabbit-jcr-commons/2.1.0/*.jar lib/
 cp ~/.m2/repository/org/slf4j/slf4j-api/1.6.0/*.jar lib/
 cp ~/.m2/repository/org/slf4j/jcl-over-slf4j/1.5.8/*.jar lib/
-cp ~/.m2/repository/commons-httpclient/commons-httpclient/3.0/*.jar lib/
+cp ~/.m2/repository/commons-httpclient/commons-httpclient/3.1/*.jar lib/
 cp ~/.m2/repository/commons-codec/commons-codec/1.2/*.jar lib/
 cp ~/.m2/repository/org/antlr/antlr/3.1.3/*.jar lib/
 cp ~/.m2/repository/org/antlr/antlr-runtime/3.1.3/*.jar lib/
+cp ~/.m2/repository/net/oauth/core/oauth/$OAUTH_VERS/*.jar lib/
+cp ~/.m2/repository/net/oauth/core/oauth-consumer/$OAUTH_VERS/*.jar lib/
+cp ~/.m2/repository/net/oauth/core/oauth-httpclient4/$OAUTH_HTTP_VERS/*.jar lib/
+cp ~/.m2/repository/org/apache/httpcomponents/httpclient/4.0/*.jar lib/
+cp ~/.m2/repository/org/apache/httpcomponents/httpcore/4.0.1/*.jar lib/
 

@@ -1,4 +1,8 @@
 syntax: glob
+lib/httpclient*.jar
+lib/httpcore*.jar
+lib/oauth*.jar
+lib/fuse-j.jar
 lib/antlr*.jar
 lib/commons-codec*.jar
 lib/commons-httpclient*.jar
