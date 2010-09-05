@@ -82,6 +82,10 @@ echo "UserAuthURL      : $USERAUTHURL"
 echo "RequestTokenURL  : $REQUESTTOKENURL"
 echo "Secret           : $SECRET"
 
+ACCESSTOKENURL=`echo $ACCESSTOKENURL | sed -e 's~&~\&amp;~g' -e 's~<~\&lt;~g' -e 's~>~\&gt;~g'`
+USERAUTHURL=`echo $USERAUTHURL | sed -e 's~&~\&amp;~g' -e 's~<~\&lt;~g' -e 's~>~\&gt;~g'`
+REQUESTTOKENURL=`echo $REQUESTTOKENURL | sed -e 's~&~\&amp;~g' -e 's~<~\&lt;~g' -e 's~>~\&gt;~g'`
+
 TEMPFILE=/tmp/tmp.xml
 rm -f $TEMPFILE
 touch $TEMPFILE
@@ -98,5 +102,5 @@ echo -ne "  <Secret>$SECRET</Secret>\n" >> $TEMPFILE
 echo -ne "</OAuthConfigFile>\n" >> $TEMPFILE
 
 cat $TEMPFILE
-#cat $TEMPFILE > $WHERE
+cat $TEMPFILE > $WHERE
 #rm -f $TEMPFILE
