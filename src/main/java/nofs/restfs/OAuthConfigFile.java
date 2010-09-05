@@ -103,7 +103,7 @@ public class OAuthConfigFile extends BaseFileObject implements IListensToEvents 
 						_parent.StatusFile().SetState(_facade.getError());
 					} else if(_facade.getAuthorizationURL() != null && _facade.getAuthorizationURL().length() > 0) {
 						System.out.println("Auth url: " + _facade.getAuthorizationURL());
-						_parent.StatusFile().SetState(_facade.getAuthorizationURL());
+						_parent.StatusFile().SetState(_facade.getAuthorizationURL() + "\n");
 					} else {
 						_parent.StatusFile().SetState("Authorizing...");
 					}
