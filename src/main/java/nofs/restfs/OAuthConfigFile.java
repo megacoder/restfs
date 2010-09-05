@@ -1,6 +1,7 @@
 package nofs.restfs;
 
 import nofs.Library.Annotations.DomainObject;
+import nofs.Library.Annotations.HideMethod;
 import nofs.Library.Containers.IListensToEvents;
 import nofs.restfs.oauth.IOAuthFacade;
 import nofs.restfs.oauth.impl.OAuthFacade;
@@ -18,6 +19,7 @@ public class OAuthConfigFile extends BaseFileObject implements IListensToEvents 
 	private OAuthInstanceFolder _parent;
 	private volatile IOAuthFacade _facade;
 	
+	@HideMethod
 	public void setupParent(OAuthInstanceFolder parent) {
 		_parent = parent;
 	}
@@ -123,6 +125,7 @@ public class OAuthConfigFile extends BaseFileObject implements IListensToEvents 
 	}
 	
 	@Override
+	@HideMethod
 	public void Closed() throws Exception {
 		if(haveAccessToken()) {
 			Facade().setAccessToken(_accessToken);
@@ -144,14 +147,17 @@ public class OAuthConfigFile extends BaseFileObject implements IListensToEvents 
 		}
 	}
 	@Override
+	@HideMethod
 	public void Created() throws Exception {
 		//NOOP	
 	}
 	@Override
+	@HideMethod
 	public void Deleting() throws Exception {
 		//NOOP		
 	}
 	@Override
+	@HideMethod
 	public void Opened() throws Exception {
 		//NOOP
 	}	
