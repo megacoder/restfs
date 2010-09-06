@@ -109,7 +109,7 @@ public class OAuthConfigFile extends BaseFileObject implements IListensToEvents 
 					}
 				}
 				System.out.println("got token: " + _facade.getAccessToken());
-				_parent.TokenFile().SetState(_facade.getAccessToken());
+				_parent.TokenFile().SetState(_facade.getAccessToken() + "\n");
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
