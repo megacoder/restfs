@@ -17,14 +17,13 @@ fi
 
 if [ -e $WHERE ]
 then
-	SED_WS='s/^ *//g;s/ *$//g'
 	KEY=`cat $WHERE | grep "<Key>" | sed 's/<Key>//g;s/<\/Key>//g;s/^ *//g;s/ *$//g'`
 	ACCESSTOKEN=`cat $WHERE | grep "<AccessToken>" | sed 's/<AccessToken>//g;s/<\/AccessToken>//g;s/^ *//g;s/ *$//g'`
 	VERIFIERPIN=`cat $WHERE | grep "<VerifierPin>" | sed 's/<VerifierPin>//g;s/<\/VerifierPin>//g;s/^ *//g;s/ *$//g'`
         ACCESSTOKENURL=`cat $WHERE | grep "<AccessTokenURL>" | sed 's/<AccessTokenURL>//g;s/<\/AccessTokenURL>//g;s/^ *//g;s/ *$//g'`
         USERAUTHURL=`cat $WHERE | grep "<UserAuthURL>" | sed 's/<UserAuthURL>//g;s/<\/UserAuthURL>//g;s/^ *//g;s/ *$//g'`
 	REQUESTTOKENURL=`cat $WHERE | grep "<RequestTokenURL>" | sed 's/<RequestTokenURL>//g;s/<\/RequestTokenURL>//g;s/^ *//g;s/ *$//g'`
-	SECRET=`cat $WHERE | grep "<Secret>" | sed 's/<Secret>//g;s/<\/Secret>//g;$SED_WS'`
+	SECRET=`cat $WHERE | grep "<Secret>" | sed 's/<Secret>//g;s/<\/Secret>//g;s^ *//g;s/ *$//g'`
 fi
 
 #echo "Key from XML             : $KEY"
@@ -101,6 +100,6 @@ echo -ne "  <RequestTokenURL>$REQUESTTOKENURL</RequestTokenURL>\n" >> $TEMPFILE
 echo -ne "  <Secret>$SECRET</Secret>\n" >> $TEMPFILE
 echo -ne "</OAuthConfigFile>\n" >> $TEMPFILE
 
-cat $TEMPFILE
+#cat $TEMPFILE
 cat $TEMPFILE > $WHERE
 #rm -f $TEMPFILE
