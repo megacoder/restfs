@@ -14,6 +14,12 @@ public class OAuthStatusFile extends BaseFileObject implements IProvidesUnstruct
 		_data = new StringBuilder();
 	}
 	
+	public String GetData() { 
+		synchronized(_data) {
+			return _data.toString();
+		}
+	}
+	
 	public void SetState(String text) {
 		synchronized(_data) {
 			_data.delete(0, _data.length());

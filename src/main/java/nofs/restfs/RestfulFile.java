@@ -4,15 +4,13 @@ import java.nio.ByteBuffer;
 import java.util.Date;
 
 import nofs.Library.Annotations.DomainObject;
+import nofs.Library.Annotations.NeedsContainerManager;
 import nofs.Library.Annotations.ProvidesLastAccessTime;
 import nofs.Library.Annotations.ProvidesLastModifiedTime;
+import nofs.Library.Containers.IDomainObjectContainerManager;
 import nofs.Library.Containers.IListensToEvents;
 import nofs.Library.Containers.IProvidesUnstructuredData;
-import nofs.restfs.http.DeleteAnswer;
-import nofs.restfs.http.GetAnswer;
-import nofs.restfs.http.PostAnswer;
-import nofs.restfs.http.PutAnswer;
-import nofs.restfs.http.WebDavFacade;
+import nofs.restfs.http.WebMethodExecutor;
 
 @DomainObject
 public class RestfulFile extends BaseFileObject implements IProvidesUnstructuredData, IListensToEvents {
@@ -21,6 +19,7 @@ public class RestfulFile extends BaseFileObject implements IProvidesUnstructured
 	private Date _aTime;
 	private Date _mTime;
 	private RestfulSetting _settings;
+	private IDomainObjectContainerManager _containerManager;
 	
 	public RestfulFile() {
 		super();
@@ -30,12 +29,34 @@ public class RestfulFile extends BaseFileObject implements IProvidesUnstructured
 		_settings = null;
 	}
 	
+	@NeedsContainerManager
+	public void setContainerManager(IDomainObjectContainerManager manager) {
+		_containerManager = manager;
+	}
+	
 	public void setSettings(RestfulSetting settings) {
 		_settings = settings;
 	}
 	
 	public RestfulSetting getSettings() {
 		return _settings;
+	}
+	
+	private String getOAuthToken() throws Exception {
+		String path = _settings.getOAuthTokenPath();
+		if(path.length() > 0) {
+			Object fileObj = _containerManager.TranslatePath(path);
+			if(fileObj instanceof OAuthStatusFile) {
+				OAuthStatusFile tokenFile = (OAuthStatusFile)fileObj;
+				if(tokenFile.getName().compareTo("token") == 0) {
+					String data = tokenFile.GetData();
+					if(data.length() > 0) {
+						return data;
+					}
+				}
+			}
+		}
+		return null;
 	}
 	
 	@ProvidesLastAccessTime
@@ -87,67 +108,18 @@ public class RestfulFile extends BaseFileObject implements IProvidesUnstructured
 	@Override
 	public void Closed() throws Exception {
 		if(getSettings().getFsMethod().compareTo("Closed") == 0) {
-			PerformMethod();			
+			PerformMethod();
 		}
+	}
+	
+	private void PerformMethod() throws Exception {
+		SetRepresentation(WebMethodExecutor.PerformMethod(getName(), getSettings(), _representation, getOAuthToken()));
 	}
 	
 	private void SetRepresentation(byte[] data) {
 		_representation = data == null ? new byte[0] : data;
 	}
 	
-	private void PerformMethod() throws Exception
-	{
-		try {
-			System.out.println(
-					getName() + " PerformMethod() - web method: " + getSettings().getWebMethod() + 
-					" - fs method: " + getSettings().getFsMethod() + 
-					" - host: " + getSettings().getHost() + 
-					" - resource: " + getSettings().getResource());
-			if(getSettings().getWebMethod().toLowerCase().compareTo("get") == 0) {
-				System.out.println(getName() + " get...");
-				GetAnswer answer = WebDavFacade.Instance().GetMethod(
-						getSettings().getHost(), getSettings().getPort(), 
-						getSettings().getResource());
-				SetRepresentation(answer.getData());
-				System.out.println(getName() + " get completed");
-			} else if(getSettings().getWebMethod().toLowerCase().compareTo("post") == 0) {
-				System.out.println(getName() + " post...");
-				PostAnswer answer = WebDavFacade.Instance().PostMethod(
-						getSettings().getHost(), getSettings().getPort(), 
-						getSettings().getResource(), getSettings().getFormName(),
-						_representation);
-				if(answer != null) {
-					SetRepresentation(answer.getData());
-				}
-				System.out.println(getName() + " post completed");
-			} else if(getSettings().getWebMethod().toLowerCase().compareTo("put") == 0) {
-				System.out.println(getName() + " put...");
-				PutAnswer answer = WebDavFacade.Instance().PutMethod(
-						getSettings().getHost(), getSettings().getPort(), 
-						getSettings().getResource(), _representation);
-				if(answer != null) {
-					SetRepresentation(answer.getData());
-				}
-				System.out.println(getName() + " put completed");
-			} else if(getSettings().getWebMethod().toLowerCase().compareTo("delete") == 0) {
-				System.out.println(getName() + " delete...");
-				DeleteAnswer answer = WebDavFacade.Instance().DeleteMethod(
-						getSettings().getHost(), getSettings().getPort(),
-						getSettings().getResource());
-				if(answer != null) {
-					SetRepresentation(answer.getData());
-				}
-				System.out.println(getName() + " delete completed");
-			} else {
-				throw new Exception("web method " + getSettings().getWebMethod() + " not implemented yet ");
-			}
-		} catch(Exception e) {
-			System.out.println("method failed");
-			e.printStackTrace();
-			throw e;
-		}
-	}
-
 	@Override
 	public void Opened() throws Exception {
 		System.out.println(getName() + " opened");

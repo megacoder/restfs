@@ -3,7 +3,7 @@ package nofs.restfs.tests.util;
 public class RestSettingHelper {
 	public static String CreateSettingsXml(
 			String fsMethod, String webMethod, String formName, 
-			String resource, String host, String port) {
+			String resource, String host, String port, String oauthPath) {
 		final String restfulSettingNode = "RestfulSetting";
 		final String fsMethodNode = "FsMethod";
 		final String webMethodNode = "WebMethod";
@@ -11,6 +11,7 @@ public class RestSettingHelper {
 		final String resourceNode = "Resource";
 		final String hostNode = "Host";
 		final String portNode = "Port";
+		final String oauthNode = "OAuthTokenPath";
 		final String xmlHeader = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n";
 		final String pad = "  ";
 		String xml = 
@@ -22,6 +23,7 @@ public class RestSettingHelper {
 				pad + Element(resourceNode, resource) +
 				pad + Element(hostNode, host) +
 				pad + Element(portNode, port) +
+				pad + Element(oauthNode, oauthPath) +
 			End(restfulSettingNode);
 		return xml;
 	}

@@ -75,13 +75,13 @@ public class RestFsWithServiceTest extends BaseFuseTests {
 	@Test
 	public void TestPostUserOnUTime() throws Exception {
 		Assert.assertEquals(0, _fs.mknod(Fix("/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
-		WriteToFile("/.x", RestSettingHelper.CreateSettingsXml("utime", "post", "user", "/users/5", "127.0.0.1", "8100"));
+		WriteToFile("/.x", RestSettingHelper.CreateSettingsXml("utime", "post", "user", "/users/5", "127.0.0.1", "8100", ""));
 		WriteToFile("/x", "{\"id\":\"1\",\"name\":\"foobar\"}");
 		Assert.assertEquals(0, _fs.utime(Fix("/x"), (int)System.currentTimeMillis(), (int)System.currentTimeMillis()));
 		String result = ReadFromFile("/x");
 		Assert.assertEquals("{\"name\":\"foobar\"}", result);
 		
-		WriteToFile("/.x", RestSettingHelper.CreateSettingsXml("utime", "get", "", "/users/5", "127.0.0.1", "8100"));
+		WriteToFile("/.x", RestSettingHelper.CreateSettingsXml("utime", "get", "", "/users/5", "127.0.0.1", "8100", ""));
 		Assert.assertEquals(0, _fs.utime(Fix("/x"), (int)System.currentTimeMillis(), (int)System.currentTimeMillis()));
 		result = ReadFromFile("/x");
 		Assert.assertEquals("{\"id\":\"1\",\"name\":\"name\"}", result);
@@ -90,7 +90,7 @@ public class RestFsWithServiceTest extends BaseFuseTests {
 	@Test
 	public void TestGetUserOnUtime() throws Exception {
 		Assert.assertEquals(0, _fs.mknod(Fix("/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
-		WriteToFile("/.x", RestSettingHelper.CreateSettingsXml("utime", "get", "", "/users/5", "127.0.0.1", "8100"));
+		WriteToFile("/.x", RestSettingHelper.CreateSettingsXml("utime", "get", "", "/users/5", "127.0.0.1", "8100", ""));
 		Assert.assertEquals(0, _fs.utime(Fix("/x"), (int)System.currentTimeMillis(), (int)System.currentTimeMillis()));
 		String result = ReadFromFile("/x");
 		Assert.assertEquals("{\"id\":\"1\",\"name\":\"name\"}", result);
@@ -99,7 +99,7 @@ public class RestFsWithServiceTest extends BaseFuseTests {
 	@Test
 	public void TestGetUserBeforeRead() throws Exception {
 		Assert.assertEquals(0, _fs.mknod(Fix("/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
-		WriteToFile("/.x", RestSettingHelper.CreateSettingsXml("beforeread", "get", "", "/users/5", "127.0.0.1", "8100"));
+		WriteToFile("/.x", RestSettingHelper.CreateSettingsXml("beforeread", "get", "", "/users/5", "127.0.0.1", "8100", ""));
 		String result = ReadFromFile("/x");
 		Assert.assertEquals("{\"id\":\"1\",\"name\":\"name\"}", result);
 	}
@@ -107,7 +107,7 @@ public class RestFsWithServiceTest extends BaseFuseTests {
 	@Test
 	public void TestGetUserOpened() throws Exception {
 		Assert.assertEquals(0, _fs.mknod(Fix("/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
-		WriteToFile("/.x", RestSettingHelper.CreateSettingsXml("opened", "get", "", "/users/5", "127.0.0.1", "8100"));
+		WriteToFile("/.x", RestSettingHelper.CreateSettingsXml("opened", "get", "", "/users/5", "127.0.0.1", "8100", ""));
 		String result = ReadFromFile("/x");
 		Assert.assertEquals("{\"id\":\"1\",\"name\":\"name\"}", result);
 	}

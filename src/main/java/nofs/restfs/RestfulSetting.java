@@ -28,4 +28,8 @@ public class RestfulSetting extends BaseFileObject {
 	private String _resource = "";
 	public String getResource() { return _resource; }
 	public void setResource(String value) { _resource = value; }
+	
+	private String _oauthTokenPath = "";
+	public String getOAuthTokenPath() { return _oauthTokenPath; }
+	public void setOAuthTokenPath(String value) { _oauthTokenPath = value; }
 }

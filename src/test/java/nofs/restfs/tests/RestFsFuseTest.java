@@ -175,7 +175,7 @@ public class RestFsFuseTest extends BaseFuseTests {
 	public void TestGetOnUTimeMethod() throws Exception {
 		Assert.assertEquals(0, _fs.mknod(Fix("/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
 		MockFuseOpenSetter handle = new MockFuseOpenSetter();
-		String xml = RestSettingHelper.CreateSettingsXml("UTime","GET", "","~joe/uptime","joekaylor.net", "80");
+		String xml = RestSettingHelper.CreateSettingsXml("UTime","GET", "","~joe/uptime","joekaylor.net", "80", "");
 		Assert.assertEquals(0, _fs.open(Fix("/.x"), 0, handle));
 		Assert.assertEquals(0, _fs.truncate(Fix("/.x"), 0));
 		WriteToFile(_fs, Fix("/.x"), handle, xml);
@@ -197,7 +197,7 @@ public class RestFsFuseTest extends BaseFuseTests {
 	public void TestOpenTruncateWriteSettingsFile() throws Exception {
 		Assert.assertEquals(0, _fs.mknod(Fix("/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
 		MockFuseOpenSetter handle = new MockFuseOpenSetter();
-		String xml = RestSettingHelper.CreateSettingsXml("a","b","","c","d", "80");
+		String xml = RestSettingHelper.CreateSettingsXml("a","b","","c","d", "80", "");
 		Assert.assertEquals(0, _fs.open(Fix("/.x"), 0, handle));
 		Assert.assertEquals(0, _fs.truncate(Fix("/.x"), 0));
 		WriteToFile(_fs, Fix("/.x"), handle, xml);
@@ -241,19 +241,19 @@ public class RestFsFuseTest extends BaseFuseTests {
 		
 		final String start = "";//"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n";
 		
-		String xml = RestSettingHelper.CreateSettingsXml("","","","","","");
+		String xml = RestSettingHelper.CreateSettingsXml("","","","","","", "");
 		
 		Assert.assertEquals(start + xml, ReadFromFile(Fix("/.x")));
 		
-		xml = RestSettingHelper.CreateSettingsXml("aa","bb","cc","dd","ee","16000");
+		xml = RestSettingHelper.CreateSettingsXml("aa","bb","cc","dd","ee","16000", "");
 		WriteToFile(Fix("/.x"), xml);
 		Assert.assertEquals(start + xml, ReadFromFile(Fix("/.x")));
 		
-		xml = RestSettingHelper.CreateSettingsXml("f","g","h","i","j","6500");
+		xml = RestSettingHelper.CreateSettingsXml("f","g","h","i","j","6500", "");
 		WriteToFile(Fix("/.x"), xml);
 		Assert.assertEquals(start + xml, ReadFromFile(Fix("/.x")));
 		
-		xml = RestSettingHelper.CreateSettingsXml("lll","mmm","nnn","ooo","ppp","6500");
+		xml = RestSettingHelper.CreateSettingsXml("lll","mmm","nnn","ooo","ppp","6500", "");
 		WriteToFile(Fix("/.x"), xml);
 		Assert.assertEquals(start + xml, ReadFromFile(Fix("/.x")));
 	}
@@ -267,7 +267,7 @@ public class RestFsFuseTest extends BaseFuseTests {
 		
 		MockFuseOpenSetter handle = new MockFuseOpenSetter();
 		
-		String xml = RestSettingHelper.CreateSettingsXml("","","","","", "");
+		String xml = RestSettingHelper.CreateSettingsXml("","","","","", "", "");
 		
 		ByteBuffer buffer = ByteBuffer.allocate(1024*1024);
 		Assert.assertEquals(0, _fs.open(Fix("/.x"), 0, handle));
@@ -288,7 +288,7 @@ public class RestFsFuseTest extends BaseFuseTests {
 		Assert.assertEquals(0, _fs.release(Fix("/.x"), handle.getFh(), 0));
 		AssertEquals(xml, buffer);
 		
-		xml = RestSettingHelper.CreateSettingsXml("a","b","","c","d", "80");
+		xml = RestSettingHelper.CreateSettingsXml("a","b","","c","d", "80", "");
 		handle = new MockFuseOpenSetter();
 		Assert.assertEquals(0, _fs.truncate(Fix("/.x"),	0));
 		Assert.assertEquals(0, _fs.open(Fix("/.x"), 0, handle));
