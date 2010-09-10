@@ -28,6 +28,37 @@ public class RestSettingHelper {
 		return xml;
 	}
 	
+	public static String CreateAuthXml(
+			String key,
+			String accessToken, String secret, 
+			String pin, String accessTokenURL,
+			String userAuthURL, String requestTokenURL)
+	{
+		final String OAuthConfigFileNode = "OAuthConfigFile";
+		final String KeyNode = "Key";
+		final String AccessTokenNode = "AccessToken";
+		final String VerifierPinNode = "VerifierPin";
+		final String AccessTokenURLNode = "AccessTokenURL";
+		final String UserAuthURLNode = "UserAuthURL";
+		final String RequestTokenURLNode = "RequestTokenURL";
+		final String SecretNode = "Secret";
+		final String xmlHeader = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n";
+		final String pad = "  ";
+		String xml =
+			xmlHeader +
+			Begin(OAuthConfigFileNode) + "\n" +
+				pad + Element(KeyNode, key) +
+				pad + Element(AccessTokenNode, accessToken) +
+				pad + Element(VerifierPinNode, pin) +
+				pad + Element(AccessTokenURLNode, accessTokenURL) +
+				pad + Element(UserAuthURLNode, userAuthURL) + 
+				pad + Element(RequestTokenURLNode, requestTokenURL) +
+				pad + Element(SecretNode, secret) +
+			End(OAuthConfigFileNode);
+		
+		return xml;
+	}
+	
 	private static String Element(String node, String value) {
 		return Begin(node) + value + End(node);
 	}
