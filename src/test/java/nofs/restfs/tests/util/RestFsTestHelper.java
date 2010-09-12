@@ -5,6 +5,8 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
 
 import nofs.FUSE.Impl.NoFSFuseDriver;
 import nofs.Factories.IPersistenceFactory;
@@ -16,10 +18,23 @@ import org.junit.Assert;
 
 public class RestFsTestHelper extends BaseFuseTests {
 	
+	private static final List<String> Loaded = new ArrayList<String>();
+	
 	@SuppressWarnings("unchecked")
 	public static void HackAddAJarToClassPath(File jarFile) throws Exception {
+		for(String loaded : Loaded) {
+			if(loaded.compareTo(jarFile.getAbsolutePath()) == 0) {
+				return;
+			}
+		}
+		Loaded.add(jarFile.getAbsolutePath());
 		URL fileUrl = jarFile.toURI().toURL();
 		URLClassLoader sysLoader = (URLClassLoader)ClassLoader.getSystemClassLoader();
+		for(URL existingURL : sysLoader.getURLs()) {
+			if(existingURL.toString().compareTo(fileUrl.toString()) == 0) {
+				return;
+			}
+		}
 		Class sysclass = URLClassLoader.class;
 		Class[] parameters = new Class[]{URL.class};
 		Method method = sysclass.getDeclaredMethod("addURL", parameters);

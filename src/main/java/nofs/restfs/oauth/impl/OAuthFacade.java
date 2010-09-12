@@ -25,17 +25,14 @@ public class OAuthFacade implements IOAuthFacade {
 	private final OAuthConsumer _consumer;
 	private final OAuthClient _client;
 	private final OAuthAccessor _accessor;
-	private final boolean _oob;
+	private final String _callBack;
 
 	private String _authorizationURL;
 	private String _error;
 
 	public OAuthFacade(
 			String key, String secret, String requestTokenURL,
-			String userAuthURL, String accessTokenURL, boolean oob) throws Exception {
-		if(!oob) {
-			throw new Exception("oob == false not yet supported");
-		}
+			String userAuthURL, String accessTokenURL, String callback) throws Exception {
 		_key = key;
 		_secret = secret;
 		_requestTokenURL = requestTokenURL;
@@ -46,7 +43,7 @@ public class OAuthFacade implements IOAuthFacade {
 		_consumer = new OAuthConsumer(null, _key, _secret, _provider);
 		_client = new OAuthClient(new HttpClient4());
 		_accessor = new OAuthAccessor(_consumer);
-		_oob = oob;
+		_callBack = callback;
 		_verifier = null;
 
 		_authorizationURL = null;
@@ -129,8 +126,14 @@ public class OAuthFacade implements IOAuthFacade {
 							server.start();
 							callback = OAuth.newList(OAuth.OAUTH_CALLBACK, 
 									"http://localhost:" + freePort + CALLBACK_PATH);
-						} else */if(_oob) {
+						} else */
+						/*if(_oob) {
 							callback = OAuth.newList(OAuth.OAUTH_CALLBACK, "oob");
+						}*/
+						if(_callBack == null || _callBack.length() == 0) {
+							callback = OAuth.newList(OAuth.OAUTH_CALLBACK, "oob");
+						} else {
+							callback = OAuth.newList(OAuth.OAUTH_CALLBACK, _callBack);
 						}
 						OAuthMessage response = _client.getRequestTokenResponse(_accessor, null, callback);
 						String authorizationURL = OAuth.addParameters(

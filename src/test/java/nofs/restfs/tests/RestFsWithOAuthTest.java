@@ -9,6 +9,7 @@ import fuse.FuseFtypeConstants;
 
 import nofs.FUSE.Impl.NoFSFuseDriver;
 import nofs.restfs.http.GetAnswer;
+import nofs.restfs.http.PostAnswer;
 import nofs.restfs.http.WebDavFacade;
 import nofs.restfs.oauth.IOAuthFacade;
 import nofs.restfs.oauth.impl.OAuthFacade;
@@ -55,37 +56,71 @@ public class RestFsWithOAuthTest extends BaseFuseTests {
 	
 	@Test
 	public void TestOAuthFacade() throws Exception {
-		IOAuthFacade facade = new OAuthFacade(Key, Secret, RequestTokenURL, UserAuthURL, AccessTokenURL, true);
+		IOAuthFacade facade = new OAuthFacade(Key, Secret, RequestTokenURL, UserAuthURL, AccessTokenURL, "none");
 		facade.beginAuthorization();
 		final int maxWait = 4000;
 		boolean success = facade.waitForAuthorization(maxWait);
 		Assert.assertEquals("", facade.getError());
 		Assert.assertEquals("should not have succeeded yet", false, success);
-		Assert.assertTrue(facade.getAuthorizationURL(), facade.getAuthorizationURL().startsWith("http://localhost:8182/oauth-provider/authorize?oauth_token="));
-		Assert.assertTrue(facade.getAuthorizationURL(), facade.getAuthorizationURL().endsWith("&oauth_callback=oob"));
+		final String firstPart = "http://localhost:8182/oauth-provider/authorize?oauth_token=";
+		final String lastPart = "&oauth_callback=none";
+		Assert.assertTrue(facade.getAuthorizationURL(), facade.getAuthorizationURL().startsWith(firstPart));
+		Assert.assertTrue(facade.getAuthorizationURL(), facade.getAuthorizationURL().endsWith(lastPart));
 		Assert.assertTrue(facade.getAccessToken() == null || facade.getAccessToken().compareTo("") == 0);
 	}
 	
 	@Test
 	public void TestGetTokenWithRestfs() throws Exception {
 		Assert.assertEquals(0, _fs.mkdir(Fix("/auth/x"), FuseFtypeConstants.TYPE_DIR | 0755));
-		String xml = RestSettingHelper.CreateAuthXml(Key, "", Secret, "", AccessTokenURL, UserAuthURL, RequestTokenURL);
+		String xml = RestSettingHelper.CreateAuthXml(Key, "", Secret, "", AccessTokenURL, UserAuthURL, RequestTokenURL, "none");
 		RestFsTestHelper.WriteToFile(_fs, Fix("/auth/x/config"), xml);
 		Thread.sleep(2500);
 		
 		String tokenData = RestFsTestHelper.ReadFromFile(_fs, Fix("/auth/x/token"));
 		Assert.assertEquals("", tokenData);
 		
+		final String firstPart = "http://localhost:8182/oauth-provider/authorize?oauth_token=";
+		final String lastPart = "&oauth_callback=none";
+		
 		String authURL = RestFsTestHelper.ReadFromFile(_fs, Fix("/auth/x/status"));
-		Assert.assertTrue(authURL, authURL.startsWith("http://localhost:8182/oauth-provider/authorize?oauth_token="));
-		Assert.assertTrue(authURL, authURL.endsWith("&oauth_callback=oob\n"));
+		Assert.assertTrue(authURL, authURL.startsWith(firstPart));
+		Assert.assertTrue(authURL, authURL.endsWith(lastPart + "\n"));
 		String resource = authURL.substring("http://localhost:8182".length()).trim();
+		String oauth_token = authURL.substring(firstPart.length()).trim();
+		oauth_token = oauth_token.substring(0, oauth_token.length() - lastPart.length()).trim();
 		GetAnswer answer = WebDavFacade.Instance().GetMethod("localhost", "" + PORT, resource);
 		String representation = ConvertToString(answer.getData());
 		Assert.assertEquals(representation, 200, answer.getCode());
-		Assert.assertEquals("", representation);
+		Assert.assertTrue(representation != null && representation.length() > 0);
+		
+		//System.err.println(representation);
+		
+		PostAnswer postAnswer = WebDavFacade.Instance().PostMethod(
+				"localhost", "" + PORT, "/oauth-provider/authorize.jsp", "authZForm", 
+				ConvertToBytes(
+						"{\"userId\" : \"foo\", " + 
+						"\"oauth_token\" : \"" + oauth_token + "\", " +
+						"\"oauth_callback\" : \"none\"" +
+						"}"));
+		representation = ConvertToString(postAnswer.getData());
+		Assert.assertEquals(representation, 200, postAnswer.getCode());
+		Assert.assertTrue(representation != null && representation.length() > 0);
+		//Assert.assertEquals("", representation);
+		System.err.println(representation);
+		
+		Thread.sleep(2500);
+		
+		Assert.assertEquals("", RestFsTestHelper.ReadFromFile(_fs, Fix("/auth/x/token")));
 	}
 
+	private static byte[] ConvertToBytes(String data) {
+		byte[] bytes = new byte[data.length()];
+		int i = (-1);
+		for(char c : data.toCharArray()) {
+			bytes[++i] = (byte)c;
+		}
+		return bytes;
+	}
 	
 	private static String ConvertToString(byte[] data) {
 		StringBuffer buff = new StringBuffer();

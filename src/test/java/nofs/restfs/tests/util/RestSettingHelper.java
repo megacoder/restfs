@@ -32,9 +32,11 @@ public class RestSettingHelper {
 			String key,
 			String accessToken, String secret, 
 			String pin, String accessTokenURL,
-			String userAuthURL, String requestTokenURL)
+			String userAuthURL, String requestTokenURL,
+			String callbackURL)
 	{
 		final String OAuthConfigFileNode = "OAuthConfigFile";
+		final String CallBackURLNode = "CallBackURL";
 		final String KeyNode = "Key";
 		final String AccessTokenNode = "AccessToken";
 		final String VerifierPinNode = "VerifierPin";
@@ -47,6 +49,7 @@ public class RestSettingHelper {
 		String xml =
 			xmlHeader +
 			Begin(OAuthConfigFileNode) + "\n" +
+				pad + Element(CallBackURLNode, callbackURL) +
 				pad + Element(KeyNode, key) +
 				pad + Element(AccessTokenNode, accessToken) +
 				pad + Element(VerifierPinNode, pin) +

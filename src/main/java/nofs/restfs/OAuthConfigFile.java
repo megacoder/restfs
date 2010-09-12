@@ -16,9 +16,16 @@ public class OAuthConfigFile extends BaseFileObject implements IListensToEvents 
 	private String _accessTokenURL = "";
 	private String _verifierPin = "";
 	private String _accessToken = "";
+	private String _callbackURL = "";
 	private OAuthInstanceFolder _parent;
 	private volatile IOAuthFacade _facade;
 	
+	public String getCallBackURL() {
+		return _callbackURL;
+	}
+	public void setCallBackURL(String value) {
+		_callbackURL = value;
+	}
 	@HideMethod
 	public void setupParent(OAuthInstanceFolder parent) {
 		_parent = parent;
@@ -119,7 +126,7 @@ public class OAuthConfigFile extends BaseFileObject implements IListensToEvents 
 	
 	private IOAuthFacade Facade() throws Exception {
 		if(_facade == null) {
-			_facade = new OAuthFacade(_key, _secret, _requestTokenURL, _userAuthURL, _accessTokenURL, true);
+			_facade = new OAuthFacade(_key, _secret, _requestTokenURL, _userAuthURL, _accessTokenURL, _callbackURL);
 		}
 		return _facade;
 	}

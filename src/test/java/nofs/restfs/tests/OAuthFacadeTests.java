@@ -25,7 +25,7 @@ public class OAuthFacadeTests {
 	public void TestFacade() throws Exception {
 		IOAuthFacade facade = new OAuthFacade(
 				Key(), Secret(), RequestTokenURL(), 
-				AuthorizeURL(), AccessTokenURL(), true);
+				AuthorizeURL(), AccessTokenURL(), null);
 		facade.beginAuthorization();
 		while(!facade.waitForAuthorization(20)) {
 		}
