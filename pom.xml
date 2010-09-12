@@ -97,6 +97,7 @@
     <!--<oauth.version>20100601</oauth.version>-->
     <oauth.version>20100527</oauth.version>
     <oauth.httpclient.version>20090913</oauth.httpclient.version>
+    <jetty.version>6.1.11</jetty.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
@@ -213,15 +214,46 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.mortbay.jetty</groupId>
-      <artifactId>jetty-embedded</artifactId>
-      <version>6.1.11</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.3.1</version>
+      <scope>test</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.mortbay.jetty</groupId>
+      <artifactId>jetty-embedded</artifactId>
+      <version>${jetty.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mortbay.jetty</groupId>
+      <artifactId>jetty-util</artifactId>
+      <version>${jetty.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mortbay.jetty</groupId>
+      <artifactId>jsp-2.1</artifactId>
+      <version>${jetty.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mortbay.jetty</groupId>
+      <artifactId>jsp-api-2.1</artifactId>
+      <version>${jetty.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mortbay.jetty</groupId>
+      <artifactId>jetty-ant</artifactId>
+      <version>${jetty.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mortbay.jetty</groupId>
+      <artifactId>jetty-j2se6</artifactId>
+      <version>6.1.21</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -230,12 +262,19 @@
       <version>2.4</version>
       <scope>test</scope>
     </dependency>
+    
     <dependency>
       <groupId>net.oauth</groupId>
       <artifactId>oauth-core</artifactId>
       <version>20100601</version>
       <scope>test</scope>
     </dependency>
-
+    <dependency>
+      <groupId>net.oauth.example</groupId>
+      <artifactId>oauth-provider</artifactId>
+      <version>20090105</version>
+      <type>war</type>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 </project>

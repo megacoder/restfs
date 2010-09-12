@@ -81,8 +81,8 @@ public class RestFsWithOAuthTest extends BaseFuseTests {
 		Assert.assertTrue(authURL, authURL.endsWith("&oauth_callback=oob\n"));
 		String resource = authURL.substring("http://localhost:8182".length()).trim();
 		GetAnswer answer = WebDavFacade.Instance().GetMethod("localhost", "" + PORT, resource);
-		Assert.assertEquals(ConvertToString(answer.getData()), 200, answer.getCode());
 		String representation = ConvertToString(answer.getData());
+		Assert.assertEquals(representation, 200, answer.getCode());
 		Assert.assertEquals("", representation);
 	}
 

@@ -1,5 +1,9 @@
 package nofs.restfs.tests.util;
 
+import java.io.File;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.nio.ByteBuffer;
 
 import nofs.FUSE.Impl.NoFSFuseDriver;
@@ -11,6 +15,18 @@ import nofs.metadata.interfaces.INoFSClassLoader;
 import org.junit.Assert;
 
 public class RestFsTestHelper extends BaseFuseTests {
+	
+	@SuppressWarnings("unchecked")
+	public static void HackAddAJarToClassPath(File jarFile) throws Exception {
+		URL fileUrl = jarFile.toURI().toURL();
+		URLClassLoader sysLoader = (URLClassLoader)ClassLoader.getSystemClassLoader();
+		Class sysclass = URLClassLoader.class;
+		Class[] parameters = new Class[]{URL.class};
+		Method method = sysclass.getDeclaredMethod("addURL", parameters);
+		method.setAccessible(true);
+		method.invoke(sysLoader, new Object[]{fileUrl});
+	}
+	
 	public static void WriteToFile(NoFSFuseDriver fs, String path, String xml) throws Exception {
 		MockFuseOpenSetter handle = new MockFuseOpenSetter();
 		Assert.assertEquals(0, fs.open(Fix(path), 0, handle));
