@@ -147,6 +147,9 @@ public class OAuthConfigFile extends BaseFileObject implements IListensToEvents 
 			UpdaterThread updater = new UpdaterThread(Facade(), _parent);
 			updater.setDaemon(true);
 			updater.start();
+		} else if(_updaterRunning && allAuthSettingsAreSet()) {
+			System.out.println("setting PIN...");
+			Facade().setVerifier(_verifierPin);
 		}
 		if(verifierPinSet()) {
 			System.out.println("setting PIN...");

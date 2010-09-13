@@ -148,7 +148,7 @@ public class OAuthFacade implements IOAuthFacade {
 						}
 						if (_accessor.accessToken == null) {
 							List<Parameter> parameters = null;
-							if(_verifier != null) {
+							if(_verifier != null && _verifier.length() > 0) {
 								parameters = OAuth.newList(OAuth.OAUTH_VERIFIER, _verifier.toString());
 							}
 							_client.getAccessToken(_accessor, null, parameters);
