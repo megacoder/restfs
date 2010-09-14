@@ -4,9 +4,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.server.SeleniumServer;
-
-import com.thoughtworks.selenium.DefaultSelenium;
 
 import fuse.FuseFtypeConstants;
 
@@ -69,27 +66,31 @@ public class RestFsWithOAuthTest extends BaseFuseTests {
 		Assert.assertTrue(facade.getAccessToken() == null || facade.getAccessToken().compareTo("") == 0);
 	}
 	
-	private static void HandleAuthURL(String authURL) throws Exception {
-		final String firstPart = "http://localhost:8182/oauth-provider/authorize?oauth_token=";
-		final String lastPart = "&oauth_callback=none";
-		String oauth_token = authURL.substring(firstPart.length()).trim();
-		oauth_token = oauth_token.substring(0, oauth_token.length() - lastPart.length()).trim();
+	@Test
+	public void TestOAuthServiceInteraction() throws Exception {
+		Assert.assertEquals(0, _fs.mkdir(Fix("/auth/x"), FuseFtypeConstants.TYPE_DIR | 0755));
+		final String authXml = RestSettingHelper
+			.CreateAuthXml(Key, "", Secret, "", AccessTokenURL, UserAuthURL, RequestTokenURL, "none");
+		RestFsTestHelper.WriteToFile(_fs, Fix("/auth/x/config"), authXml);
+		Thread.sleep(2500);
 		
-		SeleniumServer server = new SeleniumServer();
-		DefaultSelenium selenium = new DefaultSelenium("localhost", 4444, "*firefox", authURL);
-		try {
-			server.start();
-			selenium.start();
-			selenium.open(authURL);
-			selenium.waitForPageToLoad("5000");
-			selenium.type("userId", "foo");
-			//Thread.sleep(2500);
-			selenium.click("Authorize");
-			//Thread.sleep(2500);
-		} finally {
-			selenium.stop();
-			server.stop();
-		}
+		WaitForFileToChange("/auth/x/status", new String[]{"", "Authorizing..."}, 50);
+		String authURL = RestFsTestHelper.ReadFromFile(_fs, Fix("/auth/x/status"));
+		RestFsTestHelper.HandleAuthURL(authURL);
+		RestFsTestHelper.WriteToFile(_fs, Fix("/auth/x/config"), authXml);
+		WaitForFileToChange("/auth/x/token", new String[]{""}, 5);
+		String token = RestFsTestHelper.ReadFromFile(_fs, Fix("/auth/x/token"));
+		Assert.assertTrue(token, token != null && token.length() > 0);
+		
+		final String configXml = RestSettingHelper.CreateSettingsXml("utime", "GET", "", "/oauth-provider/echo", "localhost", "8182", Fix("/auth/x"));
+		Assert.assertEquals(0, _fs.mknod(Fix("/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
+		RestFsTestHelper.WriteToFile(_fs, Fix("/.x"), configXml);
+	
+		AssertEquals(configXml, RestFsTestHelper.ReadFromFile(_fs, Fix("/.x")));
+		
+		Assert.assertEquals(0, _fs.utime(Fix("/x"), (int)System.currentTimeMillis(), (int)System.currentTimeMillis()));
+		String contents = RestFsTestHelper.ReadFromFile(_fs, Fix("/x"));
+		Assert.assertTrue(contents, contents.startsWith("[Your UserId:foo]"));
 	}
 	
 	@Test
@@ -112,14 +113,12 @@ public class RestFsWithOAuthTest extends BaseFuseTests {
 		Assert.assertTrue(authURL, authURL.startsWith(firstPart));
 		Assert.assertTrue(authURL, authURL.endsWith(lastPart + "\n"));
 		
-		HandleAuthURL(authURL);
+		RestFsTestHelper.HandleAuthURL(authURL);
 		
 		RestFsTestHelper.WriteToFile(_fs, Fix("/auth/x/config"), authXml);
 		
 		WaitForFileToChange("/auth/x/token", new String[]{""}, 5);
-				
 		String token = RestFsTestHelper.ReadFromFile(_fs, Fix("/auth/x/token"));
-		
 		Assert.assertTrue(token, token != null && token.length() > 0);
 	}
 

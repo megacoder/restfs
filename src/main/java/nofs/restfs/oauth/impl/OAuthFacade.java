@@ -65,6 +65,18 @@ public class OAuthFacade implements IOAuthFacade {
 		}
 	}
 	
+	public String getRequestToken() {
+		synchronized(_accessor) {
+			return _accessor.requestToken;
+		}
+	}
+	
+	public String getRequestTokenSecret() {
+		synchronized(_accessor) {
+			return _accessor.tokenSecret;
+		}
+	}
+	
 	public String getAccessToken() {
 		synchronized(_accessor) {
 			return _accessor.accessToken;
@@ -108,6 +120,15 @@ public class OAuthFacade implements IOAuthFacade {
 		}
 	}
 
+	public OAuthMessage Invoke(String method, String url, List<Parameter> parameters) throws Exception {
+		synchronized(_accessor) {
+			if(_accessor.accessToken == null) {
+				throw new Exception("access token is null!");
+			}
+			return _client.invoke(_accessor, method, url, parameters);
+		}
+	}
+	
 	private void Authorize() {
 		//Server server = null;
 		try {

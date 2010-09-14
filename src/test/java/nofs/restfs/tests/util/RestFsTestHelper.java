@@ -15,8 +15,34 @@ import nofs.metadata.interfaces.IMetadataFactory;
 import nofs.metadata.interfaces.INoFSClassLoader;
 
 import org.junit.Assert;
+import org.openqa.selenium.server.SeleniumServer;
+
+import com.thoughtworks.selenium.DefaultSelenium;
 
 public class RestFsTestHelper extends BaseFuseTests {
+	
+	public static void HandleAuthURL(String authURL) throws Exception {
+		final String firstPart = "http://localhost:8182/oauth-provider/authorize?oauth_token=";
+		final String lastPart = "&oauth_callback=none";
+		String oauth_token = authURL.substring(firstPart.length()).trim();
+		oauth_token = oauth_token.substring(0, oauth_token.length() - lastPart.length()).trim();
+		
+		SeleniumServer server = new SeleniumServer();
+		DefaultSelenium selenium = new DefaultSelenium("localhost", 4444, "*firefox", authURL);
+		try {
+			server.start();
+			selenium.start();
+			selenium.open(authURL);
+			selenium.waitForPageToLoad("5000");
+			selenium.type("userId", "foo");
+			//Thread.sleep(2500);
+			selenium.click("Authorize");
+			//Thread.sleep(2500);
+		} finally {
+			selenium.stop();
+			server.stop();
+		}
+	}
 	
 	private static final List<String> Loaded = new ArrayList<String>();
 	

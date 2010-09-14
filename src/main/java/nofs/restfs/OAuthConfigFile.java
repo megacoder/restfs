@@ -73,6 +73,17 @@ public class OAuthConfigFile extends BaseFileObject implements IListensToEvents 
 		return _key;
 	}
 	
+	private String _requestToken = null;
+	@HideMethod
+	public String getRequestToken() {
+		return _requestToken;
+	}
+	private String _requestTokenSecret = null;
+	@HideMethod
+	public String getRequestTokenSecret() {
+		return _requestTokenSecret;
+	}
+	
 	private boolean allAuthSettingsAreSet() {
 		return 
 			!(_key == "" &&
@@ -117,6 +128,9 @@ public class OAuthConfigFile extends BaseFileObject implements IListensToEvents 
 				}
 				System.out.println("got token: " + _facade.getAccessToken());
 				_parent.TokenFile().SetState(_facade.getAccessToken() + "\n");
+				_parent.ConfigFile().setAccessToken(_facade.getAccessToken());
+				_requestToken = _facade.getRequestToken();
+				_requestTokenSecret = _facade.getRequestTokenSecret();
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
@@ -124,7 +138,8 @@ public class OAuthConfigFile extends BaseFileObject implements IListensToEvents 
 		}
 	}
 	
-	private IOAuthFacade Facade() throws Exception {
+	@HideMethod
+	public IOAuthFacade Facade() throws Exception {
 		if(_facade == null) {
 			_facade = new OAuthFacade(_key, _secret, _requestTokenURL, _userAuthURL, _accessTokenURL, _callbackURL);
 		}

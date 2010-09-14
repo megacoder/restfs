@@ -6,8 +6,6 @@ import nofs.restfs.tests.util.RestFsTestHelper;
 
 import org.mortbay.jetty.Connector;
 import org.mortbay.jetty.Server;
-import org.mortbay.jetty.servlet.Context;
-import org.mortbay.jetty.servlet.ServletHolder;
 import org.mortbay.jetty.webapp.WebAppContext;
 
 public class WebServerFixture {
@@ -39,11 +37,7 @@ public class WebServerFixture {
 			_server.setHandler(context);
 			_server.setStopAtShutdown(true);
 		} else {
-			Context root = new Context(_server,"/", Context.SESSIONS);
-			root.addServlet(new ServletHolder(new AccessTokenServlet()), "/oauth-provider/access_token");
-			root.addServlet(new ServletHolder(new AuthorizationServlet()), "/oauth-provider/authorize");
-			root.addServlet(new ServletHolder(new RequestTokenServlet()), "/oauth-provider/request_token");
-			root.addServlet(new ServletHolder(new EchoServlet()), "/echo");
+			throw new Exception("not implemented");
 		}
 	}
 	

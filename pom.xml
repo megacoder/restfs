@@ -301,12 +301,6 @@
     </dependency>
     
     <dependency>
-      <groupId>net.oauth</groupId>
-      <artifactId>oauth-core</artifactId>
-      <version>20090105</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>net.oauth.example</groupId>
       <artifactId>oauth-provider</artifactId>
       <version>20090105</version>

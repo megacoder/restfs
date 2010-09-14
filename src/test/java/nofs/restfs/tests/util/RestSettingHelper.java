@@ -17,13 +17,13 @@ public class RestSettingHelper {
 		String xml = 
 			xmlHeader +
 			Begin(restfulSettingNode) + "\n" +
-				pad + Element(fsMethodNode, fsMethod) +
 				pad + Element(webMethodNode, webMethod) +
+				pad + Element(fsMethodNode, fsMethod) +
 				pad + Element(formNameNode, formName) +
+				pad + Element(oauthNode, oauthPath) +
 				pad + Element(resourceNode, resource) +
 				pad + Element(hostNode, host) +
 				pad + Element(portNode, port) +
-				pad + Element(oauthNode, oauthPath) +
 			End(restfulSettingNode);
 		return xml;
 	}

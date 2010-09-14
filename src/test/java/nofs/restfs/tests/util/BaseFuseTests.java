@@ -85,6 +85,10 @@ public class BaseFuseTests {
 		XMLComparison.Compare(expectedValue, actualValue);
 	}
 
+	protected static void AssertEquals(String expectedValue, String actualValue) throws Exception {
+		XMLComparison.Compare(expectedValue, actualValue);
+	}
+	
 	protected static void Compare(MockFuseDirFiller dir, DirFillerExpect[] expect) {
 		LinkedList<DirFillerExpect> expList = new LinkedList<DirFillerExpect>();
 		for(int i = 0; i < expect.length; i++) {

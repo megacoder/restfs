@@ -39,7 +39,7 @@ public class OAuthInstanceFolder extends RestfulFolder<BaseFileObject> {
 	private volatile OAuthConfigFile _configFile = null;
 	
 	@SuppressWarnings("unchecked")
-	private OAuthConfigFile ConfigFile() throws Exception {
+	public OAuthConfigFile ConfigFile() throws Exception {
 		if(_configFile == null) {
 			IDomainObjectContainer<OAuthConfigFile> container = _containerManager.GetContainer(OAuthConfigFile.class);
 			_configFile = container.NewPersistentInstance();
