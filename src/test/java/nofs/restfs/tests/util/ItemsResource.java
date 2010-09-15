@@ -1,7 +1,6 @@
 package nofs.restfs.tests.util;
 
 import java.io.IOException;
-import java.util.concurrent.ConcurrentMap;
 
 import org.restlet.data.Form;
 import org.restlet.data.MediaType;
@@ -11,7 +10,6 @@ import org.restlet.representation.Representation;
 import org.restlet.representation.StringRepresentation;
 import org.restlet.resource.Get;
 import org.restlet.resource.Post;
-import org.restlet.resource.ServerResource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -24,6 +22,7 @@ public class ItemsResource extends BaseResource {
 	/**
 	 * Handle POST requests: create a new item.
 	 */
+	@SuppressWarnings("deprecation")
 	@Post
 	public Representation acceptItem(Representation entity) {
 		Representation result = null;

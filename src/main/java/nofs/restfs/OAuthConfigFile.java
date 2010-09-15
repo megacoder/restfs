@@ -15,7 +15,6 @@ public class OAuthConfigFile extends BaseFileObject implements IListensToEvents 
 	private String _userAuthURL = "";
 	private String _accessTokenURL = "";
 	private String _verifierPin = "";
-	private String _accessToken = "";
 	private String _callbackURL = "";
 	private OAuthInstanceFolder _parent;
 	private volatile IOAuthFacade _facade;
@@ -29,12 +28,6 @@ public class OAuthConfigFile extends BaseFileObject implements IListensToEvents 
 	@HideMethod
 	public void setupParent(OAuthInstanceFolder parent) {
 		_parent = parent;
-	}
-	public String getAccessToken() {
-		return _accessToken;
-	}
-	public void setAccessToken(String value) {
-		_accessToken = value;
 	}
 	public String getVerifierPin() {
 		return _verifierPin;
@@ -72,18 +65,7 @@ public class OAuthConfigFile extends BaseFileObject implements IListensToEvents 
 	public String getKey() {
 		return _key;
 	}
-	
-	private String _requestToken = null;
-	@HideMethod
-	public String getRequestToken() {
-		return _requestToken;
-	}
-	private String _requestTokenSecret = null;
-	@HideMethod
-	public String getRequestTokenSecret() {
-		return _requestTokenSecret;
-	}
-	
+		
 	private boolean allAuthSettingsAreSet() {
 		return 
 			!(_key == "" &&
@@ -95,10 +77,6 @@ public class OAuthConfigFile extends BaseFileObject implements IListensToEvents 
 	
 	private boolean verifierPinSet() {
 		return !(_verifierPin == "");
-	}
-	
-	private boolean haveAccessToken() {
-		return !(_accessToken == "");
 	}
 	
 	private volatile boolean _updaterRunning = false;
@@ -127,10 +105,10 @@ public class OAuthConfigFile extends BaseFileObject implements IListensToEvents 
 					}
 				}
 				System.out.println("got token: " + _facade.getAccessToken());
-				_parent.TokenFile().SetState(_facade.getAccessToken() + "\n");
-				_parent.ConfigFile().setAccessToken(_facade.getAccessToken());
-				_requestToken = _facade.getRequestToken();
-				_requestTokenSecret = _facade.getRequestTokenSecret();
+				
+				_parent.TokenFile().setAccessToken(_facade.getAccessToken());
+				_parent.TokenFile().setRequestToken(_facade.getRequestToken());
+				_parent.TokenFile().setTokenSecret(_facade.getRequestTokenSecret());
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
@@ -149,16 +127,16 @@ public class OAuthConfigFile extends BaseFileObject implements IListensToEvents 
 	@Override
 	@HideMethod
 	public void Closed() throws Exception {
-		if(haveAccessToken()) {
-			Facade().setAccessToken(_accessToken);
-		} else if(!_updaterRunning && allAuthSettingsAreSet()) {
+		if(!_updaterRunning && allAuthSettingsAreSet()) {
 			System.out.println("authorizing...");
 			_facade = null;
 			_updaterRunning = true;
 			
 			Facade().beginAuthorization();
 			_parent.StatusFile().SetState("Authorizing...");
-			_parent.TokenFile().SetState("");
+			_parent.TokenFile().setAccessToken("");
+			_parent.TokenFile().setRequestToken("");
+			_parent.TokenFile().setTokenSecret("");
 			UpdaterThread updater = new UpdaterThread(Facade(), _parent);
 			updater.setDaemon(true);
 			updater.start();

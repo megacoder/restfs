@@ -11,52 +11,52 @@ import net.oauth.OAuth.Parameter;
 import net.oauth.client.OAuthClient;
 import net.oauth.client.httpclient4.HttpClient4;
 import nofs.restfs.OAuthInstanceFolder;
-
 import org.apache.commons.httpclient.NameValuePair;
 
 public class OAuthWebFacade implements IWebExecutorFacade {
 
 	private final OAuthAccessor _accessor;
-	private final OAuthClient _client;
-	private final OAuthInstanceFolder _instance;
-	
-	private static boolean IsNullOrEmpty(String value) {
-		return value == null || value.length() == 0;
-	}
-	
-	private static void ValidateConfig(OAuthInstanceFolder config) throws Exception {
-		if(IsNullOrEmpty(config.ConfigFile().getAccessToken()) ||
-		   IsNullOrEmpty(config.ConfigFile().getAccessTokenURL()) ||
-		   IsNullOrEmpty(config.ConfigFile().getKey()) ||
-		   IsNullOrEmpty(config.ConfigFile().getRequestTokenURL()) ||
-		   IsNullOrEmpty(config.ConfigFile().getSecret()) ||
-		   IsNullOrEmpty(config.ConfigFile().getUserAuthURL())) {
-			   throw new Exception("config file is not valid");
-		}
-	}
-	
-	public OAuthWebFacade(OAuthInstanceFolder oauthInstance) throws Exception {
-		_instance = oauthInstance;
-		ValidateConfig(oauthInstance);
-		OAuthServiceProvider provider = new OAuthServiceProvider(
-				oauthInstance.ConfigFile().getRequestTokenURL(),
-				oauthInstance.ConfigFile().getUserAuthURL(),
-				oauthInstance.ConfigFile().getAccessTokenURL());
-		String callback = oauthInstance.ConfigFile().getCallBackURL();
-		if(callback != null && callback.length() == 0) {
-			callback = null;
-		}
-		OAuthConsumer consumer = new OAuthConsumer(
-				callback,
-				oauthInstance.ConfigFile().getKey(),
-				oauthInstance.ConfigFile().getSecret(),
-				provider);
-		_accessor = new OAuthAccessor(consumer);
-		_accessor.accessToken = oauthInstance.ConfigFile().getAccessToken();
-		_accessor.requestToken = oauthInstance.ConfigFile().getRequestToken();
-		_accessor.tokenSecret = oauthInstance.ConfigFile().getRequestTokenSecret();
-		_client = new OAuthClient(new HttpClient4());
-	}
+    private final OAuthClient _client;
+    
+    private static boolean IsNullOrEmpty(String value) {
+            return value == null || value.length() == 0;
+    }
+    
+    private static void ValidateConfig(OAuthInstanceFolder config) throws Exception {
+            if(IsNullOrEmpty(config.ConfigFile().getAccessTokenURL()) ||
+               IsNullOrEmpty(config.ConfigFile().getKey()) ||
+               IsNullOrEmpty(config.ConfigFile().getRequestTokenURL()) ||
+               IsNullOrEmpty(config.ConfigFile().getSecret()) ||
+               IsNullOrEmpty(config.ConfigFile().getUserAuthURL()) ||
+               IsNullOrEmpty(config.TokenFile().getAccessToken()) ||
+               IsNullOrEmpty(config.TokenFile().getRequestToken()) ||
+               IsNullOrEmpty(config.TokenFile().getTokenSecret())) {
+                       throw new Exception("config file is not valid");
+            }
+    }
+    
+    public OAuthWebFacade(OAuthInstanceFolder oauthInstance) throws Exception {
+            ValidateConfig(oauthInstance);
+            OAuthServiceProvider provider = new OAuthServiceProvider(
+                            oauthInstance.ConfigFile().getRequestTokenURL(),
+                            oauthInstance.ConfigFile().getUserAuthURL(),
+                            oauthInstance.ConfigFile().getAccessTokenURL());
+            String callback = oauthInstance.ConfigFile().getCallBackURL();
+            if(callback != null && callback.length() == 0) {
+                    callback = null;
+            }
+            OAuthConsumer consumer = new OAuthConsumer(
+                            callback,
+                            oauthInstance.ConfigFile().getKey(),
+                            oauthInstance.ConfigFile().getSecret(),
+                            provider);
+            _accessor = new OAuthAccessor(consumer);
+            _accessor.accessToken = oauthInstance.TokenFile().getAccessToken();
+            _accessor.requestToken = oauthInstance.TokenFile().getRequestToken();
+            _accessor.tokenSecret = oauthInstance.TokenFile().getTokenSecret();
+            _client = new OAuthClient(new HttpClient4());
+    }
+
 	
 	private static String ConvertToString(byte[] data) {
 		StringBuffer buff = new StringBuffer();

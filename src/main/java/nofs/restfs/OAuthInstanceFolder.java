@@ -34,7 +34,7 @@ public class OAuthInstanceFolder extends RestfulFolder<BaseFileObject> {
 		_containerManager = containerManager;
 	}
 	
-	private volatile OAuthStatusFile _tokenFile = null;
+	private volatile OAuthTokenFile _tokenFile = null;
 	private volatile OAuthStatusFile _statusFile = null;
 	private volatile OAuthConfigFile _configFile = null;
 	
@@ -62,9 +62,9 @@ public class OAuthInstanceFolder extends RestfulFolder<BaseFileObject> {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public OAuthStatusFile TokenFile() throws Exception {
+	public OAuthTokenFile TokenFile() throws Exception {
 		if(_tokenFile == null) {
-			IDomainObjectContainer<OAuthStatusFile> container = _containerManager.GetContainer(OAuthStatusFile.class);
+			IDomainObjectContainer<OAuthTokenFile> container = _containerManager.GetContainer(OAuthTokenFile.class);
 			_tokenFile = container.NewPersistentInstance();
 			_tokenFile.setName("token");
 			container.ObjectChanged(_tokenFile);

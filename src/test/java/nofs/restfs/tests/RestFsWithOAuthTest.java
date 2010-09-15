@@ -70,17 +70,18 @@ public class RestFsWithOAuthTest extends BaseFuseTests {
 	public void TestOAuthServiceInteraction() throws Exception {
 		Assert.assertEquals(0, _fs.mkdir(Fix("/auth/x"), FuseFtypeConstants.TYPE_DIR | 0755));
 		final String authXml = RestSettingHelper
-			.CreateAuthXml(Key, "", Secret, "", AccessTokenURL, UserAuthURL, RequestTokenURL, "none");
+			.CreateAuthXml(Key, Secret, "", AccessTokenURL, UserAuthURL, RequestTokenURL, "none");
+		final String blankTokenXml = RestFsTestHelper.ReadFromFile(_fs, Fix("/auth/x/token"));
 		RestFsTestHelper.WriteToFile(_fs, Fix("/auth/x/config"), authXml);
 		Thread.sleep(2500);
 		
 		WaitForFileToChange("/auth/x/status", new String[]{"", "Authorizing..."}, 50);
-		String authURL = RestFsTestHelper.ReadFromFile(_fs, Fix("/auth/x/status"));
+		final String authURL = RestFsTestHelper.ReadFromFile(_fs, Fix("/auth/x/status"));
 		RestFsTestHelper.HandleAuthURL(authURL);
 		RestFsTestHelper.WriteToFile(_fs, Fix("/auth/x/config"), authXml);
-		WaitForFileToChange("/auth/x/token", new String[]{""}, 5);
-		String token = RestFsTestHelper.ReadFromFile(_fs, Fix("/auth/x/token"));
-		Assert.assertTrue(token, token != null && token.length() > 0);
+		WaitForFileToChange("/auth/x/token", new String[]{"", blankTokenXml}, 5);
+		final String tokenXml = RestFsTestHelper.ReadFromFile(_fs, Fix("/auth/x/token"));
+		Assert.assertTrue(tokenXml, tokenXml != null && tokenXml.length() > blankTokenXml.length());
 		
 		final String configXml = RestSettingHelper.CreateSettingsXml("utime", "GET", "", "/oauth-provider/echo", "localhost", "8182", Fix("/auth/x"));
 		Assert.assertEquals(0, _fs.mknod(Fix("/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
@@ -89,7 +90,7 @@ public class RestFsWithOAuthTest extends BaseFuseTests {
 		AssertEquals(configXml, RestFsTestHelper.ReadFromFile(_fs, Fix("/.x")));
 		
 		Assert.assertEquals(0, _fs.utime(Fix("/x"), (int)System.currentTimeMillis(), (int)System.currentTimeMillis()));
-		String contents = RestFsTestHelper.ReadFromFile(_fs, Fix("/x"));
+		final String contents = RestFsTestHelper.ReadFromFile(_fs, Fix("/x"));
 		Assert.assertTrue(contents, contents.startsWith("[Your UserId:foo]"));
 	}
 	
@@ -97,7 +98,7 @@ public class RestFsWithOAuthTest extends BaseFuseTests {
 	public void TestGetTokenWithRestfs() throws Exception {
 		Assert.assertEquals(0, _fs.mkdir(Fix("/auth/x"), FuseFtypeConstants.TYPE_DIR | 0755));
 		final String authXml = RestSettingHelper
-			.CreateAuthXml(Key, "", Secret, "", AccessTokenURL, UserAuthURL, RequestTokenURL, "none");
+			.CreateAuthXml(Key, Secret, "", AccessTokenURL, UserAuthURL, RequestTokenURL, "none");
 		RestFsTestHelper.WriteToFile(_fs, Fix("/auth/x/config"), authXml);
 		Thread.sleep(2500);
 		

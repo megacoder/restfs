@@ -1,6 +1,25 @@
 package nofs.restfs.tests.util;
 
 public class RestSettingHelper {
+	
+	private static final String _xmlHeader = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n";
+	
+	public static String CreateTokenXml(String accessToken, String requestToken, String tokenSecret) {
+		final String accessTokenNode = "AccessToken";
+		final String requestTokenNode = "RequestToken";
+		final String tokenSecretNode = "TokenSecret";
+		final String OAuthTokenFileNode = "OAuthTokenFile";
+		final String pad = "  ";
+		String xml = 
+			_xmlHeader +
+			Begin(OAuthTokenFileNode) + "\n" +
+				pad + Element(accessTokenNode, accessToken) +
+				pad + Element(requestTokenNode, requestToken) +
+				pad + Element(tokenSecretNode, tokenSecret) +
+			End(OAuthTokenFileNode);
+		return xml;			
+	}
+	
 	public static String CreateSettingsXml(
 			String fsMethod, String webMethod, String formName, 
 			String resource, String host, String port, String oauthPath) {
@@ -12,10 +31,10 @@ public class RestSettingHelper {
 		final String hostNode = "Host";
 		final String portNode = "Port";
 		final String oauthNode = "OAuthTokenPath";
-		final String xmlHeader = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n";
+		
 		final String pad = "  ";
 		String xml = 
-			xmlHeader +
+			_xmlHeader +
 			Begin(restfulSettingNode) + "\n" +
 				pad + Element(webMethodNode, webMethod) +
 				pad + Element(fsMethodNode, fsMethod) +
@@ -29,8 +48,7 @@ public class RestSettingHelper {
 	}
 	
 	public static String CreateAuthXml(
-			String key,
-			String accessToken, String secret, 
+			String key, String secret, 
 			String pin, String accessTokenURL,
 			String userAuthURL, String requestTokenURL,
 			String callbackURL)
@@ -38,20 +56,17 @@ public class RestSettingHelper {
 		final String OAuthConfigFileNode = "OAuthConfigFile";
 		final String CallBackURLNode = "CallBackURL";
 		final String KeyNode = "Key";
-		final String AccessTokenNode = "AccessToken";
 		final String VerifierPinNode = "VerifierPin";
 		final String AccessTokenURLNode = "AccessTokenURL";
 		final String UserAuthURLNode = "UserAuthURL";
 		final String RequestTokenURLNode = "RequestTokenURL";
 		final String SecretNode = "Secret";
-		final String xmlHeader = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n";
 		final String pad = "  ";
 		String xml =
-			xmlHeader +
+			_xmlHeader +
 			Begin(OAuthConfigFileNode) + "\n" +
 				pad + Element(CallBackURLNode, callbackURL) +
 				pad + Element(KeyNode, key) +
-				pad + Element(AccessTokenNode, accessToken) +
 				pad + Element(VerifierPinNode, pin) +
 				pad + Element(AccessTokenURLNode, accessTokenURL) +
 				pad + Element(UserAuthURLNode, userAuthURL) + 

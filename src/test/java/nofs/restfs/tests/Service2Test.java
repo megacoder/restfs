@@ -27,6 +27,7 @@ public class Service2Test {
 		_app.StopRunner();
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Test
 	public void TestService() throws Exception {
 		 ClientResource itemsResource = new ClientResource("http://localhost:8100/firstResource/items");  

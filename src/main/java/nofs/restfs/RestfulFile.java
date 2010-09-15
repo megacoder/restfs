@@ -42,7 +42,7 @@ public class RestfulFile extends BaseFileObject implements IProvidesUnstructured
 		return _settings;
 	}
 	
-	private OAuthInstanceFolder getConfigFolder() throws Exception {
+	private OAuthInstanceFolder getTokenFolder() throws Exception {
 		String path = _settings.getOAuthTokenPath();
 		if(path.length() > 0) {
 			Object fileObj = _containerManager.TranslatePath(path);
@@ -107,7 +107,7 @@ public class RestfulFile extends BaseFileObject implements IProvidesUnstructured
 	}
 	
 	private void PerformMethod() throws Exception {
-		SetRepresentation(WebMethodExecutor.PerformMethod(getName(), getSettings(), _representation, getConfigFolder()));
+		SetRepresentation(WebMethodExecutor.PerformMethod(getName(), getSettings(), _representation, getTokenFolder()));
 	}
 	
 	private void SetRepresentation(byte[] data) {
