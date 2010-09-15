@@ -1,18 +1,6 @@
 syntax: glob
-lib/httpclient*.jar
-lib/httpcore*.jar
-lib/oauth*.jar
-lib/fuse-j.jar
-lib/antlr*.jar
-lib/commons-codec*.jar
-lib/commons-httpclient*.jar
-lib/jackrabbit*
-lib/jcl*
-lib/slf4j*
-lib/commons-logging*.jar
-lib/dom4j*.jar
-lib/nofs*.jar
-lib/db4o*.jar
+lib/*.war
+lib/*.jar
 target/**
 *.dat
 *.db
