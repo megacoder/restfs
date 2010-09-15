@@ -23,6 +23,7 @@ public class OAuthInstanceFolder extends RestfulFolder<BaseFileObject> {
 			newList.add(TokenFile());
 			newList.add(StatusFile());
 			newList.add(ConfigFile());
+			newList.add(VerifierFile());
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -37,6 +38,7 @@ public class OAuthInstanceFolder extends RestfulFolder<BaseFileObject> {
 	private volatile OAuthTokenFile _tokenFile = null;
 	private volatile OAuthStatusFile _statusFile = null;
 	private volatile OAuthConfigFile _configFile = null;
+	private volatile OAuthVerifierFile _verifierFile;
 	
 	@SuppressWarnings("unchecked")
 	public OAuthConfigFile ConfigFile() throws Exception {
@@ -70,5 +72,17 @@ public class OAuthInstanceFolder extends RestfulFolder<BaseFileObject> {
 			container.ObjectChanged(_tokenFile);
 		}
 		return _tokenFile;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public OAuthVerifierFile VerifierFile() throws Exception {
+		if(_verifierFile == null) {
+			IDomainObjectContainer<OAuthVerifierFile> container = _containerManager.GetContainer(OAuthVerifierFile.class);
+			_verifierFile = container.NewPersistentInstance();
+			_verifierFile.setName("verifier");
+			container.ObjectChanged(_verifierFile);
+			_verifierFile.setParent(this);
+		}
+		return _verifierFile;
 	}
 }

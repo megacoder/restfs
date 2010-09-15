@@ -1,6 +1,7 @@
 package nofs.restfs;
 
 import nofs.Library.Annotations.DomainObject;
+import nofs.Library.Annotations.HideMethod;
 
 @DomainObject(CanWrite=false)
 public class OAuthTokenFile extends BaseFileObject {
@@ -26,5 +27,10 @@ public class OAuthTokenFile extends BaseFileObject {
 	}
 	public void setTokenSecret(String value) {
 		_tokenSecret = value;
+	}
+	
+	@HideMethod
+	public boolean IsBlank() {
+		return _accessToken.length() == 0 && _requestToken.length() == 0 && _tokenSecret.length() == 0;
 	}
 }

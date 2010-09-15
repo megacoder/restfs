@@ -70,7 +70,7 @@ public class RestFsWithOAuthTest extends BaseFuseTests {
 	public void TestOAuthServiceInteraction() throws Exception {
 		Assert.assertEquals(0, _fs.mkdir(Fix("/auth/x"), FuseFtypeConstants.TYPE_DIR | 0755));
 		final String authXml = RestSettingHelper
-			.CreateAuthXml(Key, Secret, "", AccessTokenURL, UserAuthURL, RequestTokenURL, "none");
+			.CreateAuthXml(Key, Secret, AccessTokenURL, UserAuthURL, RequestTokenURL, "none");
 		final String blankTokenXml = RestFsTestHelper.ReadFromFile(_fs, Fix("/auth/x/token"));
 		RestFsTestHelper.WriteToFile(_fs, Fix("/auth/x/config"), authXml);
 		Thread.sleep(2500);
@@ -78,7 +78,7 @@ public class RestFsWithOAuthTest extends BaseFuseTests {
 		WaitForFileToChange("/auth/x/status", new String[]{"", "Authorizing..."}, 50);
 		final String authURL = RestFsTestHelper.ReadFromFile(_fs, Fix("/auth/x/status"));
 		RestFsTestHelper.HandleAuthURL(authURL);
-		RestFsTestHelper.WriteToFile(_fs, Fix("/auth/x/config"), authXml);
+		RestFsTestHelper.WriteToFile(_fs, Fix("/auth/x/verifier"), RestSettingHelper.CreateVerifierXml(""));
 		WaitForFileToChange("/auth/x/token", new String[]{"", blankTokenXml}, 5);
 		final String tokenXml = RestFsTestHelper.ReadFromFile(_fs, Fix("/auth/x/token"));
 		Assert.assertTrue(tokenXml, tokenXml != null && tokenXml.length() > blankTokenXml.length());
@@ -98,7 +98,7 @@ public class RestFsWithOAuthTest extends BaseFuseTests {
 	public void TestGetTokenWithRestfs() throws Exception {
 		Assert.assertEquals(0, _fs.mkdir(Fix("/auth/x"), FuseFtypeConstants.TYPE_DIR | 0755));
 		final String authXml = RestSettingHelper
-			.CreateAuthXml(Key, Secret, "", AccessTokenURL, UserAuthURL, RequestTokenURL, "none");
+			.CreateAuthXml(Key, Secret, AccessTokenURL, UserAuthURL, RequestTokenURL, "none");
 		RestFsTestHelper.WriteToFile(_fs, Fix("/auth/x/config"), authXml);
 		Thread.sleep(2500);
 		
@@ -116,7 +116,7 @@ public class RestFsWithOAuthTest extends BaseFuseTests {
 		
 		RestFsTestHelper.HandleAuthURL(authURL);
 		
-		RestFsTestHelper.WriteToFile(_fs, Fix("/auth/x/config"), authXml);
+		RestFsTestHelper.WriteToFile(_fs, Fix("/auth/x/verifier"), RestSettingHelper.CreateVerifierXml(""));
 		
 		WaitForFileToChange("/auth/x/token", new String[]{""}, 5);
 		String token = RestFsTestHelper.ReadFromFile(_fs, Fix("/auth/x/token"));

@@ -4,6 +4,18 @@ public class RestSettingHelper {
 	
 	private static final String _xmlHeader = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n";
 	
+	public static String CreateVerifierXml(String pin) {
+		final String OAuthVerifierNode = "OAuthVerifierFile";
+		final String PinNode = "Pin";
+		final String pad = "  ";
+		String xml = 
+			_xmlHeader +
+			Begin(OAuthVerifierNode) + "\n" +
+				pad + Element(PinNode, pin) +
+			End(OAuthVerifierNode);
+		return xml;
+	}
+	
 	public static String CreateTokenXml(String accessToken, String requestToken, String tokenSecret) {
 		final String accessTokenNode = "AccessToken";
 		final String requestTokenNode = "RequestToken";
@@ -48,15 +60,13 @@ public class RestSettingHelper {
 	}
 	
 	public static String CreateAuthXml(
-			String key, String secret, 
-			String pin, String accessTokenURL,
+			String key, String secret, String accessTokenURL,
 			String userAuthURL, String requestTokenURL,
 			String callbackURL)
 	{
 		final String OAuthConfigFileNode = "OAuthConfigFile";
 		final String CallBackURLNode = "CallBackURL";
 		final String KeyNode = "Key";
-		final String VerifierPinNode = "VerifierPin";
 		final String AccessTokenURLNode = "AccessTokenURL";
 		final String UserAuthURLNode = "UserAuthURL";
 		final String RequestTokenURLNode = "RequestTokenURL";
@@ -67,7 +77,6 @@ public class RestSettingHelper {
 			Begin(OAuthConfigFileNode) + "\n" +
 				pad + Element(CallBackURLNode, callbackURL) +
 				pad + Element(KeyNode, key) +
-				pad + Element(VerifierPinNode, pin) +
 				pad + Element(AccessTokenURLNode, accessTokenURL) +
 				pad + Element(UserAuthURLNode, userAuthURL) + 
 				pad + Element(RequestTokenURLNode, requestTokenURL) +

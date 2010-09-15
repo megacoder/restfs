@@ -29,12 +29,6 @@ public class OAuthConfigFile extends BaseFileObject implements IListensToEvents 
 	public void setupParent(OAuthInstanceFolder parent) {
 		_parent = parent;
 	}
-	public String getVerifierPin() {
-		return _verifierPin;
-	}
-	public void setVerifierPin(String value) {
-		_verifierPin = value;
-	}
 	public void setAccessTokenURL(String accessTokenURL) {
 		_accessTokenURL = accessTokenURL;
 	}
@@ -65,18 +59,26 @@ public class OAuthConfigFile extends BaseFileObject implements IListensToEvents 
 	public String getKey() {
 		return _key;
 	}
-		
-	private boolean allAuthSettingsAreSet() {
-		return 
-			!(_key == "" &&
-			  _secret == "" &&
-			  _requestTokenURL == "" &&
-			  _userAuthURL == "" &&
-			  _accessTokenURL == "");
+	
+	private static boolean NotEmpty(String value) {
+		return value != null && value.length() > 0;
 	}
 	
-	private boolean verifierPinSet() {
-		return !(_verifierPin == "");
+	private boolean allAuthSettingsAreSet() {
+		return 
+			NotEmpty(_key) && 
+			NotEmpty(_secret) &&
+			NotEmpty(_requestTokenURL) &&
+			NotEmpty(_userAuthURL) &&
+			NotEmpty(_accessTokenURL);
+	}
+
+	@HideMethod
+	public void setVerifierPin(String value) throws Exception {
+		_verifierPin = value;
+		if(_updaterRunning) {
+			Facade().setVerifier(_verifierPin);
+		}
 	}
 	
 	private volatile boolean _updaterRunning = false;
@@ -127,26 +129,15 @@ public class OAuthConfigFile extends BaseFileObject implements IListensToEvents 
 	@Override
 	@HideMethod
 	public void Closed() throws Exception {
-		if(!_updaterRunning && allAuthSettingsAreSet()) {
+		if(!_updaterRunning && allAuthSettingsAreSet() && _parent.TokenFile().IsBlank()) {
 			System.out.println("authorizing...");
 			_facade = null;
 			_updaterRunning = true;
-			
 			Facade().beginAuthorization();
 			_parent.StatusFile().SetState("Authorizing...");
-			_parent.TokenFile().setAccessToken("");
-			_parent.TokenFile().setRequestToken("");
-			_parent.TokenFile().setTokenSecret("");
 			UpdaterThread updater = new UpdaterThread(Facade(), _parent);
 			updater.setDaemon(true);
 			updater.start();
-		} else if(_updaterRunning && allAuthSettingsAreSet()) {
-			System.out.println("setting PIN...");
-			Facade().setVerifier(_verifierPin);
-		}
-		if(verifierPinSet()) {
-			System.out.println("setting PIN...");
-			Facade().setVerifier(_verifierPin);
 		}
 	}
 	@Override
