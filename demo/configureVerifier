@@ -1,0 +1,34 @@
+#!/bin/bash
+
+WHERE=$1
+PIN=""
+
+if [ 0 -eq $# ]
+then
+	echo "args: [pin:Verifier-PIN]"
+fi
+
+if [ -e $WHERE ]
+then
+	for ARG in $@
+	do
+		PIN_COUNT=`echo $ARG | grep -c "pin:"`
+		if [ 0 -lt $PIN_COUNT ]
+		then
+			PIN=`echo $ARG | sed 's/pin://g'`
+		fi
+	done
+fi
+
+TEMPFILE=/tmp/tmp.xml
+rm -f $TEMPFILE
+touch $TEMPFILE
+
+echo -ne "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n" >> $TEMPFILE
+echo -ne "<OAuthVerifierFile>\n" >> $TEMPFILE
+echo -ne "  <Pin>$PIN</Pin>\n" >> $TEMPFILE
+echo -ne "</OAuthVerifierFile>\n" >> $TEMPFILE
+
+#cat $TEMPFILE
+cat $TEMPFILE > $WHERE
+#rm -f $TEMPFILE

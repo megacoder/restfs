@@ -1,0 +1,10 @@
+BASE=../tmp
+
+touch $BASE/user_status
+
+./configureResource $BASE/.user_status \
+	fs:utime web:GET resource:/1/users/show/joekaylor.json \
+	host:api.twitter.com port:80
+
+touch $BASE/user_status
+

@@ -2,47 +2,43 @@
 
 WHERE=$1
 KEY=""
-ACCESSTOKEN=""
-VERIFIERPIN=""
 ACCESSTOKENURL=""
 USERAUTHURL=""
 REQUESTTOKENURL=""
+CALLBACKURL=""
 SECRET=""
 
 if [ 0 -eq $# ]
 then
-	echo "args: [key:API-Key] [token:OAuth-Token] [pin:OAuth-Verifier-Pin] [accessurl:Access-URL] [userauthurl:User-Authentication-URL] [requesttokenurl:Request-Token-URL] [secret:Consumer-Secret]"
+	echo "args: [key:API-Key] [accessurl:Access-URL] [userauthurl:User-Authentication-URL] [requesttokenurl:Request-Token-URL] [callback:Callback-URL] [secret:Consumer-Secret]"
 	exit 0
 fi
 
 if [ -e $WHERE ]
 then
 	KEY=`cat $WHERE | grep "<Key>" | sed 's/<Key>//g;s/<\/Key>//g;s/^ *//g;s/ *$//g'`
-	ACCESSTOKEN=`cat $WHERE | grep "<AccessToken>" | sed 's/<AccessToken>//g;s/<\/AccessToken>//g;s/^ *//g;s/ *$//g'`
-	VERIFIERPIN=`cat $WHERE | grep "<VerifierPin>" | sed 's/<VerifierPin>//g;s/<\/VerifierPin>//g;s/^ *//g;s/ *$//g'`
         ACCESSTOKENURL=`cat $WHERE | grep "<AccessTokenURL>" | sed 's/<AccessTokenURL>//g;s/<\/AccessTokenURL>//g;s/^ *//g;s/ *$//g'`
         USERAUTHURL=`cat $WHERE | grep "<UserAuthURL>" | sed 's/<UserAuthURL>//g;s/<\/UserAuthURL>//g;s/^ *//g;s/ *$//g'`
 	REQUESTTOKENURL=`cat $WHERE | grep "<RequestTokenURL>" | sed 's/<RequestTokenURL>//g;s/<\/RequestTokenURL>//g;s/^ *//g;s/ *$//g'`
+	CALLBACKURL=`cat $WHERE | grep "<CallBackURL>" | sed 's/<CallBackURL>//g;s/<\/CallBackURL>//g;s/^ *//g;s/ *$//g'`
 	SECRET=`cat $WHERE | grep "<Secret>" | sed 's/<Secret>//g;s/<\/Secret>//g;s^ *//g;s/ *$//g'`
 fi
 
 #echo "Key from XML             : $KEY"
-#echo "AccessToken from XML     : $ACCESSTOKEN"
-#echo "VerifierPin from XML     : $VERIFIERPIN"
 #echo "AccessTokenURL from XML  : $ACCESSTOKENURL"
 #echo "UserAuthURL from XML     : $USERAUTHURL"
 #echo "RequestTokenURL from XML : $REQUESTTOKENURL"
+#echo "CallBackURL from XML     : $CALLBACKURL"
 #echo "Secret from XML          : $SECRET"
 
 for ARG in $@
 do
 	KEY_COUNT=`echo $ARG | grep -c "key:"`
-	ACCESSTOKEN_COUNT=`echo $ARG | grep -c "token:"`
-	VERIFIERPIN_COUNT=`echo $ARG | grep -c "pin:"`
 	ACCESSTOKENURL_COUNT=`echo $ARG | grep -c "accessurl:"`
 	USERAUTHURL_COUNT=`echo $ARG | grep -c "userauthurl:"`
 	SECRET_COUNT=`echo $ARG | grep -c "secret:"`
 	REQUESTTOKENURL_COUNT=`echo $ARG | grep -c "requesttokenurl:"`
+	CALLBACKURL_COUNT=`echo $ARG | grep -c "callback:"`
 	if [ 0 -lt $REQUESTTOKENURL_COUNT ]
 	then
 		REQUESTTOKENURL=`echo $ARG | sed 's/requesttokenurl://g'`
@@ -50,14 +46,6 @@ do
 	if [ 0 -lt $KEY_COUNT ]
 	then
 		KEY=`echo $ARG | sed 's/key://g'`
-	fi
-	if [ 0 -lt $ACCESSTOKEN_COUNT ]
-	then
-		ACCESSTOKEN=`echo $ARG | sed 's/token://g'`
-	fi
-	if [ 0 -lt $VERIFIERPIN_COUNT ]
-	then
-		VERIFIERPIN=`echo $ARG | sed 's/pin://g'`
 	fi
 	if [ 0 -lt $ACCESSTOKENURL_COUNT ]
 	then
@@ -71,19 +59,23 @@ do
 	then
 		SECRET=`echo $ARG | sed 's/secret://g'`
 	fi
+	if [ 0 -lt $CALLBACKURL_COUNT ]
+	then
+		CALLBACKURL=`echo $ARG | sed 's/callback://g'`
+	fi
 done
 
 echo "Key              : $KEY"
-echo "AccessToken      : $ACCESSTOKEN"
-echo "VerifierPin      : $VERIFIERPIN"
 echo "AccessTokenURL   : $ACCESSTOKENURL"
 echo "UserAuthURL      : $USERAUTHURL"
 echo "RequestTokenURL  : $REQUESTTOKENURL"
+echo "CallbackURL      : $CALLBACKURL"
 echo "Secret           : $SECRET"
 
 ACCESSTOKENURL=`echo $ACCESSTOKENURL | sed -e 's~&~\&amp;~g' -e 's~<~\&lt;~g' -e 's~>~\&gt;~g'`
 USERAUTHURL=`echo $USERAUTHURL | sed -e 's~&~\&amp;~g' -e 's~<~\&lt;~g' -e 's~>~\&gt;~g'`
 REQUESTTOKENURL=`echo $REQUESTTOKENURL | sed -e 's~&~\&amp;~g' -e 's~<~\&lt;~g' -e 's~>~\&gt;~g'`
+CALLBACKURL=`echo $CALLBACKURL | sed -e 's~&~\&amp;~g' -e 's~<~\&lt;~g' -e 's~>~\&gt;~g'`
 
 TEMPFILE=/tmp/tmp.xml
 rm -f $TEMPFILE
@@ -92,12 +84,11 @@ touch $TEMPFILE
 echo -ne "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n" >> $TEMPFILE
 echo -ne "<OAuthConfigFile>\n" >> $TEMPFILE
 echo -ne "  <Key>$KEY</Key>\n" >> $TEMPFILE
-echo -ne "  <AccessToken>$ACCESSTOKEN</AccessToken>\n" >> $TEMPFILE
-echo -ne "  <VerifierPin>$VERIFIERPIN</VerifierPin>\n" >> $TEMPFILE
 echo -ne "  <AccessTokenURL>$ACCESSTOKENURL</AccessTokenURL>\n" >> $TEMPFILE
 echo -ne "  <UserAuthURL>$USERAUTHURL</UserAuthURL>\n" >> $TEMPFILE
 echo -ne "  <RequestTokenURL>$REQUESTTOKENURL</RequestTokenURL>\n" >> $TEMPFILE
 echo -ne "  <Secret>$SECRET</Secret>\n" >> $TEMPFILE
+echo -ne "  <CallBackURL>$CALLBACKURL</CallBackURL>\n" >> $TEMPFILE
 echo -ne "</OAuthConfigFile>\n" >> $TEMPFILE
 
 #cat $TEMPFILE

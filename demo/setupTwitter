@@ -7,9 +7,13 @@ SECRET="bWQSgKLOLfwie4Zt9cxerozcu5xGFMYy10vJpa8Tfy4"
 REQUEST_TOKEN_URL="https://api.twitter.com/oauth/request_token"
 ACCESS_TOKEN_URL="https://api.twitter.com/oauth/access_token"
 AUTHORIZE_URL="https://api.twitter.com/oauth/authorize"
+CALLBACK="oob"
 
 mkdir $BASE/auth/twitter
 ./configureAuth $BASE/auth/twitter/config \
 	key:$KEY secret:$SECRET accessurl:$ACCESS_TOKEN_URL \
-	userauthurl:$AUTHORIZE_URL requesttokenurl:$REQUEST_TOKEN_URL
+	userauthurl:$AUTHORIZE_URL requesttokenurl:$REQUEST_TOKEN_URL \
+	callback:$CALLBACK
 
+sleep 4
+cat $BASE/auth/twitter/status

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+BASE=../tmp
+
+./configureVerifier $BASE/auth/twitter/verifier pin:$1
+
+
