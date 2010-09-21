@@ -79,13 +79,15 @@ public class RestFsFuseTest extends BaseFuseTests {
 		TestFolderContents(_fs, Fix("/auth/x"), new DirFillerExpect[] {
 			new DirFillerExpect("token", FuseFtypeConstants.TYPE_FILE | 0555),
 			new DirFillerExpect("status", FuseFtypeConstants.TYPE_FILE | 0555),
-			new DirFillerExpect("config", FuseFtypeConstants.TYPE_FILE | 0755)
+			new DirFillerExpect("config", FuseFtypeConstants.TYPE_FILE | 0755),
+			new DirFillerExpect("verifier", FuseFtypeConstants.TYPE_FILE | 0755)
 		});
 		Assert.assertEquals(Errno.EACCES, _fs.mkdir(Fix("/auth/x/1"), FuseFtypeConstants.TYPE_DIR | 0755));
 		TestFolderContents(_fs, Fix("/auth/x"), new DirFillerExpect[] {
 			new DirFillerExpect("token", FuseFtypeConstants.TYPE_FILE | 0555),
 			new DirFillerExpect("status", FuseFtypeConstants.TYPE_FILE | 0555),
-			new DirFillerExpect("config", FuseFtypeConstants.TYPE_FILE | 0755)
+			new DirFillerExpect("config", FuseFtypeConstants.TYPE_FILE | 0755),
+			new DirFillerExpect("verifier", FuseFtypeConstants.TYPE_FILE | 0755)
 		});
 	}
 	
@@ -95,13 +97,15 @@ public class RestFsFuseTest extends BaseFuseTests {
 		TestFolderContents(_fs, Fix("/auth/x"), new DirFillerExpect[] {
 			new DirFillerExpect("token", FuseFtypeConstants.TYPE_FILE | 0555),
 			new DirFillerExpect("status", FuseFtypeConstants.TYPE_FILE | 0555),
-			new DirFillerExpect("config", FuseFtypeConstants.TYPE_FILE | 0755)
+			new DirFillerExpect("config", FuseFtypeConstants.TYPE_FILE | 0755),
+			new DirFillerExpect("verifier", FuseFtypeConstants.TYPE_FILE | 0755)
 		});
 		Assert.assertEquals(Errno.EACCES, _fs.mknod(Fix("/auth/x/1"), FuseFtypeConstants.TYPE_DIR | 0755, 0));
 		TestFolderContents(_fs, Fix("/auth/x"), new DirFillerExpect[] {
 			new DirFillerExpect("token", FuseFtypeConstants.TYPE_FILE | 0555),
 			new DirFillerExpect("status", FuseFtypeConstants.TYPE_FILE | 0555),
-			new DirFillerExpect("config", FuseFtypeConstants.TYPE_FILE | 0755)
+			new DirFillerExpect("config", FuseFtypeConstants.TYPE_FILE | 0755),
+			new DirFillerExpect("verifier", FuseFtypeConstants.TYPE_FILE | 0755)
 		});
 	}
 	

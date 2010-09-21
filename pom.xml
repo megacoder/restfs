@@ -34,10 +34,10 @@
       </testResource>
     </testResources>
     <plugins>
-      <plugin>
+      <!--<plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>selenium-maven-plugin</artifactId>
-      </plugin>
+      </plugin>-->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
@@ -133,7 +133,7 @@
     </repository>
   </repositories>
 
-  <pluginRepositories>
+  <!--<pluginRepositories>
     <pluginRepository>
       <id>codehaus snapshot repository</id>
       <url>http://snapshots.repository.codehaus.org/</url>
@@ -141,7 +141,7 @@
         <enabled>true</enabled>
       </releases>
     </pluginRepository>
-  </pluginRepositories>
+  </pluginRepositories>-->
 
   <properties>
     <restlet.version>2.0-SNAPSHOT</restlet.version>

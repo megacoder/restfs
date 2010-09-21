@@ -102,8 +102,9 @@ public class RestFsWithOAuthTest extends BaseFuseTests {
 		RestFsTestHelper.WriteToFile(_fs, Fix("/auth/x/config"), authXml);
 		Thread.sleep(2500);
 		
+		final String blankTokenData = RestSettingHelper.CreateTokenXml("", "", "");
 		String tokenData = RestFsTestHelper.ReadFromFile(_fs, Fix("/auth/x/token"));
-		Assert.assertEquals("", tokenData);
+		AssertEquals(blankTokenData, tokenData);
 		
 		final String firstPart = "http://localhost:8182/oauth-provider/authorize?oauth_token=";
 		final String lastPart = "&oauth_callback=none";
