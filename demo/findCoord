@@ -1,0 +1,29 @@
+#!/bin/bash
+
+if [ 0 -eq $# ]
+then
+	echo "findCoord [some street address some city some state]"
+	echo "ex:"
+	echo "findCoord 1600 Pennsylvania Ave Washington DC"
+	echo ""
+	exit 0
+fi
+
+TERMS=$@
+
+URL_ARGS=`echo $TERMS | sed 's/ /%20/g'`
+FILE_NAME=`echo $TERMS | sed 's/ /_/g'`
+RESOURCE="geocode?q=$URL_ARGS"
+RESOURCE=`echo $RESOURCE | sed -e 's~&~\&amp;~g' -e 's~<~\&lt;~g' -e 's~>~\&gt;~g'`
+BASE=../tmp
+
+touch $BASE/$FILE_NAME	
+./configureResource $BASE/.$FILE_NAME fs:utime web:get host:where.yahooapis.com port:80 resource:$RESOURCE
+touch $BASE/$FILE_NAME
+
+LATITUDE=`cat $BASE/$FILE_NAME | sed -e 's/.*<latitude>//g' -e 's/<\/latitude>.*//g' -e 's/<\?.*\?>//g' | tr -d '\n' | tr -d ' ' | tr -d '\t'`
+LONGITUDE=`cat $BASE/$FILE_NAME | sed -e 's/.*<longitude>//g' -e 's/<\/longitude>.*//g' -e 's/<\?.*\?>//g' | tr -d '\n' | tr -d ' ' | tr -d '\t'`
+
+echo -ne "($LATITUDE,$LONGITUDE)\n"
+
+
