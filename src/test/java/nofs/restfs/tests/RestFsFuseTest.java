@@ -134,6 +134,15 @@ public class RestFsFuseTest extends BaseFuseTests {
 	}
 	
 	@Test
+	public void TestRmdir() throws Exception {
+		Assert.assertEquals(0, _fs.mkdir(Fix("/x"), FuseFtypeConstants.TYPE_DIR | 0755));
+		Assert.assertEquals(0, _fs.rmdir(Fix("/x")));
+		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {
+			new DirFillerExpect("auth", FuseFtypeConstants.TYPE_DIR | 0755)
+		});
+	}
+	
+	@Test
 	public void TestUnlink() throws Exception {
 		Assert.assertEquals(0, _fs.mknod(Fix("/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
 		Assert.assertEquals(0, _fs.unlink(Fix("/x")));
@@ -165,8 +174,8 @@ public class RestFsFuseTest extends BaseFuseTests {
 		TestFolderContents(_fs, Fix("/x"), new DirFillerExpect[] {});
 		Assert.assertEquals(0, _fs.mknod(Fix("/x/y"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
 		TestFolderContents(_fs, Fix("/x"), new DirFillerExpect[] {
-			new DirFillerExpect("y", FuseFtypeConstants.TYPE_DIR | 0755),
-			new DirFillerExpect(".y", FuseFtypeConstants.TYPE_DIR | 0755)
+			new DirFillerExpect("y", FuseFtypeConstants.TYPE_FILE | 0755),
+			new DirFillerExpect(".y", FuseFtypeConstants.TYPE_FILE | 0755)
 		});
 	}
 	

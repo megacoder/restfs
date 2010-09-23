@@ -9,10 +9,16 @@ import nofs.Library.Containers.IDomainObjectContainer;
 import nofs.Library.Containers.IDomainObjectContainerManager;
 
 @DomainObject
-@FolderObject
+@FolderObject(ChildTypeFilterMethod="Filter")
 public class RestfulFolderWithSettings extends RestfulFolder<BaseFileObject> {
 	
 	public RestfulFolderWithSettings() {
+	}
+	
+	public boolean Filter(Class<?> possibleChildType) {
+		return 
+			possibleChildType == RestfulFolderWithSettings.class ||
+			possibleChildType == RestfulFile.class;
 	}
 	
 	private IDomainObjectContainerManager _containerManager;
