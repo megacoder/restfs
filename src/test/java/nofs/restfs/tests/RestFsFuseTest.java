@@ -134,6 +134,15 @@ public class RestFsFuseTest extends BaseFuseTests {
 	}
 	
 	@Test
+	public void TestUnlink() throws Exception {
+		Assert.assertEquals(0, _fs.mknod(Fix("/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
+		Assert.assertEquals(0, _fs.unlink(Fix("/x")));
+		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {
+			new DirFillerExpect("auth", FuseFtypeConstants.TYPE_DIR | 0755)
+		});
+	}
+	
+	@Test
 	public void TestMknod() throws Exception {
 		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {
 			new DirFillerExpect("auth", FuseFtypeConstants.TYPE_DIR | 0755)

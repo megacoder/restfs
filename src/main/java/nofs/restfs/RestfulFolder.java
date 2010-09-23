@@ -128,8 +128,10 @@ public abstract class RestfulFolder<T extends BaseFileObject> extends BaseFileOb
 		return getInnerList().listIterator(index);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean remove(Object o) {
+		RemovingObject((T)o);
 		return getInnerList().remove(o);
 	}
 

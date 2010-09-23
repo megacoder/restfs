@@ -25,6 +25,10 @@ public class RestFsWithService2Test extends BaseFuseTests {
 		_fs = RestFsTestHelper.BuildFS(_tmpFolder);
 		_app = new RestExampleRunner2();
 		_app.StartRunner();
+		while(!_app.Started()) {
+			Thread.sleep(100);
+			System.out.println("waiting for Jetty to start...");
+		}
 	}
 
 	@After
@@ -36,28 +40,31 @@ public class RestFsWithService2Test extends BaseFuseTests {
 	
 	@Test
 	public void TestPostThenPutThenGetOnUTime() throws Exception {
+		final String root = "/firstResource/";
+		//final String root = "/";
+		
 		Assert.assertEquals(0, _fs.mknod(Fix("/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
 		
-		RestFsTestHelper.WriteToFile(_fs, "/.x", RestSettingHelper.CreateSettingsXml("utime", "post", "", "/firstResource/items", "127.0.0.1", "8100", ""));
+		RestFsTestHelper.WriteToFile(_fs, "/.x", RestSettingHelper.CreateSettingsXml("utime", "post", "", root + "items", "127.0.0.1", "8100", ""));
 		RestFsTestHelper.WriteToFile(_fs, "/x", "{\"description\":\"1\",\"name\":\"foobar\"}");
 		Assert.assertEquals(0, _fs.utime(Fix("/x"), (int)System.currentTimeMillis(), (int)System.currentTimeMillis()));
 		String result = RestFsTestHelper.ReadFromFile(_fs, "/x");
 		Assert.assertEquals("Item created", result);
 		
-		RestFsTestHelper.WriteToFile(_fs, "/.x", RestSettingHelper.CreateSettingsXml("utime", "get", "", "/firstResource/items/foobar", "127.0.0.1", "8100", ""));
+		RestFsTestHelper.WriteToFile(_fs, "/.x", RestSettingHelper.CreateSettingsXml("utime", "get", "", root + "items/foobar", "127.0.0.1", "8100", ""));
 		Assert.assertEquals(0, _fs.utime(Fix("/x"), (int)System.currentTimeMillis(), (int)System.currentTimeMillis()));
 		result = RestFsTestHelper.ReadFromFile(_fs, "/x");
 		Assert.assertEquals(
 				"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><item><name>foobar</name><description>1</description></item>",
 				result);
 		
-		RestFsTestHelper.WriteToFile(_fs, "/.x", RestSettingHelper.CreateSettingsXml("utime", "put", "", "/firstResource/items/foobar", "127.0.0.1", "8100", ""));
+		RestFsTestHelper.WriteToFile(_fs, "/.x", RestSettingHelper.CreateSettingsXml("utime", "put", "", root + "items/foobar", "127.0.0.1", "8100", ""));
 		RestFsTestHelper.WriteToFile(_fs, "/x", "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><item><name>foobar</name><description>123</description></item>");
 		Assert.assertEquals(0, _fs.utime(Fix("/x"), (int)System.currentTimeMillis(), (int)System.currentTimeMillis()));
 		result = RestFsTestHelper.ReadFromFile(_fs, "/x");
 		Assert.assertEquals("", result);
 		
-		RestFsTestHelper.WriteToFile(_fs, "/.x", RestSettingHelper.CreateSettingsXml("utime", "get", "", "/firstResource/items/foobar", "127.0.0.1", "8100", ""));
+		RestFsTestHelper.WriteToFile(_fs, "/.x", RestSettingHelper.CreateSettingsXml("utime", "get", "", root + "items/foobar", "127.0.0.1", "8100", ""));
 		Assert.assertEquals(0, _fs.utime(Fix("/x"), (int)System.currentTimeMillis(), (int)System.currentTimeMillis()));
 		result = RestFsTestHelper.ReadFromFile(_fs, "/x");
 		Assert.assertEquals(
