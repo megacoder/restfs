@@ -95,6 +95,16 @@
 
   <repositories>
     <repository>
+        <id>maven-nofs</id>
+        <name>Public online NOFS repository</name>
+        <url>http://nofs.googlecode.com/hg/artifacts/</url>
+    </repository>
+    <repository>
+      <id>maven-restfs</id>
+      <name>Public online RestFS repository</name>
+      <url>http://restfs.googlecode.com/hg/artifacts/</url>
+    </repository>
+    <!--<repository>
       <id>oauth</id> 
       <name>OAuth Repository</name> 
       <url>http://oauth.googlecode.com/svn/code/maven</url> 
@@ -103,11 +113,6 @@
         <id>maven-restlet</id>
         <name>Public online Restlet repository</name>
         <url>http://maven.restlet.org/</url>
-    </repository>
-    <repository>
-        <id>maven-nofs</id>
-        <name>Public online NOFS repository</name>
-        <url>http://nofs.googlecode.com/hg/artifacts/</url>
     </repository>
     <repository>
         <id>openqa</id>
@@ -130,7 +135,7 @@
         <releases>
           <enabled>true</enabled>
         </releases>
-    </repository>
+    </repository>-->
   </repositories>
 
   <!--<pluginRepositories>
