@@ -1,0 +1,67 @@
+validating query files:
+
+/query
+	/source
+	/accepted
+	/errors
+
+a query file written to /query/source/query1, if accepted, will also appear in /query/accepted/query1 as read-only, if any errors, they will show up in /query/errors/query1. files in /query/accepted are applied to the filesystem.
+
+
+
+example query file 1 
+(touching config file will GET from http://foo/bar, transform to xml and write to /foo_bar)
+-------------------------------------
+ADD XFORM FROM 'json' TO 'xml' WITH /transformations/json_to_xml
+
+utime(this) 
+USING OAUTH TOKEN /auth/foo
+GET FROM http://foo/bar AS /foo_bar
+XFORM FROM 'json' TO 'xml'
+
+
+
+example query file 2:
+(images copied into /images will be transformed to PNG and posted to http://photos/upload?f=...)
+-------------------------------------
+ADD XFORM FROM 'jpeg' TO 'png' WITH /transformations/jpg2png
+ADD XFORM FROM 'gif' TO 'png' WITH /transformations/gif2png
+
+closed(/images/$file_name )
+XFORM TO 'png'
+USING OAUTH TOKEN /auth/photo
+POST TO http://photos/upload?f=$file_name
+
+
+
+example query file 3:
+(changes to /document/resume.pdf will be posted to http://job_service/engineers/resume.pdf)
+('updated' here means that N-writes followed by a close as opposed to N-reads followed by a close)
+-------------------------------------
+updated(/document/resume.pdf) 
+POST TO http://job_service/engineers/resume.pdf
+
+
+
+example query file 4:
+-------------------------------------
+updated(/users/$user_name/resume.pdf)
+POST TO http://job_service/engineers/$user_name/resume.pdf
+
+
+
+example query file 5:
+-------------------------------------
+mknod(/users/$user_name/resume.pdf)
+GET FROM http://job_service/engineers/$user_name/resume.pdf
+
+
+
+example query file 6:
+-------------------------------------
+opening(/weather_radar_image.jpeg)
+GET FROM http://weather/chicago/radar.jpeg
+CACHE FOR 60 SECONDS
+
+
+
