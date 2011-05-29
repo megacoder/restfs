@@ -32,14 +32,21 @@ class ConfigGrammar extends StandardTokenParsers() {
     OPENING, LPAREN, GET, PUT, POST, DELETE, USING, OAUTH, TOKEN)
   lexical.delimiters += (LPAREN, RPAREN)
 
+  def Parse_JavaList(text:String) : java.util.List[ProgramStm] = {
+    val stmList = new java.util.ArrayList[ProgramStm];
+    val statements = Parse(text)
+    statements.foreach(stm => stmList.add(stm));
+    return stmList
+  }
+
   def Parse(text:String) : List[ProgramStm] = {
     val updatedText = Source.fromString(text).getLines.reduceLeft[String](_ + NL + _)
     val tokens = new lexical.Scanner(updatedText)
-    val statments = phrase(program)(tokens).get
-    if(statments.size == 0 && !lexical.lastNoSuccess.successful) {
+    val statements = phrase(program)(tokens).get
+    if(statements.size == 0 && !lexical.lastNoSuccess.successful) {
       throw new Exception(lexical.lastNoSuccess.toString)
     }
-    return statments
+    return statements
   }
 
   def program : Parser[List[ProgramStm]] = (
