@@ -153,8 +153,8 @@
   <properties>
     <scala.version>2.9.0</scala.version>
     <restlet.version>2.0-SNAPSHOT</restlet.version>
-    <nofs.version>0.0.29</nofs.version>
-    <restfs.version>0.0.25</restfs.version>
+    <nofs.version>0.0.30</nofs.version>
+    <restfs.version>0.0.26</restfs.version>
     <db4o.version>7.4.88.12908</db4o.version>
     <!--<oauth.version>20100601</oauth.version>-->
     <oauth.version>20100527</oauth.version>

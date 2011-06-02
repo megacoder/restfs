@@ -46,7 +46,11 @@ public class RestFsFuseTest extends BaseFuseTests {
 		final String persistenceDriver = "nofs.Factories.Db4oPersistenceFactory";
 		ClassLoader loader = ClassLoader.getSystemClassLoader();
 		INoFSClassLoader nofsLoader = new NoFSClassLoader(ClassLoader.getSystemClassLoader());
+        nofsLoader.AddPackageFilter("nofs.restfs");
+        nofsLoader.AddPackageFilter("nofs.restfs.rules");
+        nofsLoader.AddPackageFilter("nofs.restfs.oauth");
 		IMetadataFactory metadataFactory = (IMetadataFactory)loader.loadClass(metaDataDriver).newInstance();
+        metadataFactory.SetClassLoader(nofsLoader);
 		IPersistenceFactory persistenceFactory = (IPersistenceFactory)loader.loadClass(persistenceDriver).newInstance();
 		NoFSFuseDriver fs = new NoFSFuseDriver(nofsLoader, objectStore, metaFile, metadataFactory, persistenceFactory);
 		fs.Init();
@@ -56,14 +60,16 @@ public class RestFsFuseTest extends BaseFuseTests {
 	@Test
 	public void TestInitialFS() throws Exception {
 		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {
-			new DirFillerExpect("auth", FuseFtypeConstants.TYPE_DIR | 0755)
+			new DirFillerExpect("auth", FuseFtypeConstants.TYPE_DIR | 0755),
+            new DirFillerExpect("rules", FuseFtypeConstants.TYPE_DIR | 0755)
 		});
 	}
 	
 	@Test
 	public void TestMkdirInAuth() throws Exception {
 		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {
-			new DirFillerExpect("auth", FuseFtypeConstants.TYPE_DIR | 0755)
+			new DirFillerExpect("auth", FuseFtypeConstants.TYPE_DIR | 0755),
+            new DirFillerExpect("rules", FuseFtypeConstants.TYPE_DIR | 0755)
 		});
 		TestFolderContents(_fs, Fix("/auth"), new DirFillerExpect[] {
 		});
@@ -112,7 +118,8 @@ public class RestFsFuseTest extends BaseFuseTests {
 	@Test
 	public void TestMknodInAuth() throws Exception {
 		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {
-			new DirFillerExpect("auth", FuseFtypeConstants.TYPE_DIR | 0755)
+			new DirFillerExpect("auth", FuseFtypeConstants.TYPE_DIR | 0755),
+            new DirFillerExpect("rules", FuseFtypeConstants.TYPE_DIR | 0755)
 		});
 		TestFolderContents(_fs, Fix("/auth"), new DirFillerExpect[] {
 		});
@@ -124,7 +131,8 @@ public class RestFsFuseTest extends BaseFuseTests {
 	@Test
 	public void TestMkdir() throws Exception {
 		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {
-			new DirFillerExpect("auth", FuseFtypeConstants.TYPE_DIR | 0755)
+			new DirFillerExpect("auth", FuseFtypeConstants.TYPE_DIR | 0755),
+            new DirFillerExpect("rules", FuseFtypeConstants.TYPE_DIR | 0755)
 		});
 		Assert.assertEquals(0, _fs.mkdir(Fix("/x"), FuseFtypeConstants.TYPE_DIR | 0755));
 		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {
@@ -138,7 +146,8 @@ public class RestFsFuseTest extends BaseFuseTests {
 		Assert.assertEquals(0, _fs.mkdir(Fix("/x"), FuseFtypeConstants.TYPE_DIR | 0755));
 		Assert.assertEquals(0, _fs.rmdir(Fix("/x")));
 		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {
-			new DirFillerExpect("auth", FuseFtypeConstants.TYPE_DIR | 0755)
+			new DirFillerExpect("auth", FuseFtypeConstants.TYPE_DIR | 0755),
+            new DirFillerExpect("rules", FuseFtypeConstants.TYPE_DIR | 0755)
 		});
 	}
 	
@@ -147,14 +156,16 @@ public class RestFsFuseTest extends BaseFuseTests {
 		Assert.assertEquals(0, _fs.mknod(Fix("/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
 		Assert.assertEquals(0, _fs.unlink(Fix("/x")));
 		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {
-			new DirFillerExpect("auth", FuseFtypeConstants.TYPE_DIR | 0755)
+			new DirFillerExpect("auth", FuseFtypeConstants.TYPE_DIR | 0755),
+            new DirFillerExpect("rules", FuseFtypeConstants.TYPE_DIR | 0755)
 		});
 	}
 	
 	@Test
 	public void TestMknod() throws Exception {
 		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {
-			new DirFillerExpect("auth", FuseFtypeConstants.TYPE_DIR | 0755)
+			new DirFillerExpect("auth", FuseFtypeConstants.TYPE_DIR | 0755),
+            new DirFillerExpect("rules", FuseFtypeConstants.TYPE_DIR | 0755)
 		});
 		Assert.assertEquals(0, _fs.mknod(Fix("/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
 		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {
@@ -169,6 +180,7 @@ public class RestFsFuseTest extends BaseFuseTests {
 		Assert.assertEquals(0, _fs.mkdir(Fix("/x"), FuseFtypeConstants.TYPE_DIR | 0755));
 		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {
 			new DirFillerExpect("auth", FuseFtypeConstants.TYPE_DIR | 0755),
+            new DirFillerExpect("rules", FuseFtypeConstants.TYPE_DIR | 0755),
 			new DirFillerExpect("x", FuseFtypeConstants.TYPE_DIR | 0755)
 		});
 		TestFolderContents(_fs, Fix("/x"), new DirFillerExpect[] {});
@@ -182,7 +194,8 @@ public class RestFsFuseTest extends BaseFuseTests {
 	@Test
 	public void TestMknodThenUTime() throws Exception {
 		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {
-			new DirFillerExpect("auth", FuseFtypeConstants.TYPE_DIR | 0755)
+			new DirFillerExpect("auth", FuseFtypeConstants.TYPE_DIR | 0755),
+            new DirFillerExpect("rules", FuseFtypeConstants.TYPE_DIR | 0755)
 		});
 		Assert.assertEquals(0, _fs.mknod(Fix("/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
 		Assert.assertEquals(0, _fs.utime(Fix("/x"), (int)System.currentTimeMillis(), (int)System.currentTimeMillis()));
@@ -283,7 +296,8 @@ public class RestFsFuseTest extends BaseFuseTests {
 	@Test
 	public void TestWriteToSettingsFile() throws Exception {
 		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {
-			new DirFillerExpect("auth", FuseFtypeConstants.TYPE_DIR | 0755)
+			new DirFillerExpect("auth", FuseFtypeConstants.TYPE_DIR | 0755),
+            new DirFillerExpect("rules", FuseFtypeConstants.TYPE_DIR | 0755)
 		});
 		Assert.assertEquals(0, _fs.mknod(Fix("/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
 		
@@ -328,7 +342,8 @@ public class RestFsFuseTest extends BaseFuseTests {
 	@Test
 	public void TestWriteToFile() throws Exception {
 		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {
-			new DirFillerExpect("auth", FuseFtypeConstants.TYPE_DIR | 0755)
+			new DirFillerExpect("auth", FuseFtypeConstants.TYPE_DIR | 0755),
+            new DirFillerExpect("rules", FuseFtypeConstants.TYPE_DIR | 0755)
 		});
 		Assert.assertEquals(0, _fs.mknod(Fix("/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
 		

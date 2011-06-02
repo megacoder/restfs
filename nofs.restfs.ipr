@@ -39,6 +39,9 @@
       </facet-type>
     </autodetection-disabled>
   </component>
+  <component name="HighlightingAdvisor">
+    <option name="SUGGEST_TYPE_AWARE_HIGHLIGHTING" value="false" />
+  </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_STRING" value="-target 1.6" />
   </component>
@@ -558,81 +561,81 @@
         <root url="jar://$MAVEN_REPOSITORY$/net/sourceforge/nekohtml/nekohtml/1.9.13/nekohtml-1.9.13-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: nofs:nofs.Common.Interfaces:0.0.29">
+    <library name="Maven: nofs:nofs.Common.Interfaces:0.0.30">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/nofs/nofs.Common.Interfaces/0.0.29/nofs.Common.Interfaces-0.0.29.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/nofs/nofs.Common.Interfaces/0.0.30/nofs.Common.Interfaces-0.0.30.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/nofs/nofs.Common.Interfaces/0.0.29/nofs.Common.Interfaces-0.0.29-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/nofs/nofs.Common.Interfaces/0.0.30/nofs.Common.Interfaces-0.0.30-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/nofs/nofs.Common.Interfaces/0.0.29/nofs.Common.Interfaces-0.0.29-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/nofs/nofs.Common.Interfaces/0.0.30/nofs.Common.Interfaces-0.0.30-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: nofs:nofs.Db4o:0.0.29">
+    <library name="Maven: nofs:nofs.Db4o:0.0.30">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/nofs/nofs.Db4o/0.0.29/nofs.Db4o-0.0.29.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/nofs/nofs.Db4o/0.0.30/nofs.Db4o-0.0.30.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/nofs/nofs.Db4o/0.0.29/nofs.Db4o-0.0.29-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/nofs/nofs.Db4o/0.0.30/nofs.Db4o-0.0.30-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/nofs/nofs.Db4o/0.0.29/nofs.Db4o-0.0.29-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/nofs/nofs.Db4o/0.0.30/nofs.Db4o-0.0.30-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: nofs:nofs.Library.Annotations:0.0.29">
+    <library name="Maven: nofs:nofs.Library.Annotations:0.0.30">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/nofs/nofs.Library.Annotations/0.0.29/nofs.Library.Annotations-0.0.29.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/nofs/nofs.Library.Annotations/0.0.30/nofs.Library.Annotations-0.0.30.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/nofs/nofs.Library.Annotations/0.0.29/nofs.Library.Annotations-0.0.29-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/nofs/nofs.Library.Annotations/0.0.30/nofs.Library.Annotations-0.0.30-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/nofs/nofs.Library.Annotations/0.0.29/nofs.Library.Annotations-0.0.29-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/nofs/nofs.Library.Annotations/0.0.30/nofs.Library.Annotations-0.0.30-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: nofs:nofs.library:0.0.29">
+    <library name="Maven: nofs:nofs.library:0.0.30">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/nofs/nofs.library/0.0.29/nofs.library-0.0.29.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/nofs/nofs.library/0.0.30/nofs.library-0.0.30.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/nofs/nofs.library/0.0.29/nofs.library-0.0.29-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/nofs/nofs.library/0.0.30/nofs.library-0.0.30-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/nofs/nofs.library/0.0.29/nofs.library-0.0.29-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/nofs/nofs.library/0.0.30/nofs.library-0.0.30-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: nofs:nofs.metadata.AnnotationDriver:0.0.29">
+    <library name="Maven: nofs:nofs.metadata.AnnotationDriver:0.0.30">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/nofs/nofs.metadata.AnnotationDriver/0.0.29/nofs.metadata.AnnotationDriver-0.0.29.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/nofs/nofs.metadata.AnnotationDriver/0.0.30/nofs.metadata.AnnotationDriver-0.0.30.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/nofs/nofs.metadata.AnnotationDriver/0.0.29/nofs.metadata.AnnotationDriver-0.0.29-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/nofs/nofs.metadata.AnnotationDriver/0.0.30/nofs.metadata.AnnotationDriver-0.0.30-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/nofs/nofs.metadata.AnnotationDriver/0.0.29/nofs.metadata.AnnotationDriver-0.0.29-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/nofs/nofs.metadata.AnnotationDriver/0.0.30/nofs.metadata.AnnotationDriver-0.0.30-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: nofs:nofs.metadata.interfaces:0.0.29">
+    <library name="Maven: nofs:nofs.metadata.interfaces:0.0.30">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/nofs/nofs.metadata.interfaces/0.0.29/nofs.metadata.interfaces-0.0.29.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/nofs/nofs.metadata.interfaces/0.0.30/nofs.metadata.interfaces-0.0.30.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/nofs/nofs.metadata.interfaces/0.0.29/nofs.metadata.interfaces-0.0.29-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/nofs/nofs.metadata.interfaces/0.0.30/nofs.metadata.interfaces-0.0.30-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/nofs/nofs.metadata.interfaces/0.0.29/nofs.metadata.interfaces-0.0.29-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/nofs/nofs.metadata.interfaces/0.0.30/nofs.metadata.interfaces-0.0.30-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: nofs:nofs:0.0.29">
+    <library name="Maven: nofs:nofs:0.0.30">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/nofs/nofs/0.0.29/nofs-0.0.29.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/nofs/nofs/0.0.30/nofs-0.0.30.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/nofs/nofs/0.0.29/nofs-0.0.29-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/nofs/nofs/0.0.30/nofs-0.0.30-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/nofs/nofs/0.0.29/nofs-0.0.29-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/nofs/nofs/0.0.30/nofs-0.0.30-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: org.antlr:antlr-runtime:3.1.3">
