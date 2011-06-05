@@ -57,8 +57,8 @@ class ConfigGrammarTestCase {
 
     Assert.assertEquals(2, stm1.getOperations().size)
 
-    val xform = stm1.getOperations()(0).asInstanceOf[ApplyTransformationOperation]
-    val getop = stm1.getOperations()(1).asInstanceOf[ApplyWebMethodOperation]
+    val xform = stm1.getOperations().get(0).asInstanceOf[ApplyTransformationOperation]
+    val getop = stm1.getOperations().get(1).asInstanceOf[ApplyWebMethodOperation]
 
     Assert.assertEquals("json", xform.getFromType())
     Assert.assertEquals("xml", xform.getToType())
@@ -84,8 +84,8 @@ class ConfigGrammarTestCase {
 
     Assert.assertEquals(2, stm1.getOperations().size)
 
-    val xform = stm1.getOperations()(0).asInstanceOf[ApplyTransformationOperation]
-    val getop = stm1.getOperations()(1).asInstanceOf[ApplyWebMethodOperation]
+    val xform = stm1.getOperations().get(0).asInstanceOf[ApplyTransformationOperation]
+    val getop = stm1.getOperations().get(1).asInstanceOf[ApplyWebMethodOperation]
 
     Assert.assertEquals("json", xform.getFromType())
     Assert.assertEquals("xml", xform.getToType())
@@ -110,7 +110,7 @@ class ConfigGrammarTestCase {
 
     Assert.assertEquals(1, stm1.getOperations().size)
 
-    val getop = stm1.getOperations()(0).asInstanceOf[ApplyWebMethodOperation]
+    val getop = stm1.getOperations().get(0).asInstanceOf[ApplyWebMethodOperation]
 
     Assert.assertEquals("get", getop.getMethod())
     Assert.assertEquals("http://foo/bar", getop.getUrl())
@@ -132,7 +132,7 @@ class ConfigGrammarTestCase {
 
     Assert.assertEquals(1, stm1.getOperations().size)
 
-    val getop = stm1.getOperations()(0).asInstanceOf[ApplyWebMethodOperation]
+    val getop = stm1.getOperations().get(0).asInstanceOf[ApplyWebMethodOperation]
 
     Assert.assertEquals("delete", getop.getMethod())
     Assert.assertEquals("http://foo/bar", getop.getUrl())
@@ -154,7 +154,7 @@ class ConfigGrammarTestCase {
 
     Assert.assertEquals(1, stm1.getOperations().size)
 
-    val getop = stm1.getOperations()(0).asInstanceOf[ApplyWebMethodOperation]
+    val getop = stm1.getOperations().get(0).asInstanceOf[ApplyWebMethodOperation]
 
     Assert.assertEquals("put", getop.getMethod())
     Assert.assertEquals("http://foo/bar", getop.getUrl())
@@ -183,8 +183,8 @@ class ConfigGrammarTestCase {
 
     Assert.assertEquals(2, stm2.getOperations().size)
 
-    val xform = stm2.getOperations()(0).asInstanceOf[ApplyTransformationOperation]
-    val getop = stm2.getOperations()(1).asInstanceOf[ApplyWebMethodOperation]
+    val xform = stm2.getOperations().get(0).asInstanceOf[ApplyTransformationOperation]
+    val getop = stm2.getOperations().get(1).asInstanceOf[ApplyWebMethodOperation]
 
     Assert.assertEquals("json", xform.getFromType())
     Assert.assertEquals("xml", xform.getToType())

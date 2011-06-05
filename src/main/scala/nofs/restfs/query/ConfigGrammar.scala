@@ -69,9 +69,15 @@ class ConfigGrammar extends StandardTokenParsers() {
     }
   )
 
-  def operations : Parser[List[FSOperation]] = (
-    ( operation+ ) ^^ { case ops => ops }
+  def operations : Parser[java.util.List[FSOperation]] = (
+    ( operation+ ) ^^ { case ops => toOperationsList(ops) }
   )
+
+  def toOperationsList(operations : List[FSOperation]) : java.util.List[FSOperation] = {
+    val operationList = new java.util.ArrayList[FSOperation];
+    operations.foreach(stm => operationList.add(stm));
+    return operationList;
+  }
 
   def operation : Parser[FSOperation] = (
     (XFORM ~ FROM ~ stringLit ~ TO ~ stringLit) ^^ {

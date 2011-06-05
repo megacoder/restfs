@@ -58,13 +58,62 @@ public class RestFsFuseTest extends BaseFuseTests {
                 "MKNOD(\"/foo/bar\")\n" +
                 "XFORM FROM \"json\" TO \"xml\"\n" +
                 "GET FROM \"http://foo/bar\" USING OAUTH TOKEN \"/auth/baz\"";
+        final String expectedXML =
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n" +
+                "<RulesASTFile>\n" +
+                  "<Statements>\n" +
+                    "<nofs.restfs.query.ast.FSRuleStm>\n" +
+                      "<Operations>\n" +
+                        "<nofs.restfs.query.ast.ApplyTransformationOperation>\n" +
+                          "<FromType>json</FromType>\n" +
+                          "<ToType>xml</ToType>\n" +
+                        "</nofs.restfs.query.ast.ApplyTransformationOperation>\n" +
+                        "<nofs.restfs.query.ast.ApplyWebMethodOperation>\n" +
+                          "<Url>http://foo/bar</Url>\n" +
+                          "<Token>/auth/baz</Token>\n" +
+                          "<Method>get</Method>\n" +
+                        "</nofs.restfs.query.ast.ApplyWebMethodOperation>\n" +
+                      "</Operations>\n" +
+                      "<Action>\n" +
+                        "<FileName>/foo/bar</FileName>\n" +
+                        "<Action>MKNOD</Action>\n" +
+                      "</Action>\n" +
+                    "</nofs.restfs.query.ast.FSRuleStm>\n" +
+                  "</Statements>\n" +
+                "</RulesASTFile>";
         WriteToFile(Fix("/rules/x"), configText);
         final String srcFileContents = ReadFromFile(Fix("/rules/x"));
         Assert.assertEquals(configText, srcFileContents);
         final String astText = ReadFromFile(Fix("/rules/x.ast"));
         final String errText = ReadFromFile(Fix("/rules/x.err"));
-        Assert.assertEquals("", astText);
+        XMLComparison.Compare(expectedXML, astText);
         Assert.assertEquals("", errText);
+    }
+
+    @Test
+    public void TestRulesCompilation_Error() throws Exception {
+        TestFolderContents(_fs, Fix("/rules"), new DirFillerExpect[] {
+		});
+        Assert.assertEquals(0, _fs.mknod(Fix("/rules/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
+        TestFolderContents(_fs, Fix("/rules"), new DirFillerExpect[] {
+            new DirFillerExpect("x", FuseFtypeConstants.TYPE_FILE | 0755),
+            new DirFillerExpect("x.ast", FuseFtypeConstants.TYPE_FILE | 0555),
+            new DirFillerExpect("x.err", FuseFtypeConstants.TYPE_FILE | 0555),
+		});
+        final String configText = "blah";
+        WriteToFile(Fix("/rules/x"), configText);
+        final String srcFileContents = ReadFromFile(Fix("/rules/x"));
+        Assert.assertEquals(configText, srcFileContents);
+        final String astText = ReadFromFile(Fix("/rules/x.ast"));
+        final String errText = ReadFromFile(Fix("/rules/x.err"));
+        final String expectedXml =
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n" +
+                "<RulesASTFile>\n" +
+                  "<Statements/>\n" +
+                "</RulesASTFile>";
+        XMLComparison.Compare(expectedXml, astText);
+        final String expectedErr = "No result when parsing failed";
+        Assert.assertEquals(expectedErr, errText);
     }
 	
 	@Test

@@ -2,13 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fa1a8ffc-77e5-4251-8873-430f4b41d181" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/nofs.restfs.iws" afterPath="$PROJECT_DIR$/nofs.restfs.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/nofs/restfs/rules/RulesFolder.java" afterPath="$PROJECT_DIR$/src/main/java/nofs/restfs/rules/RulesFolder.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/nofs/restfs/rules/RulesSourceFile.java" afterPath="$PROJECT_DIR$/src/main/java/nofs/restfs/rules/RulesSourceFile.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/nofs/restfs/query/ast/AddTranslatorStm.scala" afterPath="$PROJECT_DIR$/src/main/scala/nofs/restfs/query/ast/AddTranslatorStm.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/nofs/restfs/query/ast/ApplyTransformationOperation.scala" afterPath="$PROJECT_DIR$/src/main/scala/nofs/restfs/query/ast/ApplyTransformationOperation.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/nofs/restfs/query/ast/ApplyWebMethodOperation.scala" afterPath="$PROJECT_DIR$/src/main/scala/nofs/restfs/query/ast/ApplyWebMethodOperation.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/nofs/restfs/query/ast/FSAction.scala" afterPath="$PROJECT_DIR$/src/main/scala/nofs/restfs/query/ast/FSAction.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/nofs/restfs/query/ConfigGrammar.scala" afterPath="$PROJECT_DIR$/src/main/scala/nofs/restfs/query/ConfigGrammar.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/nofs/restfs/query/ast/FSRuleStm.scala" afterPath="$PROJECT_DIR$/src/main/scala/nofs/restfs/query/ast/FSRuleStm.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/nofs/restfs/tests/RestFsFuseTest.java" afterPath="$PROJECT_DIR$/src/test/java/nofs/restfs/tests/RestFsFuseTest.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/scala/nofs/restfs/query/ConfigGrammarTestCase.scala" afterPath="$PROJECT_DIR$/src/test/scala/nofs/restfs/query/ConfigGrammarTestCase.scala" />
@@ -69,22 +63,22 @@
     <favorites_list name="nofs.restfs" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.46960485">
+    <splitter split-orientation="horizontal" split-proportion="0.45288754">
       <split-first>
         <leaf>
-          <file leaf-file-name="FSAction.scala" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/main/scala/nofs/restfs/query/ast/FSAction.scala">
+          <file leaf-file-name="ApplyTransformationOperation.scala" pinned="false" current="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/main/scala/nofs/restfs/query/ast/ApplyTransformationOperation.scala">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="9" column="51" selection-start="197" selection-end="197" vertical-scroll-proportion="0.0">
+                <state line="7" column="10" selection-start="230" selection-end="230" vertical-scroll-proportion="0.23106796">
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="ConfigGrammarTestCase.scala" pinned="false" current="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/test/scala/nofs/restfs/query/ConfigGrammarTestCase.scala">
+          <file leaf-file-name="ApplyWebMethodOperation.scala" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/main/scala/nofs/restfs/query/ast/ApplyWebMethodOperation.scala">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="189" column="54" selection-start="6576" selection-end="6576" vertical-scroll-proportion="0.5625">
+                <state line="9" column="10" selection-start="289" selection-end="289" vertical-scroll-proportion="0.0">
                   <folding />
                 </state>
               </provider>
@@ -97,7 +91,7 @@
           <file leaf-file-name="RestFsFuseTest.java" pinned="false" current="true" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/test/java/nofs/restfs/tests/RestFsFuseTest.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="65" column="0" selection-start="2229" selection-end="2229" vertical-scroll-proportion="0.33272058">
+                <state line="117" column="20" selection-start="4879" selection-end="4879" vertical-scroll-proportion="0.5961165">
                   <folding />
                 </state>
               </provider>
@@ -116,7 +110,6 @@
     <option name="changedFiles">
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="$PROJECT_DIR$/src/main/scala/nofs/restfs/query/ConfigGrammar.scala" />
         <option value="$PROJECT_DIR$/src/main/java/nofs/restfs/rules/RulesErrorFile.java" />
         <option value="$PROJECT_DIR$/src/main/java/nofs/restfs/rules/RulesASTFile.java" />
         <option value="$PROJECT_DIR$/src/main/java/nofs/restfs/RestfulFolderWithSettings.java" />
@@ -124,11 +117,12 @@
         <option value="$PROJECT_DIR$/src/test/java/nofs/restfs/tests/oauthexample/WebServerFixture.java" />
         <option value="$PROJECT_DIR$/src/main/java/nofs/restfs/rules/RulesFolder.java" />
         <option value="$PROJECT_DIR$/src/main/java/nofs/restfs/rules/RulesSourceFile.java" />
-        <option value="$PROJECT_DIR$/src/main/scala/nofs/restfs/query/ast/FSRuleStm.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/nofs/restfs/query/ast/FSAction.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/nofs/restfs/query/ast/AddTranslatorStm.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/nofs/restfs/query/ast/ApplyTransformationOperation.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/nofs/restfs/query/ast/ApplyWebMethodOperation.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/nofs/restfs/query/ast/FSRuleStm.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/nofs/restfs/query/ConfigGrammar.scala" />
         <option value="$PROJECT_DIR$/src/test/scala/nofs/restfs/query/ConfigGrammarTestCase.scala" />
         <option value="$PROJECT_DIR$/src/test/java/nofs/restfs/tests/RestFsFuseTest.java" />
       </list>
@@ -299,29 +293,7 @@
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="dynamic.classpath" value="false" />
   </component>
-  <component name="RunManager" selected="JUnit.RestFsFuseTest.TestRulesCompilation">
-    <configuration default="false" name="RestFsFuseTest.TestWriteToSettingsFileSmallerThenBigger" type="JUnit" factoryName="JUnit" temporary="true">
-      <module name="nofs.restfs" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" value="" />
-      <option name="PACKAGE_NAME" value="nofs.restfs.tests" />
-      <option name="MAIN_CLASS_NAME" value="nofs.restfs.tests.RestFsFuseTest" />
-      <option name="METHOD_NAME" value="TestWriteToSettingsFileSmallerThenBigger" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="VM_PARAMETERS" value="" />
-      <option name="PARAMETERS" value="" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="moduleWithDependencies" />
-      </option>
-      <envs />
-      <patterns />
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="JUnit.RestFsFuseTest">
     <configuration default="false" name="RestFsWithOAuthTest" type="JUnit" factoryName="JUnit" temporary="true">
       <module name="nofs.restfs" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -407,6 +379,34 @@
       <envs />
       <patterns />
       <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="RestFsFuseTest.TestRulesCompilation_Error" type="JUnit" factoryName="JUnit" temporary="true">
+      <module name="nofs.restfs" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="PACKAGE_NAME" value="nofs.restfs.tests" />
+      <option name="MAIN_CLASS_NAME" value="nofs.restfs.tests.RestFsFuseTest" />
+      <option name="METHOD_NAME" value="TestRulesCompilation_Error" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="6650" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Debug" />
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
@@ -552,12 +552,12 @@
       <method />
     </configuration>
     <list size="6">
-      <item index="0" class="java.lang.String" itemvalue="JUnit.RestFsFuseTest.TestWriteToSettingsFileSmallerThenBigger" />
-      <item index="1" class="java.lang.String" itemvalue="JUnit.RestFsWithOAuthTest" />
-      <item index="2" class="java.lang.String" itemvalue="JUnit.RestFsWithOAuthTest.TestGetTokenWithRestfs" />
-      <item index="3" class="java.lang.String" itemvalue="JUnit.RestFsFuseTest" />
-      <item index="4" class="java.lang.String" itemvalue="JUnit.RestFsFuseTest.TestRulesCompilation" />
-      <item index="5" class="java.lang.String" itemvalue="JUnit.All in nofs.restfs" />
+      <item index="0" class="java.lang.String" itemvalue="JUnit.RestFsWithOAuthTest" />
+      <item index="1" class="java.lang.String" itemvalue="JUnit.RestFsWithOAuthTest.TestGetTokenWithRestfs" />
+      <item index="2" class="java.lang.String" itemvalue="JUnit.RestFsFuseTest" />
+      <item index="3" class="java.lang.String" itemvalue="JUnit.RestFsFuseTest.TestRulesCompilation" />
+      <item index="4" class="java.lang.String" itemvalue="JUnit.All in nofs.restfs" />
+      <item index="5" class="java.lang.String" itemvalue="JUnit.RestFsFuseTest.TestRulesCompilation_Error" />
     </list>
     <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
       <Host>localhost</Host>
@@ -612,14 +612,14 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="0" />
+    <frame x="104" y="13" width="1217" height="715" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32982457" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Maven-2 Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3993174" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32982457" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32423207" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="ConsoleMavenPlugin" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32982457" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -627,7 +627,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2006079" sideWeight="0.6263158" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.11474164" sideWeight="0.6263158" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.6757679" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="FLOATING" visible="false" weight="0.3736842" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" x="11" y="10" width="969" height="699" />
@@ -684,11 +684,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/test/java/nofs/restfs/tests/util/RestFsTestHelper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="97" column="66" selection-start="3822" selection-end="3822" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/nofs/restfs/tests/RestFsWithOAuthTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="28" column="0" selection-start="866" selection-end="866" vertical-scroll-proportion="0.0" />
@@ -723,23 +718,51 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/nofs/restfs/query/ast/FSOperation.scala">
+    <entry file="file://$PROJECT_DIR$/src/main/scala/nofs/restfs/query/ast/ApplyWebMethodOperation.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="15" selection-start="46" selection-end="46" vertical-scroll-proportion="0.0">
+        <state line="9" column="10" selection-start="289" selection-end="289" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/nofs/restfs/query/ast/ProgramStm.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="31" selection-start="59" selection-end="59" vertical-scroll-proportion="0.10261569">
+        <state line="4" column="57" selection-start="61" selection-end="61" vertical-scroll-proportion="0.13682093">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/scala/nofs/restfs/query/ConfigGrammarTestCase.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="186" column="11" selection-start="6438" selection-end="6438" vertical-scroll-proportion="0.46875">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/nofs/restfs/query/ConfigGrammar.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="74" column="56" selection-start="2284" selection-end="2284" vertical-scroll-proportion="0.3382353">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/nofs/restfs/query/ast/FSRuleStm.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="25" selection-start="56" selection-end="56" vertical-scroll-proportion="0.0648855">
+        <state line="6" column="32" selection-start="207" selection-end="207" vertical-scroll-proportion="0.19465649">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/nofs/restfs/query/ast/FSOperation.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2" column="15" selection-start="46" selection-end="46" vertical-scroll-proportion="0.06331471">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/nofs/restfs/query/ast/FSAction.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2" column="6" selection-start="37" selection-end="37" vertical-scroll-proportion="0.06331471">
           <folding />
         </state>
       </provider>
@@ -753,35 +776,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/nofs/restfs/query/ast/ApplyTransformationOperation.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="10" selection-start="230" selection-end="230" vertical-scroll-proportion="0.22709924">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/nofs/restfs/query/ast/ApplyWebMethodOperation.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="10" selection-start="289" selection-end="289" vertical-scroll-proportion="0.28125">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/nofs/restfs/query/ast/FSAction.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="51" selection-start="197" selection-end="197" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/scala/nofs/restfs/query/ConfigGrammarTestCase.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="189" column="54" selection-start="6576" selection-end="6576" vertical-scroll-proportion="0.5625">
+        <state line="7" column="10" selection-start="230" selection-end="230" vertical-scroll-proportion="0.23106796">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/nofs/restfs/tests/RestFsFuseTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="65" column="0" selection-start="2229" selection-end="2229" vertical-scroll-proportion="0.33272058">
+        <state line="117" column="20" selection-start="4879" selection-end="4879" vertical-scroll-proportion="0.5961165">
           <folding />
         </state>
       </provider>
