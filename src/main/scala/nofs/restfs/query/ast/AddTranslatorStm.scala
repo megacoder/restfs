@@ -5,9 +5,9 @@ class AddTranslatorStm(fromFormat: String, toFormat: String, withFileName: Strin
   private var _to = toFormat
   private var _with = withFileName
 
-  def from() = _from
+  def getFrom() = _from
 
-  def to() = _to
+  def getTo() = _to
 
-  def withFile() = _with;
+  def getWithFile() = _with;
 }

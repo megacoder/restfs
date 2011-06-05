@@ -18,6 +18,8 @@ import nofs.metadata.AnnotationDriver.NoFSClassLoader;
 import nofs.metadata.interfaces.IMetadataFactory;
 import nofs.metadata.interfaces.INoFSClassLoader;
 
+import javax.accessibility.AccessibleStateSet;
+
 public class RestFsFuseTest extends BaseFuseTests {
 	private TemporaryTestFolder _tmpFolder;
 	private NoFSFuseDriver _fs;
@@ -41,6 +43,29 @@ public class RestFsFuseTest extends BaseFuseTests {
             new DirFillerExpect("rules", FuseFtypeConstants.TYPE_DIR | 0755)
 		});
 	}
+
+    @Test
+    public void TestRulesCompilation() throws Exception {
+        TestFolderContents(_fs, Fix("/rules"), new DirFillerExpect[] {
+		});
+        Assert.assertEquals(0, _fs.mknod(Fix("/rules/x"), FuseFtypeConstants.TYPE_FILE | 0755, 0));
+        TestFolderContents(_fs, Fix("/rules"), new DirFillerExpect[] {
+            new DirFillerExpect("x", FuseFtypeConstants.TYPE_FILE | 0755),
+            new DirFillerExpect("x.ast", FuseFtypeConstants.TYPE_FILE | 0555),
+            new DirFillerExpect("x.err", FuseFtypeConstants.TYPE_FILE | 0555),
+		});
+        final String configText =
+                "MKNOD(\"/foo/bar\")\n" +
+                "XFORM FROM \"json\" TO \"xml\"\n" +
+                "GET FROM \"http://foo/bar\" USING OAUTH TOKEN \"/auth/baz\"";
+        WriteToFile(Fix("/rules/x"), configText);
+        final String srcFileContents = ReadFromFile(Fix("/rules/x"));
+        Assert.assertEquals(configText, srcFileContents);
+        final String astText = ReadFromFile(Fix("/rules/x.ast"));
+        final String errText = ReadFromFile(Fix("/rules/x.err"));
+        Assert.assertEquals("", astText);
+        Assert.assertEquals("", errText);
+    }
 	
 	@Test
 	public void TestMkdirInAuth() throws Exception {

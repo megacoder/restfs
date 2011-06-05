@@ -4,7 +4,7 @@ class FSAction(act: String, file: String) {
   private val _action = act
   private val _fileName = file
 
-  def action() = _action
+  def getAction() = _action
 
-  def fileName() = _fileName
+  def getFileName() = _fileName
 }

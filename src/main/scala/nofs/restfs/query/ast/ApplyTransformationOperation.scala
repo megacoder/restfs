@@ -4,6 +4,6 @@ class ApplyTransformationOperation(fromTyp: String, toTyp: String) extends FSOpe
   private var _fromType = fromTyp;
   private var _toType = toTyp;
 
-  def fromType() = _fromType;
-  def toType() = _toType;
+  def getFromType() = _fromType;
+  def getToType() = _toType;
 }

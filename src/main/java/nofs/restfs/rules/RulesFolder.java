@@ -16,9 +16,7 @@ import java.util.List;
 public class RulesFolder extends RestfulFolder<BaseFileObject> {
 
     public boolean Filter(Class<?> possibleChildType) {
-        return possibleChildType == RulesSourceFile.class ||
-                possibleChildType == RulesErrorFile.class ||
-                possibleChildType == RulesASTFile.class;
+        return possibleChildType == RulesSourceFile.class;
     }
 
     private IDomainObjectContainerManager _containerManager;

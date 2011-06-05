@@ -1,5 +1,6 @@
 package nofs.restfs.rules;
 
+import nofs.Library.Annotations.DomainObject;
 import nofs.Library.Annotations.HideMethod;
 import nofs.Library.Containers.IListensToEvents;
 import nofs.Library.Containers.IProvidesUnstructuredData;
@@ -11,11 +12,12 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+@DomainObject
 public class RulesSourceFile extends BaseFileObject implements IProvidesUnstructuredData, IListensToEvents {
 
     private RulesASTFile _ast;
     private RulesErrorFile _err;
-    private volatile byte[] _data;
+    private volatile byte[] _data = new byte[0];
 
     @HideMethod
     public RulesASTFile ast() { return _ast; }

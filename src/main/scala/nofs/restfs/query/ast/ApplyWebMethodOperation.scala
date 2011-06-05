@@ -5,7 +5,7 @@ class ApplyWebMethodOperation(meth : String, urlVal : String, tokenPath : String
   private val _url = urlVal;
   private val _token = tokenPath;
 
-  def method() = _method
-  def url() = _url
-  def token() = _token
+  def getMethod() = _method
+  def getUrl() = _url
+  def getToken() = _token
 }
