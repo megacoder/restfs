@@ -51,6 +51,12 @@ public class WebServerFixture {
 	
 	private final static String[] Java_Homes = {
 		"C:\\Program Files (x86)\\Java\\jdk1.6.0_18",
+        "C:\\Program Files (x86)\\Java\\jdk1.6.0_19",
+        "C:\\Program Files (x86)\\Java\\jdk1.6.0_20",
+        "C:\\Program Files (x86)\\Java\\jdk1.6.0_21",
+        "C:\\Program Files (x86)\\Java\\jdk1.6.0_22",
+        "C:\\Program Files (x86)\\Java\\jdk1.6.0_23",
+        "C:\\Program Files (x86)\\Java\\jdk1.6.0_24",
 		"C:\\Program Files (x86)\\Java\\j2sdk1.4.2_19",
 		"/usr/lib/jvm/java-6-openjdk",
 		"/usr/lib/jvm/java-1.6.0-openjdk"

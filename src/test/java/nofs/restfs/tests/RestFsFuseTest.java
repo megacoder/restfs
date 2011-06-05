@@ -2,6 +2,7 @@ package nofs.restfs.tests;
 
 import java.nio.ByteBuffer;
 
+import nofs.restfs.tests.util.*;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -12,16 +13,10 @@ import fuse.FuseFtypeConstants;
 
 import nofs.FUSE.Impl.NoFSFuseDriver;
 import nofs.Factories.IPersistenceFactory;
-import nofs.restfs.tests.util.MockFuseOpenSetter;
 
 import nofs.metadata.AnnotationDriver.NoFSClassLoader;
 import nofs.metadata.interfaces.IMetadataFactory;
 import nofs.metadata.interfaces.INoFSClassLoader;
-import nofs.restfs.tests.util.BaseFuseTests;
-import nofs.restfs.tests.util.DirFillerExpect;
-import nofs.restfs.tests.util.MockFuseGetattrSetter;
-import nofs.restfs.tests.util.RestSettingHelper;
-import nofs.restfs.tests.util.TemporaryTestFolder;
 
 public class RestFsFuseTest extends BaseFuseTests {
 	private TemporaryTestFolder _tmpFolder;
@@ -30,7 +25,7 @@ public class RestFsFuseTest extends BaseFuseTests {
 	@Before
 	public void Setup() throws Exception {
 		_tmpFolder = new TemporaryTestFolder();
-		_fs = BuildFS();
+		_fs = RestFsTestHelper.BuildFS(_tmpFolder);
 	}
 
 	@After
@@ -38,25 +33,7 @@ public class RestFsFuseTest extends BaseFuseTests {
 		_fs.CleanUp();
 		_tmpFolder.CleanUp();
 	}
-	
-	private NoFSFuseDriver BuildFS() throws Exception {
-		final String objectStore = _tmpFolder.getPath("fs.db");
-		final String metaFile = _tmpFolder.getPath("meta.db");
-		final String metaDataDriver = "nofs.metadata.AnnotationDriver.Factory";
-		final String persistenceDriver = "nofs.Factories.Db4oPersistenceFactory";
-		ClassLoader loader = ClassLoader.getSystemClassLoader();
-		INoFSClassLoader nofsLoader = new NoFSClassLoader(ClassLoader.getSystemClassLoader());
-        nofsLoader.AddPackageFilter("nofs.restfs");
-        nofsLoader.AddPackageFilter("nofs.restfs.rules");
-        nofsLoader.AddPackageFilter("nofs.restfs.oauth");
-		IMetadataFactory metadataFactory = (IMetadataFactory)loader.loadClass(metaDataDriver).newInstance();
-        metadataFactory.SetClassLoader(nofsLoader);
-		IPersistenceFactory persistenceFactory = (IPersistenceFactory)loader.loadClass(persistenceDriver).newInstance();
-		NoFSFuseDriver fs = new NoFSFuseDriver(nofsLoader, objectStore, metaFile, metadataFactory, persistenceFactory);
-		fs.Init();
-		return fs;
-	}
-	
+
 	@Test
 	public void TestInitialFS() throws Exception {
 		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {
@@ -137,7 +114,8 @@ public class RestFsFuseTest extends BaseFuseTests {
 		Assert.assertEquals(0, _fs.mkdir(Fix("/x"), FuseFtypeConstants.TYPE_DIR | 0755));
 		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {
 			new DirFillerExpect("auth", FuseFtypeConstants.TYPE_DIR | 0755),
-			new DirFillerExpect("x", FuseFtypeConstants.TYPE_DIR | 0755)
+			new DirFillerExpect("x", FuseFtypeConstants.TYPE_DIR | 0755),
+            new DirFillerExpect("rules", FuseFtypeConstants.TYPE_DIR | 0755)
 		});
 	}
 	
@@ -171,7 +149,8 @@ public class RestFsFuseTest extends BaseFuseTests {
 		TestFolderContents(_fs, Fix("/"), new DirFillerExpect[] {
 			new DirFillerExpect("auth", FuseFtypeConstants.TYPE_DIR | 0755),
 			new DirFillerExpect("x", FuseFtypeConstants.TYPE_FILE | 0755),
-			new DirFillerExpect(".x", FuseFtypeConstants.TYPE_FILE | 0755)
+			new DirFillerExpect(".x", FuseFtypeConstants.TYPE_FILE | 0755),
+            new DirFillerExpect("rules", FuseFtypeConstants.TYPE_DIR | 0755)
 		});
 	}
 	
@@ -278,7 +257,8 @@ public class RestFsFuseTest extends BaseFuseTests {
 		
 		String xml = RestSettingHelper.CreateSettingsXml("","","","","","", "");
 		
-		Assert.assertEquals(start + xml, ReadFromFile(Fix("/.x")));
+		//Assert.assertEquals(start + xml, ReadFromFile(Fix("/.x")));
+        XMLComparison.Compare(start+xml, ReadFromFile(Fix("/.x")));
 		
 		xml = RestSettingHelper.CreateSettingsXml("aa","bb","cc","dd","ee","16000", "");
 		WriteToFile(Fix("/.x"), xml);

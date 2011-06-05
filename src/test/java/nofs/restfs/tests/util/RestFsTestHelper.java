@@ -93,7 +93,11 @@ public class RestFsTestHelper extends BaseFuseTests {
 		final String persistenceDriver = "nofs.Factories.Db4oPersistenceFactory";
 		ClassLoader loader = ClassLoader.getSystemClassLoader();
 		INoFSClassLoader nofsLoader = new NoFSClassLoader(ClassLoader.getSystemClassLoader());
+        nofsLoader.AddPackageFilter("nofs.restfs");
+        nofsLoader.AddPackageFilter("nofs.restfs.rules");
+        nofsLoader.AddPackageFilter("nofs.restfs.oauth");
 		IMetadataFactory metadataFactory = (IMetadataFactory)loader.loadClass(metaDataDriver).newInstance();
+        metadataFactory.SetClassLoader(nofsLoader);
 		IPersistenceFactory persistenceFactory = (IPersistenceFactory)loader.loadClass(persistenceDriver).newInstance();
 		NoFSFuseDriver fs = new NoFSFuseDriver(nofsLoader, objectStore, metaFile, metadataFactory, persistenceFactory);
 		fs.Init();
